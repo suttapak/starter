@@ -2,7 +2,7 @@ package boostrap
 
 import (
 	"fmt"
-	"labostack/config"
+	"github.com/suttapak/starter/config"
 
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v3"

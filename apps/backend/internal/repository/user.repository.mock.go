@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"labostack/internal/model"
+	"github.com/suttapak/starter/internal/model"
 
 	"github.com/stretchr/testify/mock"
 	"gorm.io/gorm"

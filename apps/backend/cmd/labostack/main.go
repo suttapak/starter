@@ -1,16 +1,16 @@
 package main
 
 import (
-	"labostack/boostrap"
-	"labostack/config"
-	"labostack/database"
-	"labostack/internal/controller"
-	"labostack/internal/middleware"
-	"labostack/internal/repository"
-	"labostack/internal/route"
-	"labostack/internal/service"
-	"labostack/logger"
-	"labostack/mail"
+	"github.com/suttapak/starter/boostrap"
+	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/database"
+	"github.com/suttapak/starter/internal/controller"
+	"github.com/suttapak/starter/internal/middleware"
+	"github.com/suttapak/starter/internal/repository"
+	"github.com/suttapak/starter/internal/route"
+	"github.com/suttapak/starter/internal/service"
+	"github.com/suttapak/starter/logger"
+	"github.com/suttapak/starter/mail"
 
 	"go.uber.org/fx"
 )

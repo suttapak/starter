@@ -2,9 +2,9 @@ package database
 
 import (
 	"fmt"
-	"labostack/config"
-	"labostack/internal/idx"
-	"labostack/internal/model"
+	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/internal/idx"
+	"github.com/suttapak/starter/internal/model"
 
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"gorm.io/driver/postgres"

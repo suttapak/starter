@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"labostack/internal/dto"
-	"labostack/internal/service"
+	"github.com/suttapak/starter/internal/dto"
+	"github.com/suttapak/starter/internal/service"
 	"net/http"
 )
 

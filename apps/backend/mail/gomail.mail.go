@@ -2,7 +2,7 @@ package mail
 
 import (
 	"crypto/tls"
-	"labostack/config"
+	"github.com/suttapak/starter/config"
 
 	"gopkg.in/gomail.v2"
 )

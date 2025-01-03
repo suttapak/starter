@@ -2,11 +2,11 @@ package boostrap
 
 import (
 	"context"
-	"labostack/config"
+	"github.com/suttapak/starter/config"
 	"net"
 	"net/http"
 
-	_ "labostack/cmd/docs"
+	_ "github.com/suttapak/starter/cmd/docs"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/pprof"

@@ -3,14 +3,14 @@ package service
 import (
 	"context"
 	"errors"
-	"labostack/errs"
-	"labostack/helpers"
-	"labostack/internal/dto"
-	"labostack/internal/idx"
-	"labostack/internal/model"
-	"labostack/internal/repository"
-	"labostack/internal/response"
-	"labostack/logger"
+	"github.com/suttapak/starter/errs"
+	"github.com/suttapak/starter/helpers"
+	"github.com/suttapak/starter/internal/dto"
+	"github.com/suttapak/starter/internal/idx"
+	"github.com/suttapak/starter/internal/model"
+	"github.com/suttapak/starter/internal/repository"
+	"github.com/suttapak/starter/internal/response"
+	"github.com/suttapak/starter/logger"
 
 	"gorm.io/gorm"
 )

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	"html/template"
-	"labostack/internal/dto"
-	"labostack/internal/repository"
+	"github.com/suttapak/starter/internal/dto"
+	"github.com/suttapak/starter/internal/repository"
 
 	"gopkg.in/gomail.v2"
 )
