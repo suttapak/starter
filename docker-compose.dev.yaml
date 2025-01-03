@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3003:8080"
+    volumes:
+      - ./apps/backend:/app
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: "username"
+      POSTGRES_PASSWORD: "p@ssw0rd"
+      POSTGRES_DB: "labotron_stack"
+    restart: always
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
