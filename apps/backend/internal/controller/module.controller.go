@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
-	"labostack/errs"
+	"github.com/suttapak/starter/errs"
 	"net/http"
 )
 

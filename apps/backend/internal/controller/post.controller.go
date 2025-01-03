@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"labostack/internal/service"
+	"github.com/suttapak/starter/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

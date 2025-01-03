@@ -1,6 +1,6 @@
 package service
 
-import "labostack/internal/repository"
+import "github.com/suttapak/starter/internal/repository"
 
 type Post interface {
 	Fist() error

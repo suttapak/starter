@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"labostack/internal/service"
-	"labostack/logger"
+	"github.com/suttapak/starter/internal/service"
+	"github.com/suttapak/starter/logger"
 	"net/http"
 	"strconv"
 	"strings"

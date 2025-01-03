@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
-	"labostack/internal/model"
+	"github.com/suttapak/starter/internal/model"
 
 	"gorm.io/gorm"
 )

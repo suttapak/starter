@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"fmt"
-	"labostack/config"
-	"labostack/errs"
-	"labostack/logger"
+	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/errs"
+	"github.com/suttapak/starter/logger"
 	"strconv"
 	"time"
 

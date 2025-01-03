@@ -1,8 +1,8 @@
 package route
 
 import (
-	"labostack/internal/controller"
-	"labostack/internal/middleware"
+	"github.com/suttapak/starter/internal/controller"
+	"github.com/suttapak/starter/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
