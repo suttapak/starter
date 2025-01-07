@@ -3,11 +3,12 @@ package service
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/suttapak/starter/config"
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/logger"
-	"strconv"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )

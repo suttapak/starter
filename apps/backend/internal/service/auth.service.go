@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/helpers"
 	"github.com/suttapak/starter/internal/dto"
@@ -61,32 +62,18 @@ func (a auth) VerifyEmail(ctx context.Context, body dto.VerifyEmailDto) (res *re
 }
 
 func (a auth) Login(ctx context.Context, body dto.LoginDto) (res *response.AuthResponse, err error) {
-	tx := a.userRepo.BeginTx()
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		} else {
-			tx.Commit()
-		}
-	}()
-
 	// find user by email or username
-	userModel, err := a.userRepo.GetUserByEmailOrUsername(ctx, tx, body.UserNameEmail)
-	if err != nil {
+	userModel, err := a.userRepo.GetUserByEmailOrUsername(ctx, nil, body.UserNameEmail)
+	if err != nil || userModel == nil {
 		a.logger.Error(err)
-		return nil, errs.ErrBadRequest
-	}
-	if userModel == nil {
 		return nil, errs.ErrUnauthorized
 	}
+
 	// check password
 	pass, err := helpers.CheckPassword(userModel.Password, []byte(body.Password))
-	if err != nil {
+	if err != nil || !pass {
 		a.logger.Error(err)
 		return nil, errs.ErrBadRequest
-	}
-	if !pass {
-		return nil, errs.ErrUnauthorized
 	}
 	// generate token
 	token, err := a.jwtService.GenerateToken(ctx, userModel.ID)
@@ -104,7 +91,7 @@ func (a auth) Login(ctx context.Context, body dto.LoginDto) (res *response.AuthR
 		RefreshToken: refreshToken,
 	}
 	// send res
-	return
+	return res, err
 
 }
 
@@ -188,12 +175,10 @@ func (a auth) Register(ctx context.Context, user dto.UserRegisterDto) (res *resp
 	return
 }
 
-func newAuth(logger logger.AppLogger, userRepo repository.User, jwtService JWTService, mailRepo repository.MailRepository, mail Email) Auth {
+func NewAuth(logger logger.AppLogger, userRepo repository.User, jwtService JWTService) Auth {
 	return &auth{
-		logger:      logger,
-		userRepo:    userRepo,
-		jwtService:  jwtService,
-		mailRepo:    mailRepo,
-		mailService: mail,
+		logger:     logger,
+		userRepo:   userRepo,
+		jwtService: jwtService,
 	}
 }

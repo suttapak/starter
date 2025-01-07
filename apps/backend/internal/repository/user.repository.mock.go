@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"github.com/suttapak/starter/internal/model"
 
 	"github.com/stretchr/testify/mock"
@@ -55,6 +56,6 @@ func (u *userMock) Register(ctx context.Context, tx *gorm.DB, user model.User) (
 	args := u.Called(ctx, tx, user)
 	return args.Get(0).(*model.User), args.Error(1)
 }
-func NewUserRepositoryMock() User {
+func NewUserRepositoryMock() *userMock {
 	return &userMock{}
 }
