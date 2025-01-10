@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	"errors"
+
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/helpers"
 	"github.com/suttapak/starter/internal/dto"
@@ -11,8 +11,6 @@ import (
 	"github.com/suttapak/starter/internal/repository"
 	"github.com/suttapak/starter/internal/response"
 	"github.com/suttapak/starter/logger"
-
-	"gorm.io/gorm"
 )
 
 type (
@@ -23,7 +21,8 @@ type (
 	}
 	auth struct {
 		// utils
-		logger logger.AppLogger
+		passwordHelper helpers.Helper
+		logger         logger.AppLogger
 		// service
 		jwtService  JWTService
 		mailService Email
@@ -34,59 +33,41 @@ type (
 )
 
 func (a auth) VerifyEmail(ctx context.Context, body dto.VerifyEmailDto) (res *response.UserResponse, err error) {
-	a.logger.Info(body.Token)
 	email, err := a.jwtService.GetEmailFormToken(ctx, body.Token)
 	if err != nil {
 		a.logger.Error(err)
 		return nil, errs.ErrGenerateJWTFail
 	}
 	_, have, err := a.userRepo.CheckEmail(ctx, nil, email)
-	if !have {
+	if !have || err != nil {
 		a.logger.Error(errs.ErrGenerateJWTFail)
 		return nil, errs.ErrBadRequest
 	}
-	if err != nil {
-		a.logger.Error(err)
-		return nil, errs.ErrInternal
-	}
+
 	userModel, err := a.userRepo.VerifyEmail(ctx, nil, email)
 	if err != nil {
 		a.logger.Error(err)
-		return nil, errs.ErrInternal
+		return nil, errs.ErrVerifyEmail
 	}
-	if err := helpers.ParseJson(userModel, &res); err != nil {
+	if err := a.passwordHelper.ParseJson(userModel, &res); err != nil {
 		return nil, errs.ErrInvalid
 	}
 	return
 }
 
 func (a auth) Login(ctx context.Context, body dto.LoginDto) (res *response.AuthResponse, err error) {
-	tx := a.userRepo.BeginTx()
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		} else {
-			tx.Commit()
-		}
-	}()
-
 	// find user by email or username
-	userModel, err := a.userRepo.GetUserByEmailOrUsername(ctx, tx, body.UserNameEmail)
-	if err != nil {
+	userModel, err := a.userRepo.GetUserByEmailOrUsername(ctx, nil, body.UserNameEmail)
+	if err != nil || userModel == nil {
 		a.logger.Error(err)
-		return nil, errs.ErrBadRequest
+		return nil, errs.ErrUsernameOrPasswordIncorect
 	}
-	if userModel == nil {
-		return nil, errs.ErrUnauthorized
-	}
+
 	// check password
-	pass, err := helpers.CheckPassword(userModel.Password, []byte(body.Password))
-	if err != nil {
+	pass, err := a.passwordHelper.CheckPassword(userModel.Password, []byte(body.Password))
+	if err != nil || !pass {
 		a.logger.Error(err)
-		return nil, errs.ErrBadRequest
-	}
-	if !pass {
-		return nil, errs.ErrUnauthorized
+		return nil, errs.ErrUsernameOrPasswordIncorect
 	}
 	// generate token
 	token, err := a.jwtService.GenerateToken(ctx, userModel.ID)
@@ -104,49 +85,31 @@ func (a auth) Login(ctx context.Context, body dto.LoginDto) (res *response.AuthR
 		RefreshToken: refreshToken,
 	}
 	// send res
-	return
+	return res, err
 
 }
 
 func (a auth) Register(ctx context.Context, user dto.UserRegisterDto) (res *response.AuthResponse, err error) {
-	// transaction handler
-	tx := a.userRepo.BeginTx()
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		} else {
-			tx.Commit()
-		}
-	}()
-
 	var (
 		userModel model.User
 	)
 
 	// check username in database
-	_, dulicateUsername, err := a.userRepo.CheckUsername(ctx, tx, user.Username)
-	if dulicateUsername {
+	_, dulicateUsername, err := a.userRepo.CheckUsername(ctx, nil, user.Username)
+	if dulicateUsername || err != nil {
 		a.logger.Debug("username are duplicate")
-		return nil, errs.ErrDuplicateUsername
-	}
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		a.logger.Error(err)
 		return nil, errs.ErrDuplicateUsername
 	}
 
 	// check username in database
-	_, duplicateEmail, err := a.userRepo.CheckEmail(ctx, tx, user.Username)
-	if duplicateEmail {
+	_, duplicateEmail, err := a.userRepo.CheckEmail(ctx, nil, user.Email)
+	if duplicateEmail || err != nil {
 		a.logger.Debug("email are duplicate")
-		return nil, errs.ErrDuplicateEmail
-	}
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		a.logger.Error(err)
 		return nil, errs.ErrDuplicateEmail
 	}
 
 	// hash user password
-	user.Password, err = helpers.HashPassword(user.Password)
+	user.Password, err = a.passwordHelper.HashPassword(user.Password)
 	if err != nil {
 		a.logger.Error(err)
 		return nil, errs.ErrHashPassword
@@ -161,21 +124,21 @@ func (a auth) Register(ctx context.Context, user dto.UserRegisterDto) (res *resp
 		LastName:  user.LastName,
 		RoleID:    idx.RoleUser,
 	}
-	register, err := a.userRepo.Register(ctx, tx, userModel)
+	registered, err := a.userRepo.Register(ctx, nil, userModel)
 	if err != nil {
 		a.logger.Error(err)
 		return nil, errs.ErrRegisterUsername
 	}
 
 	// generate token
-	token, err := a.jwtService.GenerateToken(ctx, register.ID)
+	token, err := a.jwtService.GenerateToken(ctx, registered.ID)
 	if err != nil {
 		a.logger.Error(err)
 		return nil, errs.ErrGenerateJWTFail
 	}
 
 	// generate refresh token
-	refreshToken, err := a.jwtService.GenerateRefreshToken(ctx, register.ID)
+	refreshToken, err := a.jwtService.GenerateRefreshToken(ctx, registered.ID)
 	if err != nil {
 		a.logger.Error(err)
 		return nil, errs.ErrGenerateJWTFail
@@ -188,12 +151,20 @@ func (a auth) Register(ctx context.Context, user dto.UserRegisterDto) (res *resp
 	return
 }
 
-func newAuth(logger logger.AppLogger, userRepo repository.User, jwtService JWTService, mailRepo repository.MailRepository, mail Email) Auth {
+func NewAuth(
+	logger logger.AppLogger,
+	userRepo repository.User,
+	jwtService JWTService,
+	passwordHelper helpers.Helper,
+	mailService Email,
+	mailRepo repository.MailRepository,
+) Auth {
 	return &auth{
-		logger:      logger,
-		userRepo:    userRepo,
-		jwtService:  jwtService,
-		mailRepo:    mailRepo,
-		mailService: mail,
+		passwordHelper: passwordHelper,
+		logger:         logger,
+		userRepo:       userRepo,
+		jwtService:     jwtService,
+		mailService:    mailService,
+		mailRepo:       mailRepo,
 	}
 }

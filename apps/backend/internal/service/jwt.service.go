@@ -2,12 +2,12 @@ package service
 
 import (
 	"context"
-	"fmt"
+	"strconv"
+	"time"
+
 	"github.com/suttapak/starter/config"
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/logger"
-	"strconv"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -35,7 +35,6 @@ type (
 
 // GetUserIdFormToken implements JWTService.
 func (j *jwtService) GetUserIdFormToken(ctx context.Context, token string) (uId uint, err error) {
-	fmt.Println("token", token)
 	t, err := j.ParserToken(ctx, token, j.conf.JWT.SECRET)
 	if err != nil {
 		j.logger.Error(err)

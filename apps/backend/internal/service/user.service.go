@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/helpers"
 	"github.com/suttapak/starter/internal/repository"
@@ -19,6 +20,7 @@ type (
 	userService struct {
 		user   repository.User
 		logger logger.AppLogger
+		help   helpers.Helper
 	}
 )
 
@@ -33,12 +35,12 @@ func (u userService) GetUserByUserId(ctx context.Context, uId uint) (res *respon
 		u.logger.Error(err)
 		return nil, errs.ErrInternal
 	}
-	if err := helpers.ParseJson(userModel, &res); err != nil {
+	if err := u.help.ParseJson(userModel, &res); err != nil {
 		return nil, errs.ErrInternal
 	}
 	return
 }
 
-func newUserService(user repository.User, logger logger.AppLogger) UserService {
-	return userService{user: user, logger: logger}
+func newUserService(user repository.User, logger logger.AppLogger, help helpers.Helper) UserService {
+	return userService{user: user, logger: logger, help: help}
 }
