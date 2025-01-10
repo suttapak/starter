@@ -12,6 +12,7 @@ import (
 var Module = fx.Options(
 	fx.Provide(newPost),
 	fx.Provide(NewAuth),
+	fx.Provide(NewUser),
 )
 
 type (

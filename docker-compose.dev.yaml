@@ -1,10 +1,30 @@
 services:
+  proxy:
+    container_name: proxy
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+
+    restart: "unless-stopped"
+  frontend:
+    container_name: frontend
+    build:
+      context: ./apps/frontend
+    volumes:
+      - ./apps/frontend/src:/usr/src/app/src
+      - ./apps/frontend/public:/usr/src/app/public
+
   backend:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile.dev
-    ports:
-      - "3003:8080"
+    # ports:
+    #   - "3003:8080"
     volumes:
       - ./apps/backend:/app
   postgres:
@@ -18,5 +38,5 @@ services:
   adminer:
     image: adminer
     restart: always
-    ports:
-      - "8080:8080"
+    # ports:
+    #   - "8080:8080"

@@ -7,4 +7,6 @@ var Module = fx.Options(
 	fx.Invoke(usePost),
 	fx.Provide(newAuth),
 	fx.Invoke(useAuth),
+	fx.Provide(newUser),
+	fx.Invoke(useUser),
 )

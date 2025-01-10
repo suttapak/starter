@@ -5,5 +5,5 @@
   "eslint.alwaysShowStatus": true,
   "files.autoSave": "onFocusChange",
   "prettier.trailingComma": "all",
-  "prettier.printWidth": 160
+  "prettier.printWidth": 80
 }
