@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+
 	"github.com/suttapak/starter/config"
 	"github.com/suttapak/starter/internal/idx"
 	"github.com/suttapak/starter/internal/model"

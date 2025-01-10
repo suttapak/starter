@@ -1,10 +1,11 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/service"
-	"net/http"
 )
 
 type (
@@ -15,7 +16,7 @@ type (
 	}
 
 	auth struct {
-		userService service.Auth
+		authService service.Auth
 	}
 )
 
@@ -39,7 +40,7 @@ func (a auth) VerifyEmail(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	_, err := a.userService.VerifyEmail(c, body)
+	_, err := a.authService.VerifyEmail(c, body)
 	if err != nil {
 		handlerError(c, err)
 		return
@@ -67,12 +68,12 @@ func (a auth) Login(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	res, err := a.userService.Login(c, body)
+	res, err := a.authService.Login(c, body)
 	if err != nil {
 		handlerError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, res)
+	handleJsonResponse(c, res)
 }
 
 // Register
@@ -93,15 +94,15 @@ func (a auth) Register(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	res, err := a.userService.Register(c, user)
+	res, err := a.authService.Register(c, user)
 	if err != nil {
 		handlerError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, res)
+	handleJsonResponse(c, res)
 }
 
-func newAuth(userService service.Auth) Auth {
-	return auth{userService: userService}
+func NewAuth(authService service.Auth) Auth {
+	return auth{authService: authService}
 }

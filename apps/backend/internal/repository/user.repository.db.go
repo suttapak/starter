@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+
 	"github.com/suttapak/starter/internal/model"
 
 	"gorm.io/gorm"
@@ -10,7 +11,7 @@ import (
 
 type (
 	User interface {
-		BeginTx() *gorm.DB
+		CommonDB
 		Register(ctx context.Context, tx *gorm.DB, user model.User) (*model.User, error)
 		CheckUsername(ctx context.Context, tx *gorm.DB, username string) (user *model.User, flag bool, err error)
 		CheckEmail(ctx context.Context, tx *gorm.DB, email string) (user *model.User, flag bool, err error)
@@ -22,6 +23,22 @@ type (
 		db *gorm.DB
 	}
 )
+
+// CommitTx implements User.
+func (u user) CommitTx(tx *gorm.DB) {
+	if tx == nil {
+		return
+	}
+	tx.Commit()
+}
+
+// RollbackTx implements User.
+func (u user) RollbackTx(tx *gorm.DB) {
+	if tx == nil {
+		return
+	}
+	tx.Rollback()
+}
 
 // GetUserByUserId implements User.
 func (u user) GetUserByUserId(ctx context.Context, tx *gorm.DB, uId uint) (user *model.User, err error) {

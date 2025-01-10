@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"time"
 
@@ -36,7 +35,6 @@ type (
 
 // GetUserIdFormToken implements JWTService.
 func (j *jwtService) GetUserIdFormToken(ctx context.Context, token string) (uId uint, err error) {
-	fmt.Println("token", token)
 	t, err := j.ParserToken(ctx, token, j.conf.JWT.SECRET)
 	if err != nil {
 		j.logger.Error(err)
