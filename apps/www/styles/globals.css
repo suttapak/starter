@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.lucide {
+  /* Change this! */
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.5px;
+}
