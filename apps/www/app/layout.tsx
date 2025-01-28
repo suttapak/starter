@@ -39,7 +39,16 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers>{children}</Providers>
+        <Providers
+          themeProps={{
+            attribute: "class",
+            defaultTheme: "system",
+            enableSystem: true,
+            disableTransitionOnChange: true,
+          }}
+        >
+          {children}
+        </Providers>
       </body>
     </html>
   );

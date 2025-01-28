@@ -34,11 +34,10 @@ func TestRegister(t *testing.T) {
 		{
 			name: "TEST_SUCCESS",
 			input: dto.UserRegisterDto{
-				Email:     "email",
-				Username:  "username",
-				Password:  "password",
-				FirstName: "firstname",
-				LastName:  "lastname",
+				Email:    "email",
+				Username: "username",
+				Password: "password",
+				FullName: "fullanme",
 			},
 			output: controller.Response[*response.AuthResponse]{
 				Status:  http.StatusCreated,
@@ -73,11 +72,10 @@ func TestRegister(t *testing.T) {
 		{
 			name: "TEST_ERROR_INTERNAL",
 			input: dto.UserRegisterDto{
-				Email:     "email",
-				Username:  "username",
-				Password:  "password",
-				FirstName: "firstname",
-				LastName:  "lastname",
+				Email:    "email",
+				Username: "username",
+				Password: "password",
+				FullName: "fullanme",
 			},
 			output: controller.Response[*response.AuthResponse]{
 				Status:  http.StatusBadRequest,

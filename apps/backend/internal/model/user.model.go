@@ -7,8 +7,7 @@ type (
 		Password      string         `json:"-"`        // passowrd is user login password
 		Email         string         `json:"email"`    // email feild for register and forgot password processed
 		EmailVerifyed bool           `json:"email_verifyed"`
-		FirstName     string         `json:"first_name"`
-		LastName      string         `json:"last_name"`
+		FullName      string         `json:"full_name"`
 		ProfileImage  []ProfileImage `json:"profile_image"`
 		Role          Role           `json:"role"`
 		RoleID        uint           `json:"role_id"`

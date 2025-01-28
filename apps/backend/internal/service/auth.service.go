@@ -117,12 +117,11 @@ func (a auth) Register(ctx context.Context, user dto.UserRegisterDto) (res *resp
 
 	// register user to database
 	userModel = model.User{
-		Username:  user.Username,
-		Password:  user.Password,
-		Email:     user.Email,
-		FirstName: user.FirstName,
-		LastName:  user.LastName,
-		RoleID:    idx.RoleUser,
+		Username: user.Username,
+		Password: user.Password,
+		Email:    user.Email,
+		FullName: user.FullName,
+		RoleID:   idx.RoleUser,
 	}
 	registered, err := a.userRepo.Register(ctx, nil, userModel)
 	if err != nil {

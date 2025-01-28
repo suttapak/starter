@@ -8,7 +8,7 @@ import (
 )
 
 func GetProtectUserId(c *gin.Context) (uId uint, err error) {
-	uIdStr, ok := c.Get("userId")
+	uIdStr, ok := c.Get("user_id")
 	if !ok {
 		return 0, errs.ErrUnauthorized
 	}

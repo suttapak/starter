@@ -24,7 +24,7 @@ func newUser(r *gin.Engine, userController controller.User, guard middleware.Aut
 }
 
 func useUser(u user) {
-	group := u.r.Group("users", u.guard.Protect, u.guard.Permission)
+	group := u.r.Group("users", u.guard.Protect)
 	{
 		group.GET("/:id", u.userController.GetUserById)
 		group.GET("/me", u.userController.GetUserMe)
