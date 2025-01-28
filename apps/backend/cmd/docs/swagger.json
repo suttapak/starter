@@ -195,10 +195,33 @@
         "response.UserResponse": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
                 "email": {
+                    "description": "email feild for register and forgot password processed",
+                    "type": "string"
+                },
+                "email_verifyed": {
+                    "type": "boolean"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "role_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
                     "type": "string"
                 },
                 "username": {
+                    "description": "username is uniqe of user in system",
                     "type": "string"
                 }
             }

@@ -26,5 +26,6 @@ func useAuth(a auth) {
 	{
 		r.POST("/login", a.authController.Login)
 		r.POST("/register", a.authController.Register)
+		r.POST("/logout", a.authController.Logout)
 	}
 }

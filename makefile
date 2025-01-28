@@ -8,6 +8,8 @@ run.dev:
 	cd ~/labostack/apps/frontend && npm run dev
 run.docker.up:
 	docker compose -f docker-compose.dev.yaml up -d
+run.docker.up.build:
+	docker compose -f docker-compose.dev.yaml up -d --build
 run.docker.down:
 	docker compose -f docker-compose.dev.yaml down
 run.docker.log.server:

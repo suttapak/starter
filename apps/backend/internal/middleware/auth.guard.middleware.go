@@ -1,11 +1,12 @@
 package middleware
 
 import (
-	"github.com/suttapak/starter/internal/service"
-	"github.com/suttapak/starter/logger"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/suttapak/starter/internal/service"
+	"github.com/suttapak/starter/logger"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
@@ -61,24 +62,32 @@ func (a authGuardMiddleware) Permission(c *gin.Context) {
 
 // Protect implements AuthGuardMiddleware.
 func (a authGuardMiddleware) Protect(c *gin.Context) {
-	token := c.GetHeader("Authorization")
-	splitedToken := strings.Split(token, " ")
-	if len(splitedToken) != 2 {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{})
-		return
+	var (
+		token string
+	)
+	token, err := c.Cookie("session")
+	if token == "" {
+		token = c.GetHeader("Authorization")
+		splitedToken := strings.Split(token, " ")
+
+		if len(splitedToken) != 2 {
+			token = ""
+		}
+		if len(splitedToken) == 2 {
+			token = splitedToken[1]
+		}
 	}
-	if splitedToken[0] != "Bearer" {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{})
-		return
-	}
-	uId, err := a.jwt.GetUserIdFormToken(c, splitedToken[1])
+
+	uId, err := a.jwt.GetUserIdFormToken(c, token)
 	if err != nil {
+		a.logger.Error(err)
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{})
 		return
 	}
 	user, err := a.user.GetUserByUserId(c, uId)
 	if err != nil {
 		// form service not logger err
+		a.logger.Error(err)
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{})
 		return
 	}

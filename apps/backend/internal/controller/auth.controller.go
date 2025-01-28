@@ -12,6 +12,7 @@ type (
 	Auth interface {
 		Register(c *gin.Context)
 		Login(c *gin.Context)
+		Logout(c *gin.Context)
 		VerifyEmail(c *gin.Context)
 	}
 
@@ -19,6 +20,11 @@ type (
 		authService service.Auth
 	}
 )
+
+// Logout implements Auth.
+func (a auth) Logout(c *gin.Context) {
+	c.SetCookie("session", "", -1, "/", "localhost", false, true)
+}
 
 // VerifyEmail
 // @BasePath /auth
@@ -73,6 +79,7 @@ func (a auth) Login(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
+	c.SetCookie("session", res.Token, 0, "/", "localhost", false, true)
 	handleJsonResponse(c, res)
 }
 
