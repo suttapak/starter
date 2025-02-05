@@ -5,14 +5,6 @@ import { NewTeamDialog } from "@/components/new-team-dialog";
 import { useGetTeamMe } from "@/hooks/use-team";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface Team {
-  id: string;
-  name: string;
-  description: string;
-  username: string;
-  membersCount: number;
-}
-
 export default function TeamsPage() {
   const { data, isLoading, isError, error } = useGetTeamMe();
   const teams = data?.data.data;
