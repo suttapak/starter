@@ -33,9 +33,12 @@ services:
       dockerfile: Dockerfile.dev
     # ports:
     #   - "3003:8080"
+    depends_on:
+      db:
+        condition: service_healthy
     volumes:
       - ./apps/backend:/app
-  postgres:
+  db:
     image: postgres:15
     container_name: postgres
     environment:
@@ -43,6 +46,14 @@ services:
       POSTGRES_PASSWORD: "p@ssw0rd"
       POSTGRES_DB: "labotron_stack"
     restart: always
+    volumes:
+      - ./volumes/data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d${POSTGRES_DB}'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   adminer:
     image: adminer
     restart: always

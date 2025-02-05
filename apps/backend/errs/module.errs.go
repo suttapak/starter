@@ -1,6 +1,11 @@
 package errs
 
-import "net/http"
+import (
+	"errors"
+	"net/http"
+
+	"gorm.io/gorm"
+)
 
 var (
 	ErrNotFound                   = New(http.StatusNotFound, "ไม่พบข้อมูล")
@@ -17,6 +22,8 @@ var (
 	ErrGenerateJWTFail            = New(http.StatusInternalServerError, "บางอย่างผิดพลาดในการออก token")
 	ErrUsernameOrPasswordIncorect = New(http.StatusUnauthorized, "username หรือ password ไม่ถูกต้อง")
 	ErrVerifyEmail                = New(http.StatusBadRequest, "ข้อมูลการยืนยันตัวตนไม่ถูกต้อง")
+	ErrTeamUsernameIsUsed         = New(http.StatusBadRequest, "username นี้มีการใช้งานแล้วกรุณาใช้ username อื่น")
+	ErrDuplicatedKey              = New(http.StatusBadRequest, "มีข้อมูลนี้แล้ว ข้อมูลซ่ำโปรดลองกรอกข้อมูลอื่นๆ")
 )
 
 type AppError struct {
@@ -26,6 +33,20 @@ type AppError struct {
 
 func (e AppError) Error() string {
 	return e.Message
+}
+
+func HandeGorm(err error) error {
+	if err == nil {
+		return nil
+	}
+	switch {
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return ErrNotFound
+	case errors.Is(err, gorm.ErrDuplicatedKey):
+		return ErrDuplicatedKey
+	default:
+		return ErrInternal
+	}
 }
 
 func New(code int, message string) error {

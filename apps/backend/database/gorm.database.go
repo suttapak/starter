@@ -25,7 +25,14 @@ func newGorm(conf *config.Config) (*gorm.DB, error) {
 }
 
 func migrateDb(db *gorm.DB) error {
-	err := db.AutoMigrate(&model.User{}, &model.Post{}, &gormadapter.CasbinRule{})
+	err := db.AutoMigrate(
+		&model.User{},
+		&model.Post{},
+		&gormadapter.CasbinRule{},
+		&model.Team{},
+		&model.TeamMember{},
+		&model.TeamRole{},
+	)
 	return err
 }
 
@@ -51,6 +58,35 @@ func seedRole(db *gorm.DB) error {
 			CommonModel: model.CommonModel{ID: idx.RoleSuperAdmin},
 			Name:        "SuperAdmin",
 		}}
+		if err := db.Create(&roles).Error; err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func seedTeamRole(db *gorm.DB) error {
+	var (
+		count int64
+	)
+	if err := db.Model(&model.TeamRole{}).Count(&count).Error; err != nil {
+		return err
+	}
+	if count == 0 {
+		var roles = []*model.TeamRole{
+			{
+				CommonModel: model.CommonModel{ID: idx.TeamRoleOwnerID},
+				Name:        "Owner",
+			},
+			{
+				CommonModel: model.CommonModel{ID: idx.TeamRoleAdminID},
+				Name:        "Admin",
+			},
+			{
+				CommonModel: model.CommonModel{ID: idx.TeamRoleMemeberID},
+				Name:        "Memeber",
+			},
+		}
 		if err := db.Create(&roles).Error; err != nil {
 			return err
 		}
