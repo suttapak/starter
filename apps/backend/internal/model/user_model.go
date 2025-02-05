@@ -11,6 +11,7 @@ type (
 		ProfileImage  []ProfileImage `json:"profile_image"`
 		Role          Role           `json:"role"`
 		RoleID        uint           `json:"role_id"`
+		TeamMembers   []TeamMember   `json:"team_members"`
 	}
 
 	ProfileImage struct {

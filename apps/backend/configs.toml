@@ -10,7 +10,7 @@ expose_headers = []
 max_age = ''
 
 [db]
-dsn = 'host=postgres user=username password=p@ssw0rd dbname=labotron_stack port=5432 sslmode=disable TimeZone=Asia/Bangkok'
+dsn = 'host=db user=username password=p@ssw0rd dbname=labotron_stack port=5432 sslmode=disable TimeZone=Asia/Bangkok'
 
 [jwt]
 refresh_secret = 'super_refresh@secret'

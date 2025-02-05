@@ -22,7 +22,7 @@ type (
 )
 
 // Logout implements Auth.
-func (a auth) Logout(c *gin.Context) {
+func (a *auth) Logout(c *gin.Context) {
 	c.SetCookie("session", "", -1, "/", "localhost", false, true)
 }
 
@@ -38,7 +38,7 @@ func (a auth) Logout(c *gin.Context) {
 // @Param        token    query     string  false  "name search by q"  Format(email)
 // @Success	200		{object}  response.UserResponse
 // @Router	/auth/email/verify [post]
-func (a auth) VerifyEmail(c *gin.Context) {
+func (a *auth) VerifyEmail(c *gin.Context) {
 	var (
 		body dto.VerifyEmailDto
 	)
@@ -66,7 +66,7 @@ func (a auth) VerifyEmail(c *gin.Context) {
 // @Param data body dto.LoginDto true "body data".
 // @Success	200		{object}  response.AuthResponse
 // @Router	/auth/login 	[post]
-func (a auth) Login(c *gin.Context) {
+func (a *auth) Login(c *gin.Context) {
 	//TODO implement me
 	var body dto.LoginDto
 
@@ -95,7 +95,7 @@ func (a auth) Login(c *gin.Context) {
 // @Param data body dto.UserRegisterDto true "body data".
 // @Success	200		{object}  response.AuthResponse
 // @Router	/auth/register 	[post]
-func (a auth) Register(c *gin.Context) {
+func (a *auth) Register(c *gin.Context) {
 	var user dto.UserRegisterDto
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		handlerError(c, err)
@@ -111,5 +111,5 @@ func (a auth) Register(c *gin.Context) {
 }
 
 func NewAuth(authService service.Auth) Auth {
-	return auth{authService: authService}
+	return &auth{authService: authService}
 }

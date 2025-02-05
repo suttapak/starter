@@ -9,4 +9,8 @@ var Module = fx.Options(
 	fx.Invoke(useAuth),
 	fx.Provide(newUser),
 	fx.Invoke(useUser),
+	fx.Provide(newHealthCheck),
+	fx.Invoke(useHealthCheck),
+	fx.Provide(newTeam),
+	fx.Invoke(useTeam),
 )

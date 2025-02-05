@@ -8,4 +8,5 @@ var Module = fx.Options(
 	fx.Provide(newJWT),
 	fx.Provide(newEmailService),
 	fx.Provide(newUserService),
+	fx.Provide(NewTeam),
 )

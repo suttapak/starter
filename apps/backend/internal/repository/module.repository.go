@@ -7,5 +7,6 @@ var (
 		fx.Provide(newPost),
 		fx.Provide(newUserRepository),
 		fx.Provide(newMailRepository),
+		fx.Provide(newTeam),
 	)
 )
