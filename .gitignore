@@ -2,3 +2,5 @@
 .idea
 volumes
 .env
+
+configs.toml
