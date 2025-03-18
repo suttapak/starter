@@ -13,6 +13,7 @@ max_age = ''
 dsn = 'host=db user=username password=p@ssw0rd dbname=labotron_stack port=5432 sslmode=disable TimeZone=Asia/Bangkok'
 
 [jwt]
+email_secret = 'sutperssadfasd_dsadf'
 refresh_secret = 'super_refresh@secret'
 secret = 'super@secret'
 
@@ -26,6 +27,6 @@ username = 'matee@labotron.co.th'
 enable = false
 
 [server]
-host = ''
-host_name = ''
+host = 'localhost'
+host_name = 'http://localhost:8080'
 port = '3000'
