@@ -1,0 +1,3 @@
+p, 1, /post/*, GET
+p, 2, /post/*, GET
+p, 2, /post/*, POST

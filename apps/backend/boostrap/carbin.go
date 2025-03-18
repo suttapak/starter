@@ -1,7 +1,6 @@
 package boostrap
 
 import (
-	"fmt"
 	"github.com/suttapak/starter/config"
 
 	"github.com/casbin/casbin/v2"
@@ -16,7 +15,6 @@ func newCarbin(cfg *config.Config, db *gorm.DB) (*casbin.Enforcer, error) {
 	}
 	e, err := casbin.NewEnforcer(cfg.CARBIN.MODEL, a)
 	if err != nil {
-		fmt.Println("err", err)
 		return nil, err
 	}
 	return e, nil

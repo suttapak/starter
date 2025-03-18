@@ -1,0 +1,45 @@
+services:
+  proxy:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+
+    restart: "unless-stopped"
+  frontend:
+    image: o9yst03/stockub-frontend:test
+    container_name: frontend
+    volumes:
+      - ./.env:/usr/src/app/.env
+  backend:
+    image: o9yst03/stockub-backend:test
+    volumes:
+      - ./configs.toml:/root/configs.toml
+      - ./carbin:/root/carbin
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: "username"
+      POSTGRES_PASSWORD: "p@ssw0rd"
+      POSTGRES_DB: "labotron_stack"
+    restart: always
+    volumes:
+      - ./volumes/data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  adminer:
+    image: adminer
+    restart: always
+    # ports:
+    #   - "8080:8080"

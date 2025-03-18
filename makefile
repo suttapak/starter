@@ -1,16 +1,5 @@
-# run backend go run cmd/main.go
-backend:
-	go run apps/backend/cmd/main.go
-backend.docs:
-	swag init -g apps/backend/cmd/labostack/main.go -o apps/backend/cmd/docs
-
-run.dev:
-	cd ~/labostack/apps/frontend && npm run dev
-run.docker.up:
-	docker compose -f docker-compose.dev.yaml up -d
-run.docker.up.build:
-	docker compose -f docker-compose.dev.yaml up -d --build
-run.docker.down:
-	docker compose -f docker-compose.dev.yaml down
-run.docker.log.server:
-	docker compose -f docker-compose.dev.yaml logs -f backend
+dockerbuild:
+	cd ./apps/backend && docker buildx build --platform linux/amd64,linux/arm64  -t o9yst03/stockub-backend:test --push  . 
+	cd ./apps/www && docker buildx build --platform linux/amd64,linux/arm64  -t o9yst03/stockub-frontend:test --push  . 
+	docker compose down 
+	cd ./docker && docker compose pull && docker compose up -d

@@ -42,25 +42,25 @@ func newAppLogger() (AppLogger, error) {
 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	config.EncoderConfig.StacktraceKey = ""
 
-	config.OutputPaths = []string{"./logs/logs.log"}
-	config.ErrorOutputPaths = []string{"./logs/errs.log"}
+	// config.OutputPaths = []string{"./logs/logs.log"}
+	// config.ErrorOutputPaths = []string{"./logs/errs.log"}
 
 	logger, err := config.Build(zap.AddCallerSkip(1))
 	if err != nil {
 		return nil, err
 	}
-	logger.Info("initialed logger")
+	// logger.Info("initialed logger")
 	return &appLogger{logger: logger}, nil
 }
-func (a appLogger) Info(message string, fields ...zap.Field) {
+func (a *appLogger) Info(message string, fields ...zap.Field) {
 	a.logger.Info(message, fields...)
 }
 
-func (a appLogger) Debug(message string, fields ...zap.Field) {
+func (a *appLogger) Debug(message string, fields ...zap.Field) {
 	a.logger.Debug(message, fields...)
 }
 
-func (a appLogger) Error(message interface{}, fields ...zap.Field) {
+func (a *appLogger) Error(message interface{}, fields ...zap.Field) {
 	switch v := message.(type) {
 	case error:
 		a.logger.Error(v.Error(), fields...)

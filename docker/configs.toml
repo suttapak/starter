@@ -1,0 +1,32 @@
+[carbin]
+model = './carbin/authz_model.conf'
+
+[cors]
+allow_credentials = false
+allow_headers = []
+allow_methods = []
+allow_origin = ['*']
+expose_headers = []
+max_age = ''
+
+[db]
+dsn = 'host=db user=username password=p@ssw0rd dbname=labotron_stack port=5432 sslmode=disable TimeZone=Asia/Bangkok'
+
+[jwt]
+email_secret = 'sutperssadfasd_dsadf'
+refresh_secret = 'super_refresh@secret'
+secret = 'super@secret'
+
+[mail]
+host = 'mail.labotron.co.th'
+password = 'itlbm3624567'
+port = 587
+username = 'matee@labotron.co.th'
+
+[pprof]
+enable = false
+
+[server]
+host = 'localhost'
+host_name = 'http://localhost:8080'
+port = '3000'
