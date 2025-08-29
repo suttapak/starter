@@ -1,20 +1,19 @@
-# Use an official Node.js runtime as a base image
-FROM node:20-alpine
-
-# Set the working directory in the container
-WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json to the working directory
+FROM node:24.4.1 AS builder
+WORKDIR /app
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the rest of the application code to the working directory
 COPY . .
+RUN npm run build
+FROM nginx:alpine AS production
 
-# Expose the port that Vite will run on
-EXPOSE 3000
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Start the application
-CMD ["npm", "run", "dev"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+# docker buildx build --platform linux/amd64,linux/arm64  -t o9yst03/labinsider-website:0.1.17 -t o9yst03/labinsider-website:latest --push -f Dockerfile.prod . 
+
+
+

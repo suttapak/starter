@@ -1,0 +1,36 @@
+[carbin]
+model = './carbin/authz_model.conf'
+
+[cors]
+allow_credentials = false
+allow_headers = []
+allow_methods = []
+allow_origin = ['*']
+expose_headers = []
+max_age = ''
+
+[db]
+dsn = 'host=db user=username password=p@ssw0rd dbname=labotron_stack port=5432 sslmode=disable TimeZone=Asia/Bangkok'
+
+[jwt]
+email_secret = 'sutperssadfasd_dsadf'
+refresh_secret = 'super_refresh@secret'
+secret = 'super@secret'
+
+[labodt]
+token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ7XCJfaWRcIjpcIjY3ZjYxOTIzMDBjOTJhNzI0MWI1ZTE5MVwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJwYXNzd29yZFwiOlwiJDJiJDEwJHYvYVNabmtsd01yQXV6NkxYNVFOaE9Lc3VibHFkOTVtaVhwMjB1YnhqMFkzL004cUNGdy9TXCJ9IiwiaWF0IjoxNzUxNTk5NDg0fQ.F7HTl1fKDS8bw7Ou371tPQNSBIsMkSJ7a2kCvDCkLNLiuV1OPib0omYUf_SCJqQteAA7EDa6JdVKYS60gv9VnqCGbub_VsQuPY3oatzP4NURLt_t7kUZ9wtVzX6vgAZorjEvVt5KDe9pYoVVnKgIt4bZpwXLfXkd7aFYbPuDQQxMNkNvT69yXRJTXKDMkWf1XUXC60gqZvMzkfIuzJ_oomyOoFuzYOhFqyNxCiMtQqo2PAHka3eyRUb9TF__dCMtFcSpf0PjrThf_mZ9trZTyEBs_ZK7SlWAb62myj3wRNs_VsgDA0M1V_ZlZSI5eBHKpkiCqVKcngXqlvNdcXMx02CeQWy7e6LPevyHK-PeATBVQYm7HRjMJyn99egloaVUe8Lb8OWFdL7MW-hINVvHf0U3T4b60RdGYg0GE_mUUnKWAcRbbNhLSXBCEXWgjvXuBTDoP56-TZdkQUr_ikzyXUCbixTY91YTx5B21ttuiFxN4tIWW1z5bos3DYZOhnBxhB2T7xhgGoSb0slQflYb9Mz32Yv5xK7so4QLV8bNMSabu-fgV-dEUckaKy9uG8Gp-EdO200Gvs7ojRWPOPsCS2ljbhB13dOH6flu5ldBh6YEIRphDuCtS0UHDSV1Ue0Ok0nrA9u7A8TF6DFRq4F7qBW_yY9BzDPJQSZBPniRmS0'
+url = 'http://labodt:3001'
+
+[mail]
+host = 'mail.labotron.co.th'
+password = 'itlbm3624567'
+port = 587
+username = 'matee@labotron.co.th'
+
+[pprof]
+enable = false
+
+[server]
+host = 'localhost'
+host_name = 'http://localhost:8080'
+port = '3000'

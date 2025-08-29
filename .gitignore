@@ -4,3 +4,6 @@ volumes
 .env
 
 configs.toml
+www_old
+.env
+*.log

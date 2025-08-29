@@ -7,4 +7,5 @@ var Module = fx.Options(
 	fx.Invoke(migrateDb),
 	fx.Invoke(seedRole),
 	fx.Invoke(seedTeamRole),
+	fx.Invoke(seedReportJsonSchemaType),
 )

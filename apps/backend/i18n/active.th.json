@@ -1,0 +1,43 @@
+[
+  {
+    "excel_header_download_stock": [
+      {
+        "id": "index",
+        "translation": "ลำดับ"
+      },
+      {
+        "id": "product_code",
+        "translation": "รหัสสินค้า"
+      },
+      {
+        "id": "product_name",
+        "translation": "ชื่อสินค้า"
+      },
+      {
+        "id": "product_description",
+        "translation": "คำอธิบาย"
+      },
+      {
+        "id": "product_price",
+        "translation": "ราคา"
+      },
+      {
+        "id": "product_uom",
+        "translation": "หน่วยนับ"
+      },
+
+      {
+        "id": "product_category",
+        "translation": "หมวดหมู่"
+      },
+      {
+        "id": "available_qty",
+        "translation": "จำนวนที่ใช้ได้"
+      },
+      {
+        "id": "remaining_qty",
+        "translation": "จำนวนที่เหลือ"
+      }
+    ]
+  }
+]

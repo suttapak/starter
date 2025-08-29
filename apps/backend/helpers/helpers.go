@@ -11,13 +11,23 @@ type (
 		HashPassword(password string) (string, error)
 		CheckPassword(hashPassword string, plainPassword []byte) (bool, error)
 		ParseJson(src any, dns any) error
+		ToJson(src any) (string, error)
 	}
 	helper struct {
 	}
 )
 
+// ToJson implements Helper.
+func (p *helper) ToJson(src any) (string, error) {
+	res, err := json.Marshal(src)
+	if err != nil {
+		return "", err
+	}
+	return string(res), nil
+}
+
 // ParseJson implements Helper.
-func (p helper) ParseJson(src any, dns any) error {
+func (p *helper) ParseJson(src any, dns any) error {
 	b, err := json.Marshal(src)
 	if err != nil {
 		return err
@@ -29,7 +39,7 @@ func (p helper) ParseJson(src any, dns any) error {
 }
 
 // CheckPassword implements PasswordHelper.
-func (p helper) CheckPassword(hashPassword string, plainPassword []byte) (bool, error) {
+func (p *helper) CheckPassword(hashPassword string, plainPassword []byte) (bool, error) {
 	hashPW := []byte(hashPassword)
 	if err := bcrypt.CompareHashAndPassword(hashPW, plainPassword); err != nil {
 		return false, err
@@ -38,11 +48,11 @@ func (p helper) CheckPassword(hashPassword string, plainPassword []byte) (bool, 
 }
 
 // HashPassword implements PasswordHelper.
-func (p helper) HashPassword(password string) (string, error) {
+func (p *helper) HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 4)
 	return string(bytes), err
 }
 
 func NewHelper() Helper {
-	return helper{}
+	return &helper{}
 }

@@ -14,8 +14,8 @@ type (
 	}
 )
 
-func newUser(r *gin.Engine, userController controller.User, guard middleware.AuthGuardMiddleware) (u user) {
-	u = user{
+func newUser(r *gin.Engine, userController controller.User, guard middleware.AuthGuardMiddleware) (u *user) {
+	u = &user{
 		r:              r,
 		userController: userController,
 		guard:          guard,
@@ -23,10 +23,13 @@ func newUser(r *gin.Engine, userController controller.User, guard middleware.Aut
 	return
 }
 
-func useUser(u user) {
+func useUser(u *user) {
 	group := u.r.Group("users", u.guard.Protect)
 	{
 		group.GET("/:id", u.userController.GetUserById)
 		group.GET("/me", u.userController.GetUserMe)
+		group.GET("/by-username", u.userController.FindUserByUsername)
+		group.GET("/verify-email", u.userController.CheckUserIsVerifyEmail)
+		group.POST("/profile-image", u.userController.CreateProfileImage)
 	}
 }

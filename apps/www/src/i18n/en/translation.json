@@ -1,0 +1,244 @@
+{
+  "landing_page": {
+    "title_2": "SUTTAPAK STARTER",
+    "title_1": "STARTER",
+    "description": "GOLANG GIN + REACT VITE + POSTGRESQL + DOCKER",
+    "snippet_1": "If you haven't registered yet, you can access it at "
+  },
+  "navbar": {
+    "brand": "STARTER",
+    "use_app": "Get Started",
+    "register": "Register",
+    "profile": {
+      "profile": "Profile",
+      "logout": "Logout"
+    },
+    "admin": {
+      "header_title": "ADMIN",
+      "admin": "Admin",
+      "report": "Report"
+    },
+    "team": {
+      "report": "Report",
+      "stock": {
+        "title": "Stock",
+        "stock": "Stock",
+        "new_product": "New Product",
+        "category": "Category"
+      },
+
+      "info": {
+        "title": "Department Info",
+        "info": "Department Info",
+        "member": "Members",
+        "member_pending": "Pending Members"
+      }
+    }
+  },
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login",
+    "register": "Register"
+  },
+  "register": {
+    "title": "Register",
+    "submit": "Register",
+    "login": "Go to Login",
+
+    "state": {
+      "full_name": "Full Name",
+      "username": "Username",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "email": "Email"
+    }
+  },
+  "team": {
+    "share_title": "Share Department",
+    "share": "Share Department",
+    "share_description_generated": "Copy the share link of the department to those who want to join the department.",
+    "share_description_not_generated": "Please click the button to create a share link for the department.",
+    "edit_title": "Edit Department",
+    "edit": "Edit",
+    "info_title": "Department Info",
+    "contact_title": "Department Contact Info",
+    "search_join": "Search and Join Department",
+    "search": "Search Department",
+    "new_team": "Create Department",
+    "join_with_link": "Join Department with Invite Link",
+    "join_team": "Join Department",
+    "request_join": "Request to Join Department",
+    "approve_title": "Approve Join Request",
+    "approve": "Approve",
+    "state": {
+      "index": "Index",
+      "name": "Department Name",
+      "username": "Department Username",
+      "description": "Department Description",
+      "email": "Department Email",
+      "phone": "Department Phone",
+      "address": "Department Address",
+      "created_at": "Created At"
+    },
+    "member": {
+      "state": {
+        "index": "Index",
+        "name": "Member Name",
+        "username": "Username",
+        "email": "Email",
+        "phone": "Phone",
+        "role": "Role",
+        "status": "Status",
+        "created_at": "Created At"
+      }
+    }
+  },
+  "product": {
+    "product_info_title": "Product Info",
+    "search": {
+      "state": {
+        "code": {
+          "label": "Product Code",
+          "placeholder": "Search Product Code"
+        },
+        "name": {
+          "label": "Product Name",
+          "placeholder": "Search Product Name"
+        },
+        "oum": {
+          "label": "Unit of Measure",
+          "placeholder": "Search Unit of Measure"
+        }
+      }
+    },
+    "upload_image": {
+      "title": "Upload Product Image",
+      "action": "Upload Image",
+      "remove_image": "Remove Image",
+      "error": "Error occurred while uploading image"
+    },
+    "state": {
+      "index": "Index",
+      "images": "Product Images",
+      "code": "Product Code",
+      "name": "Product Name",
+      "description": "Description",
+      "price": "Price",
+      "oum": "Unit of Measure",
+      "category": "Category",
+      "available_qty": "Available Quantity",
+      "remaining_qty": "Remaining Quantity"
+    },
+    "new_product": {
+      "title": "Create New Product",
+      "action": "Create Product"
+    },
+    "edit_product": {
+      "title": "Edit Product",
+      "action": "Edit Product"
+    }
+  },
+  "category": {
+    "state": {
+      "index": "Index",
+      "name": "Category Name",
+      "description": "Description",
+      "created_at": "Created At"
+    },
+    "new": {
+      "title": "Create New Category",
+      "action": "Create Category"
+    },
+    "edit": {
+      "title": "Edit Category",
+      "action": "Edit Category"
+    }
+  },
+  "user": {
+    "upload_image_profile": {
+      "title": "Upload Profile Image",
+      "action": "Upload",
+      "cancel": "Cancel"
+    },
+    "group_title": {
+      "change_lang": "Change Language",
+      "profile": "Profile"
+    },
+    "state": {
+      "username": "Username",
+      "full_name": "Full Name",
+      "email": "Email",
+      "role": "Role"
+    },
+    "verify_email_status": {
+      "not_verified": "Not Verified",
+      "verified": "Verified"
+    },
+    "verify_email": {
+      "action": "Verify Email"
+    },
+    "change_lang": {
+      "state": {
+        "lang": {
+          "label": "Language",
+          "placeholder": "Select Language"
+        }
+      }
+    }
+  },
+  "verify_email_success": {
+    "message": "Thank you for verifying your email",
+    "go_to_profile": "Go to Profile"
+  },
+  "report": {
+    "state": {
+      "name": "Document Title",
+      "file": "Document Template File"
+    },
+    "new": {
+      "title": "Add Document Template",
+      "action": "Save"
+    },
+    "edit": {
+      "title": "Edit Document Template",
+      "action": "Save"
+    },
+    "render": {
+      "button": "Print Document",
+      "title": "Print Document",
+      "action": "Print",
+      "state": {
+        "file_template": "Select Document Template"
+      }
+    }
+  },
+  "danger_modal": {
+    "button": "Delete",
+    "title": "Are you sure you want to proceed?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "not_found": {
+    "product": {
+      "title": "Product Not Found",
+      "description": "The product you are looking for does not exist",
+      "action": "Go to Inventory"
+    },
+    "member_pending": {
+      "title": "Member Pending Not Found",
+      "description": "No pending member information found",
+      "action": "Go to Department Information"
+    },
+    "global": {
+      "title": "Global Not Found",
+      "description": "No data found",
+      "action": "Go to Home"
+    }
+  },
+  "download": {
+    "title": "Download File",
+    "action": "Download"
+  }
+}

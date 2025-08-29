@@ -7,9 +7,9 @@ import (
 	"github.com/suttapak/starter/internal/idx"
 	"github.com/suttapak/starter/internal/model"
 
-	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func newGorm(conf *config.Config) (*gorm.DB, error) {
@@ -17,7 +17,9 @@ func newGorm(conf *config.Config) (*gorm.DB, error) {
 		return nil, fmt.Errorf("dsn is empty")
 
 	}
-	db, err := gorm.Open(postgres.Open(conf.DB.DSN), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(conf.DB.DSN), &gorm.Config{
+		// Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -26,16 +28,44 @@ func newGorm(conf *config.Config) (*gorm.DB, error) {
 
 func migrateDb(db *gorm.DB) error {
 	err := db.AutoMigrate(
+		&model.Image{},
 		&model.User{},
-		&model.Post{},
-		&gormadapter.CasbinRule{},
+		&model.ProfileImage{},
 		&model.Team{},
 		&model.TeamMember{},
 		&model.TeamRole{},
+		&model.Product{},
+		&model.ProductCategory{},
+		&model.ProductImage{},
+		&model.ProductProductCategory{},
+		&model.AutoIncrementSequence{},
+		&model.ReportJsonSchemaType{},
+		&model.ReportTemplate{},
 	)
+
 	return err
 }
 
+func seedReportJsonSchemaType(db *gorm.DB) error {
+	var (
+		count int64
+	)
+
+	if err := db.Model(&model.ReportJsonSchemaType{}).Count(&count).Error; err != nil {
+		return err
+	}
+	if count == 0 {
+		var types = []*model.ReportJsonSchemaType{{
+			CommonModel: model.CommonModel{ID: uint(idx.ReportJsonSchemaTypeCommonId)},
+			Name:        "Common",
+		},
+		}
+		if err := db.Clauses(clause.OnConflict{DoNothing: true}).Create(&types).Error; err != nil {
+			return err
+		}
+	}
+	return nil
+}
 func seedRole(db *gorm.DB) error {
 	var (
 		count int64
@@ -83,8 +113,8 @@ func seedTeamRole(db *gorm.DB) error {
 				Name:        "Admin",
 			},
 			{
-				CommonModel: model.CommonModel{ID: idx.TeamRoleMemeberID},
-				Name:        "Memeber",
+				CommonModel: model.CommonModel{ID: idx.TeamRoleMemberID},
+				Name:        "Member",
 			},
 		}
 		if err := db.Create(&roles).Error; err != nil {

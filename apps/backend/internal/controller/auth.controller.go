@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/suttapak/starter/config"
 	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/service"
 )
@@ -14,16 +15,52 @@ type (
 		Login(c *gin.Context)
 		Logout(c *gin.Context)
 		VerifyEmail(c *gin.Context)
+		SendVerifyEmail(c *gin.Context)
+		RefreshToken(c *gin.Context)
 	}
 
 	auth struct {
+		conf        *config.Config
 		authService service.Auth
 	}
 )
 
+// RefreshToken implements Auth.
+func (a *auth) RefreshToken(c *gin.Context) {
+	userId, err := getProtectUserId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := a.authService.RefreshToken(c, userId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	c.SetCookie("session", res.Token, 0, "/", a.conf.SERVER.HOST, false, true)
+	handleJsonResponse(c, res)
+
+}
+
+// SendVerifyEmail implements Auth.
+func (a *auth) SendVerifyEmail(c *gin.Context) {
+	userId, err := getProtectUserId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	input := dto.SendVerifyEmailDto{UserID: userId}
+	err = a.authService.SendVerifyEmail(c, input)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
 // Logout implements Auth.
 func (a *auth) Logout(c *gin.Context) {
-	c.SetCookie("session", "", -1, "/", "localhost", false, true)
+	c.SetCookie("session", "", -1, "/", a.conf.SERVER.HOST, false, true)
 }
 
 // VerifyEmail
@@ -51,7 +88,7 @@ func (a *auth) VerifyEmail(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	c.Redirect(http.StatusMovedPermanently, "/auth/email/success")
+	c.Redirect(http.StatusMovedPermanently, "/verify-email-success")
 }
 
 // Login
@@ -79,7 +116,7 @@ func (a *auth) Login(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	c.SetCookie("session", res.Token, 0, "/", "localhost", false, true)
+	c.SetCookie("session", res.Token, 0, "/", a.conf.SERVER.HOST, false, true)
 	handleJsonResponse(c, res)
 }
 
@@ -110,6 +147,6 @@ func (a *auth) Register(c *gin.Context) {
 	handleJsonResponse(c, res)
 }
 
-func NewAuth(authService service.Auth) Auth {
-	return &auth{authService: authService}
+func NewAuth(authService service.Auth, conf *config.Config) Auth {
+	return &auth{authService: authService, conf: conf}
 }

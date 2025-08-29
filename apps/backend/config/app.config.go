@@ -7,6 +7,8 @@ import (
 )
 
 type (
+	I18N struct {
+	}
 	MAIL struct {
 		HOST     string `yaml:"HOST"`
 		PORT     int    `yaml:"port"`
@@ -45,6 +47,10 @@ type (
 	PPROF struct {
 		ENABLE bool `yaml:"ENABLE"`
 	}
+	LabODT struct {
+		Url   string `yaml:"URL"`
+		Token string `yaml:"TOKEN"`
+	}
 
 	Config struct {
 		SERVER SERVER `yaml:"SERVER"`
@@ -54,6 +60,7 @@ type (
 		PPROF  PPROF  `yaml:"PPROF"`
 		MAIL   MAIL   `yaml:"mail"`
 		CARBIN CARBIN `yaml:"CARBIN"`
+		LabODT LabODT `yaml:"LabODT"`
 	}
 )
 
@@ -79,6 +86,7 @@ func newAppConfig() *Config {
 	viper.SetDefault("PPROF", PPROF{})
 	viper.SetDefault("MAIL", MAIL{})
 	viper.SetDefault("CARBIN", CARBIN{})
+	viper.SetDefault("LabODT", LabODT{})
 
 	viper.WriteConfig()
 

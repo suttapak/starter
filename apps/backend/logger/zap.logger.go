@@ -3,9 +3,12 @@ package logger
 import (
 	"log"
 	"os"
+	"time"
 
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 type AppLogger interface {
@@ -30,26 +33,32 @@ func ensureDir(path string) error {
 }
 
 func newAppLogger() (AppLogger, error) {
-
-	// Define log directories
-
-	// Ensure all log directories exist
+	// Ensure logs directory exists
 	if err := ensureDir("./logs"); err != nil {
 		log.Fatalf("Failed to create log directory: %s, error: %v", "logs", err)
 	}
-	config := zap.NewDevelopmentConfig()
-	config.EncoderConfig.TimeKey = "timestamp"
-	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	config.EncoderConfig.StacktraceKey = ""
 
-	// config.OutputPaths = []string{"./logs/logs.log"}
-	// config.ErrorOutputPaths = []string{"./logs/errs.log"}
-
-	logger, err := config.Build(zap.AddCallerSkip(1))
-	if err != nil {
-		return nil, err
+	// Lumberjack for log rotation
+	logWriter := &lumberjack.Logger{
+		Filename: "./logs/app.log",
+		MaxAge:   90, // keep logs for 90 days
+		// MaxSize, MaxBackups not set (ignored)
 	}
-	// logger.Info("initialed logger")
+
+	// Zap encoder config
+	encoderConfig := zap.NewDevelopmentEncoderConfig()
+	encoderConfig.TimeKey = "timestamp"
+	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderConfig.StacktraceKey = ""
+
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(encoderConfig), // structured JSON logs
+		zapcore.AddSync(logWriter),
+		zap.DebugLevel, // log level
+	)
+
+	logger := zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
+
 	return &appLogger{logger: logger}, nil
 }
 func (a *appLogger) Info(message string, fields ...zap.Field) {
@@ -66,5 +75,28 @@ func (a *appLogger) Error(message interface{}, fields ...zap.Field) {
 		a.logger.Error(v.Error(), fields...)
 	case string:
 		a.logger.Error(v, fields...)
+	}
+}
+
+// GinLogger returns a gin.HandlerFunc that logs requests via zap
+func GinLogger(appLogger AppLogger) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
+
+		// Process request
+		c.Next()
+
+		// Log details
+		latency := time.Since(start)
+		status := c.Writer.Status()
+
+		appLogger.Info("HTTP Request",
+			zap.Int("status", status),
+			zap.String("method", c.Request.Method),
+			zap.String("path", c.Request.URL.Path),
+			zap.String("client_ip", c.ClientIP()),
+			zap.Duration("latency", latency),
+			zap.String("user-agent", c.Request.UserAgent()),
+		)
 	}
 }
