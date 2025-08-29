@@ -9,6 +9,28 @@ definitions:
       status:
         type: integer
     type: object
+  controller.Response-array_service_UserResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/service.UserResponse'
+        type: array
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.Response-bool:
+    properties:
+      data:
+        type: boolean
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
   controller.Response-service_AuthResponse:
     properties:
       data:
@@ -39,11 +61,6 @@ definitions:
     required:
     - password
     - username
-    type: object
-  dto.SendVerifyEmailDto:
-    properties:
-      user_id:
-        type: integer
     type: object
   dto.UserRegisterDto:
     properties:
@@ -167,13 +184,6 @@ paths:
     post:
       consumes:
       - application/json
-      parameters:
-      - description: body data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/dto.SendVerifyEmailDto'
       produces:
       - application/json
       responses:
@@ -314,6 +324,92 @@ paths:
             $ref: '#/definitions/controller.Response-any'
       tags:
       - auth
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-service_UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - users
+  /users/by-username:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Username
+        in: query
+        name: username
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-array_service_UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - users
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-service_UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - users
   /users/profile-image:
     post:
       consumes:
@@ -331,6 +427,31 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/controller.Response-service_UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - users
+  /users/verify-email:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-bool'
         "400":
           description: Bad Request
           schema:

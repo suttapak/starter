@@ -142,7 +142,7 @@ func getProtectUserId(c *gin.Context) (uId uint, err error) {
 }
 
 func getUserIdFromParam(c *gin.Context) (uId uint, err error) {
-	uIdStr := c.Param("uId")
+	uIdStr := c.Param("id")
 	u, err := strconv.Atoi(uIdStr)
 	if err != nil {
 		return 0, errs.ErrUnauthorized

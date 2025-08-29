@@ -56,11 +56,10 @@ func (a *auth) RefreshToken(c *gin.Context) {
 //	@Tags		auth
 //	@Accept		json
 //	@Produce	json
-//	@Param		data	body		dto.SendVerifyEmailDto	true	"body data".
-//	@Success	201		{object}	Response[any]
-//	@Failure	400		{object}	Response[any]
-//	@Failure	404		{object}	Response[any]
-//	@Failure	500		{object}	Response[any]
+//	@Success	201	{object}	Response[any]
+//	@Failure	400	{object}	Response[any]
+//	@Failure	404	{object}	Response[any]
+//	@Failure	500	{object}	Response[any]
 //	@Router		/auth/email/send-verify [post]
 func (a *auth) SendVerifyEmail(c *gin.Context) {
 	userId, err := getProtectUserId(c)
