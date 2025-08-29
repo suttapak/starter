@@ -19,6 +19,16 @@ type (
 )
 
 // CreateProfileImage implements User.
+//
+// @Tags      users
+// @Accept    multipart/form-data
+// @Produce   json
+// @Param     file formData file true "Profile image file"
+// @Success   201 {object} Response[service.UserResponse]
+// @Failure   400 {object} Response[any]
+// @Failure   404 {object} Response[any]
+// @Failure   500 {object} Response[any]
+// @Router    /users/profile-image [post]
 func (a *user) CreateProfileImage(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {

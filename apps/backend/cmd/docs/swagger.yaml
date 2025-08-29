@@ -1,22 +1,55 @@
+basePath: /api/v1
 definitions:
+  controller.Response-any:
+    properties:
+      data: {}
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.Response-service_AuthResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.AuthResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.Response-service_UserResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.UserResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
   dto.LoginDto:
     properties:
       password:
         minLength: 8
         type: string
-      username_email:
+      username:
         type: string
     required:
     - password
-    - username_email
+    - username
+    type: object
+  dto.SendVerifyEmailDto:
+    properties:
+      user_id:
+        type: integer
     type: object
   dto.UserRegisterDto:
     properties:
       email:
         type: string
-      first_name:
-        type: string
-      last_name:
+      full_name:
         type: string
       password:
         minLength: 8
@@ -25,75 +58,177 @@ definitions:
         type: string
     required:
     - email
-    - first_name
-    - last_name
+    - full_name
     - password
     - username
     type: object
-  response.AuthResponse:
+  dto.VerifyEmailDto:
+    properties:
+      token:
+        type: string
+    type: object
+  service.AuthResponse:
     properties:
       refresh_token:
         type: string
       token:
         type: string
     type: object
-  response.PostResponse:
+  service.Image:
     properties:
+      created_at:
+        type: string
+      height:
+        type: integer
       id:
         type: integer
+      path:
+        type: string
+      size:
+        type: number
+      type:
+        type: string
+      updated_at:
+        type: string
+      url:
+        type: string
+      width:
+        type: integer
     type: object
-  response.UserResponse:
+  service.ProfileImage:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      image:
+        $ref: '#/definitions/service.Image'
+      image_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  service.Role:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  service.UserResponse:
     properties:
       created_at:
         type: string
       email:
-        description: email feild for register and forgot password processed
         type: string
       email_verifyed:
         type: boolean
-      first_name:
+      full_name:
         type: string
       id:
         type: integer
-      last_name:
-        type: string
+      profile_image:
+        items:
+          $ref: '#/definitions/service.ProfileImage'
+        type: array
+      role:
+        $ref: '#/definitions/service.Role'
       role_id:
         type: integer
       updated_at:
         type: string
       username:
-        description: username is uniqe of user in system
         type: string
     type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
 info:
-  contact: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server caller server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
 paths:
+  /auth/email/send-verify:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SendVerifyEmailDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - auth
   /auth/email/verify:
     post:
       consumes:
       - application/json
-      description: verify email
       parameters:
-      - description: name search by q
-        format: email
-        in: query
-        name: token
-        type: string
+      - description: body data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerifyEmailDto'
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "301":
+          description: Moved Permanently
+        "400":
+          description: Bad Request
           schema:
-            $ref: '#/definitions/response.UserResponse'
-      summary: verify email
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
       tags:
       - auth
   /auth/login:
     post:
       consumes:
       - application/json
-      description: user login
       parameters:
       - description: body data
         in: body
@@ -104,18 +239,53 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
-            $ref: '#/definitions/response.AuthResponse'
-      summary: user login
+            $ref: '#/definitions/controller.Response-service_AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-service_AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
       tags:
       - auth
   /auth/register:
     post:
       consumes:
       - application/json
-      description: register user
       parameters:
       - description: body data
         in: body
@@ -126,26 +296,58 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
-            $ref: '#/definitions/response.AuthResponse'
-      summary: register user
+            $ref: '#/definitions/controller.Response-service_AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
       tags:
       - auth
-  /post:
+  /users/profile-image:
     post:
       consumes:
-      - application/json
-      description: do ping
+      - multipart/form-data
+      parameters:
+      - description: Profile image file
+        in: formData
+        name: file
+        required: true
+        type: file
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
-            $ref: '#/definitions/response.PostResponse'
-      summary: create post
+            $ref: '#/definitions/controller.Response-service_UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
       tags:
-      - post
+      - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

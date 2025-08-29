@@ -26,6 +26,15 @@ type (
 )
 
 // RefreshToken implements Auth.
+//
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Success	201	{object}	Response[service.AuthResponse]
+//	@Failure	400	{object}	Response[any]
+//	@Failure	404	{object}	Response[any]
+//	@Failure	500	{object}	Response[any]
+//	@Router		/auth/refresh [post]
 func (a *auth) RefreshToken(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {
@@ -43,6 +52,16 @@ func (a *auth) RefreshToken(c *gin.Context) {
 }
 
 // SendVerifyEmail implements Auth.
+//
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Param		data	body		dto.SendVerifyEmailDto	true	"body data".
+//	@Success	201		{object}	Response[any]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/auth/email/send-verify [post]
 func (a *auth) SendVerifyEmail(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {
@@ -64,17 +83,16 @@ func (a *auth) Logout(c *gin.Context) {
 }
 
 // VerifyEmail
-// @BasePath /auth
-// PingExample godoc
-// @Summary verify email
-// @Schemes
-// @Description verify email
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param        token    query     string  false  "name search by q"  Format(email)
-// @Success	200		{object}  response.UserResponse
-// @Router	/auth/email/verify [post]
+//
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Param		data	body	dto.VerifyEmailDto	true	"body data".
+//	@Success	301
+//	@Failure	400	{object}	Response[any]
+//	@Failure	404	{object}	Response[any]
+//	@Failure	500	{object}	Response[any]
+//	@Router		/auth/email/verify [post]
 func (a *auth) VerifyEmail(c *gin.Context) {
 	var (
 		body dto.VerifyEmailDto
@@ -92,17 +110,16 @@ func (a *auth) VerifyEmail(c *gin.Context) {
 }
 
 // Login
-// @BasePath /auth
-// PingExample godoc
-// @Summary user login
-// @Schemes
-// @Description user login
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param data body dto.LoginDto true "body data".
-// @Success	200		{object}  response.AuthResponse
-// @Router	/auth/login 	[post]
+//
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Param		data	body		dto.LoginDto	true	"body data".
+//	@Success	201		{object}	Response[service.AuthResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/auth/login [post]
 func (a *auth) Login(c *gin.Context) {
 	//TODO implement me
 	var body dto.LoginDto
@@ -121,17 +138,16 @@ func (a *auth) Login(c *gin.Context) {
 }
 
 // Register
-// @BasePath /auth
-// PingExample godoc
-// @Summary register user
-// @Schemes
-// @Description register user
-// @Tags auth
-// @Accept json
-// @Produce json
-// @Param data body dto.UserRegisterDto true "body data".
-// @Success	200		{object}  response.AuthResponse
-// @Router	/auth/register 	[post]
+//
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Param		data	body		dto.UserRegisterDto	true	"body data".
+//	@Success	201		{object}	Response[service.AuthResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/auth/register [post]
 func (a *auth) Register(c *gin.Context) {
 	var user dto.UserRegisterDto
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {

@@ -20,4 +20,6 @@ type (
 		Data    T      `json:"data"`
 		Meta    any    `json:"meta"`
 	}
+
+	Null struct{}
 )
