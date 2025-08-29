@@ -7,13 +7,18 @@ import (
 )
 
 type (
-	passowrdHelperMock struct {
+	helperMock struct {
 		mock.Mock
 	}
 )
 
+// ToJson implements Helper.
+func (p *helperMock) ToJson(src any) (string, error) {
+	panic("unimplemented")
+}
+
 // ParseJson implements Helper.
-func (p *passowrdHelperMock) ParseJson(src any, dns any) error {
+func (p *helperMock) ParseJson(src any, dns any) error {
 	args := p.Called()
 
 	b, err := json.Marshal(src)
@@ -27,17 +32,17 @@ func (p *passowrdHelperMock) ParseJson(src any, dns any) error {
 }
 
 // CheckPassword implements PasswordHelper.
-func (p *passowrdHelperMock) CheckPassword(hashPassword string, plainPassword []byte) (bool, error) {
+func (p *helperMock) CheckPassword(hashPassword string, plainPassword []byte) (bool, error) {
 	args := p.Called()
 	return args.Bool(0), args.Error(1)
 }
 
 // HashPassword implements PasswordHelper.
-func (p *passowrdHelperMock) HashPassword(password string) (string, error) {
+func (p *helperMock) HashPassword(password string) (string, error) {
 	args := p.Called()
 	return args.String(0), args.Error(1)
 }
 
-func NewHelperMock() *passowrdHelperMock {
-	return &passowrdHelperMock{}
+func NewHelperMock() *helperMock {
+	return &helperMock{}
 }

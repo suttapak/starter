@@ -9,11 +9,14 @@ type (
 	}
 
 	LoginDto struct {
-		UserNameEmail string `json:"username_email" binding:"required"`
+		UserNameEmail string `json:"username" binding:"required"`
 		Password      string `json:"password" binding:"required,min=8"`
 	}
 
 	VerifyEmailDto struct {
 		Token string `json:"token" form:"token"`
+	}
+	SendVerifyEmailDto struct {
+		UserID uint `json:"user_id"`
 	}
 )

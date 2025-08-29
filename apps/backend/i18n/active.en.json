@@ -1,0 +1,43 @@
+[
+  {
+    "excel_header_download_stock": [
+      {
+        "id": "index",
+        "translation": "Index"
+      },
+      {
+        "id": "product_code",
+        "translation": "Product Code"
+      },
+      {
+        "id": "product_name",
+        "translation": "Product Name"
+      },
+      {
+        "id": "product_description",
+        "translation": "Description"
+      },
+      {
+        "id": "product_price",
+        "translation": "Price"
+      },
+      {
+        "id": "product_uom",
+        "translation": "Unit of Measure"
+      },
+
+      {
+        "id": "product_category",
+        "translation": "Category"
+      },
+      {
+        "id": "available_qty",
+        "translation": "Available Quantity"
+      },
+      {
+        "id": "remaining_qty",
+        "translation": "Remaining Quantity"
+      }
+    ]
+  }
+]

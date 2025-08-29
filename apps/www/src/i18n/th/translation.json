@@ -1,0 +1,253 @@
+{
+  "landing_page": {
+    "title_2": "SUTTAPAK STARTER",
+    "title_1": "STARTER",
+    "description": "GOLANG GIN + REACT VITE + POSTGRESQL + DOCKER",
+    "snippet_1": "หากยังไม่ได้ลงทะเบียนสามารถเข้าใช้งานได้ที่ "
+  },
+  "navbar": {
+    "brand": "STARTER",
+    "use_app": "เข้าใช้งาน",
+    "register": "ลงทะเบียน",
+    "profile": {
+      "profile": "โปรไฟล์",
+      "logout": "ออกจากระบบ"
+    },
+    "admin": {
+      "header_title": "ADMIN",
+      "admin": "ผู้ดูแลระบบ",
+      "report": "รายงาน"
+    },
+    "team": {
+      "report": "รายงาน",
+      "stock": {
+        "title": "คลังสินค้า",
+        "stock": "สินค้าคงคลัง (Stock)",
+        "new_product": "เพิ่มรายการสินค้า",
+        "category": "หมวดหมู่สินค้า"
+      },
+      "info": {
+        "title": "ข้อมูลแผนก",
+        "info": "ข้อมูลแผนก",
+        "member": "สมาชิกแผนก",
+        "member_pending": "สมาชิกแผนกที่รออนุมัติ"
+      }
+    }
+  },
+  "login": {
+    "title": "เข้าสู่ระบบ",
+    "username": "ชื่อผู้ใช้",
+    "password": "รหัสผ่าน",
+    "submit": "เข้าสู่ระบบ",
+    "register": "ลงทะเบียน"
+  },
+  "register": {
+    "title": "ลงทะเบียน",
+    "submit": "ลงทะเบียน",
+    "login": "เข้าสู่ระบบ",
+
+    "state": {
+      "full_name": "ชื่อ-นามสกุล",
+      "username": "ชื่อผู้ใช้",
+      "password": "รหัสผ่าน",
+      "confirm_password": "ยืนยันรหัสผ่าน",
+      "email": "อีเมล"
+    }
+  },
+  "team": {
+    "share_title": "แชร์แผนก",
+    "share": "แชร์แผนก",
+    "share_description_generated": "คัดลอกลิงก์แชร์ที่แผนกไปยังผู้ที่ต้องการเข้าร่วมแผนก",
+    "share_description_not_generated": "กรุณากดปุ่ม แชร์แผนก",
+    "edit_title": "แก้ไขแผนก",
+    "edit": "แก้ไข",
+    "info_title": "ข้อมูลแผนก",
+    "contact_title": "ข้อมูลติดต่อแผนก",
+    "search_join": "ค้นหาและเข้าแผนก",
+    "search": "ค้นหาแผนก",
+    "new_team": "สร้างแผนก",
+    "join_with_link": "เข้าร่วมแผนกด้วยลิงก์เชิญ",
+    "join_team": "เข้าร่วมแผนก",
+    "request_join": "ขอเข้าร่วมแผนก",
+    "approve_title": "อนุมัติคำขอเข้าร่วมแผนก",
+    "approve": "อนุมัติ",
+    "state": {
+      "index": "ลำดับ",
+      "name": "ชื่อแผนก",
+      "username": "ชื่อแผนกสำหรับระบุตัวตน",
+      "description": "คำอธิบายแผนก",
+      "email": "อีเมลแผนก",
+      "phone": "เบอร์โทรศัพท์แผนก",
+      "address": "ที่อยู่แผนก",
+      "created_at": "วันที่สร้างแผนก",
+      "validation": {
+        "name": "กรุณาเพิ่มชื่อแผนก",
+        "username": "กรุณาเพิ่มชื่อแผนกสำหรับระบุตัวตน"
+      }
+    },
+    "member": {
+      "state": {
+        "index": "ลำดับ",
+        "name": "ชื่อสมาชิก",
+        "username": "ชื่อผู้ใช้",
+        "email": "อีเมล",
+        "phone": "เบอร์โทรศัพท์",
+        "role": "บทบาท",
+        "status": "สถานะ",
+        "created_at": "วันที่เข้าร่วม"
+      }
+    }
+  },
+  "product": {
+    "product_info_title": "ข้อมูลสินค้า",
+    "search": {
+      "state": {
+        "code": {
+          "label": "รหัสสินค้า",
+          "placeholder": "ค้นหารหัสสินค้า"
+        },
+        "name": {
+          "label": "ชื่อสินค้า",
+          "placeholder": "ค้นหาชื่อสินค้า"
+        },
+        "oum": {
+          "label": "หน่วยนับ",
+          "placeholder": "ค้นหาหน่วยนับ"
+        }
+      }
+    },
+    "upload_image": {
+      "title": "อัปโหลดภาพสินค้า",
+      "action": "อัปโหลดภาพ",
+      "remove_image": "ลบภาพ",
+      "error": "เกิดข้อผิดพลาดในการอัปโหลดภาพ"
+    },
+    "state": {
+      "index": "ลำดับ",
+      "images": "ภาพสินค้า",
+      "code": "รหัสสินค้า",
+      "name": "ชื่อสินค้า",
+      "description": "คำอธิบาย",
+      "price": "ราคา",
+      "oum": "หน่วยนับ",
+      "category": "หมวดหมู่",
+      "validation": {
+        "code": "กรุณาเพิ่มรหัสสินค้า",
+        "name": "กรุณาเพิ่มชื่อสินค้า",
+        "description": "กรุณาเพิ่มคำอธิบายสินค้า",
+        "price": "กรุณาเพิ่มราคาสินค้า",
+        "oum": "กรุณาเพิ่มหน่วยนับสินค้า",
+        "category": "กรุณาเลือกหมวดหมู่สินค้า"
+      }
+    },
+    "new_product": {
+      "title": "เพิ่มรายการสินค้า",
+      "action": "เพิ่มรายการสินค้า"
+    },
+    "edit_product": {
+      "title": "แก้ไขรายการสินค้า",
+      "action": "แก้ไขข้อมูล"
+    }
+  },
+  "category": {
+    "state": {
+      "index": "ลำดับ",
+      "name": "ชื่อหมวดหมู่",
+      "description": "คำอธิบาย",
+      "created_at": "วันที่สร้าง"
+    },
+    "new": {
+      "title": "สร้างหมวดหมู่สินค้าใหม่",
+      "action": "สร้างหมวดหมู่"
+    },
+    "edit": {
+      "title": "แก้ไขหมวดหมู่สินค้า",
+      "action": "แก้ไข"
+    }
+  },
+  "user": {
+    "upload_image_profile": {
+      "title": "อัปโหลดรูปโปรไฟล์",
+      "action": "อัปโหลด",
+      "cancel": "ยกเลิก"
+    },
+    "group_title": {
+      "change_lang": "เปลี่ยนภาษา",
+      "profile": "ข้อมูลส่วนตัว"
+    },
+    "state": {
+      "username": "ชื่อผู้ใช้",
+      "full_name": "ชื่อ-นามสกุล",
+      "email": "อีเมล",
+      "role": "บทบาท"
+    },
+    "verify_email_status": {
+      "not_verified": "ยังไม่ได้ยืนยันอีเมล",
+      "verified": "ยืนยันอีเมลแล้ว"
+    },
+    "verify_email": {
+      "action": "ยืนยันอีเมล"
+    },
+    "change_lang": {
+      "state": {
+        "lang": {
+          "label": "ภาษา",
+          "placeholder": "เลือกภาษา"
+        }
+      }
+    }
+  },
+  "verify_email_success": {
+    "message": "ยืนยันอีเมลสำเร็จแล้ว ขอบคุณที่ยืนยันอีเมลของคุณ",
+    "go_to_profile": "ไปที่โปรไฟล์"
+  },
+  "report": {
+    "state": {
+      "name": "หัวข้อเอกสาร",
+      "file": "ไฟล์ template เอกสาร"
+    },
+    "new": {
+      "title": "เพิ่ม template เอกสาร",
+      "action": "บันทึก"
+    },
+    "edit": {
+      "title": "แก้ไข template เอกสาร",
+      "action": "บันทึก"
+    },
+    "render": {
+      "button": "พิมพ์เอกสาร",
+      "title": "พิมพ์เอกสาร",
+      "action": "พิมพ์",
+      "state": {
+        "file_template": "เลือกหัวข้อเอกสาร"
+      }
+    }
+  },
+  "danger_modal": {
+    "button": "ลบข้อมูล",
+    "title": "ต้องการดำเนินการต่อหรือไม่",
+    "cancel": "ยกเลิก",
+    "confirm": "ยืนยัน"
+  },
+  "not_found": {
+    "product": {
+      "title": "ไม่พบข้อมูลสินค้า",
+      "description": "ไม่พบข้อมูลสินค้าที่คุณค้นหา",
+      "action": "กลับไปหน้าสินค้าคงคลัง"
+    },
+    "member_pending": {
+      "title": "ไม่พบข้อมูลสมาชิกแผนกที่รออนุมัติ",
+      "description": "ไม่พบข้อมูลสมาชิกแผนกที่รออนุมัติ",
+      "action": "กลับไปหน้าข้อมูลแผนก"
+    },
+    "global": {
+      "title": "ไม่พบข้อมูล",
+      "description": "ไม่พบข้อมูลที่คุณค้นหา",
+      "action": "กลับไปหน้าหลัก"
+    }
+  },
+  "download": {
+    "title": "ดาวน์โหลดไฟล์",
+    "action": "ดาวน์โหลด"
+  }
+}

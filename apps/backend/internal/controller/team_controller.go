@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/suttapak/starter/helpers"
 	"github.com/suttapak/starter/internal/dto"
+	"github.com/suttapak/starter/internal/filter"
 	"github.com/suttapak/starter/internal/service"
 )
 
@@ -11,18 +12,311 @@ type (
 	Team interface {
 		Create(c *gin.Context)
 		GetTeamsMe(c *gin.Context)
+		GetTeamMemberCount(c *gin.Context)
+		GetTeamMembers(c *gin.Context)
+		GetTeamByTeamId(c *gin.Context)
+		GetPendingTeamMemberCount(c *gin.Context)
+		GetPendingTeamMembers(c *gin.Context)
+		GetTeamUserMe(c *gin.Context)
+		UpdateMemberRole(c *gin.Context)
+		SendInviteTeamMember(c *gin.Context)
+		JoinTeamWithToken(c *gin.Context)
+		CreateShearLink(c *gin.Context)
+		JoinWithShearLink(c *gin.Context)
+		GetTeamsFilter(c *gin.Context)
+		CreateTeamPendingTeamMember(c *gin.Context)
+		AcceptTeamMember(c *gin.Context)
+		UpdateTeamInfo(c *gin.Context)
 	}
 	team struct {
 		teamService service.Team
 	}
 )
 
+// UpdateTeamInfo implements Team.
+func (t *team) UpdateTeamInfo(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	input := service.UpdateTeamInfoRequest{}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		handlerError(c, err)
+		return
+	}
+	if err := t.teamService.UpdateTeamInfo(c, teamId, input); err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// AcceptTeamMember implements Team.
+func (t *team) AcceptTeamMember(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	input := dto.AcceptTeamMemberDto{}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		handlerError(c, err)
+		return
+	}
+	err = t.teamService.AcceptTeamMember(c, teamId, input)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// CreateTeamPendingTeamMember implements Team.
+func (t *team) CreateTeamPendingTeamMember(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	userId, err := getProtectUserId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	err = t.teamService.CreateTeamPendingTeamMember(c, teamId, userId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// GetTeamsFilter implements Team.
+func (t *team) GetTeamsFilter(c *gin.Context) {
+	pg, err := helpers.NewPaginate(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	f, err := filter.New[filter.TeamFilter](c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetTeamsFilter(c, pg, f)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handlePaginationJsonResponse(c, res, pg)
+}
+
+// CreateShearLink implements Team.
+func (t *team) CreateShearLink(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.CreateShearLink(c, teamId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, res)
+}
+
+// JoinWithShearLink implements Team.
+func (t *team) JoinWithShearLink(c *gin.Context) {
+	userId, err := getProtectUserId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	token := c.Query("token")
+	err = t.teamService.JoinWithShearLink(c, token, userId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// JoinTeamWithToken implements Team.
+func (t *team) JoinTeamWithToken(c *gin.Context) {
+	token := c.Query("token")
+	err := t.teamService.JoinTeamWithToken(c, token)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// CreateTeamPendingTeamMember implements Team.
+func (t *team) SendInviteTeamMember(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	input := dto.CreateTeamPendingTeamMemberDto{}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		handlerError(c, err)
+		return
+	}
+	err = t.teamService.SendInviteTeamMember(c, teamId, input)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// UpdateMemberRole implements Team.
+func (t *team) UpdateMemberRole(c *gin.Context) {
+	input := dto.UpdateMemberRoleDto{}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		handlerError(c, err)
+		return
+	}
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	err = t.teamService.UpdateMemberRole(c, teamId, input)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, nil)
+}
+
+// GetTeamUserMe implements Team.
+func (t *team) GetTeamUserMe(c *gin.Context) {
+	userId, err := getProtectUserId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetTeamUserMe(c, teamId, userId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, res)
+}
+
+// GetPendingTeamMemberCount implements Team.
+func (t *team) GetPendingTeamMemberCount(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetPendingTeamMemberCount(c, teamId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, res)
+}
+
+// GetPendingTeamMembers implements Team.
+func (t *team) GetPendingTeamMembers(c *gin.Context) {
+	pg, err := helpers.NewPaginate(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	f, err := filter.New[filter.TeamMemberFilter](c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetPendingTeamMembers(c, pg, f, teamId)
+
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handlePaginationJsonResponse(c, res, pg)
+}
+
+// GetTeamByTeamId implements Team.
+func (t *team) GetTeamByTeamId(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetTeamByTeamId(c, teamId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, res)
+}
+
+// GetTeamMembers implements Team.
+func (t *team) GetTeamMembers(c *gin.Context) {
+	pg, err := helpers.NewPaginate(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	f, err := filter.New[filter.TeamMemberFilter](c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetTeamMembers(c, pg, f, teamId)
+
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handlePaginationJsonResponse(c, res, pg)
+}
+
+// GetTeamMemberCount implements Team.
+func (t *team) GetTeamMemberCount(c *gin.Context) {
+	teamId, err := getTeamId(c)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	res, err := t.teamService.GetTeamMemberCount(c, teamId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handleJsonResponse(c, res)
+}
+
 // Create implements Team.
 func (t *team) Create(c *gin.Context) {
 	var (
 		input dto.CreateTeamDto
 	)
-	userId, err := helpers.GetProtectUserId(c)
+	userId, err := getProtectUserId(c)
 	if err != nil {
 		handlerError(c, err)
 		return
@@ -41,17 +335,22 @@ func (t *team) Create(c *gin.Context) {
 
 // GetTeamsMe implements Team.
 func (t *team) GetTeamsMe(c *gin.Context) {
-	userId, err := helpers.GetProtectUserId(c)
+	userId, err := getProtectUserId(c)
 	if err != nil {
 		handlerError(c, err)
 		return
 	}
-	res, err := t.teamService.GetTeamsMe(c, userId)
+	pg, err := helpers.NewPaginate(c)
 	if err != nil {
 		handlerError(c, err)
 		return
 	}
-	handleJsonResponse(c, res)
+	res, err := t.teamService.GetTeamsMe(c, pg, userId)
+	if err != nil {
+		handlerError(c, err)
+		return
+	}
+	handlePaginationJsonResponse(c, res, pg)
 }
 
 func NewTeam(teamService service.Team) Team {

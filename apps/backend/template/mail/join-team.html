@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 2;
+        justify-content: center;
+        align-items: center;
+      }
+      .hero {
+        padding: 30px 8px;
+      }
+      button {
+        background-color: #199319;
+        color: white;
+        padding: 15px 25px;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{.TeamName}}</h1>
+      <p>กดยืนยันเพื่อเข้าร่วม</p>
+      <a class="hero" href="{{.JoinTeamLink}}">
+        <button>ยืนยันเข้าร่วมแผนก</button>
+      </a>
+      <footer>
+        <div>
+          หากมีปัญหา กรุณาติดต่อ
+          <a href="mailto:matee@labotron.co.th">contact support</a>
+        </div>
+        <nav>
+          <a href="https://www.labotron.co.th">Labotron</a>
+          <a href="https://www.labotron.co.th/privacy">Privacy</a>
+          <a href="https://www.labotron.co.th/terms">Terms</a>
+        </nav>
+      </footer>
+    </div>
+  </body>
+</html>

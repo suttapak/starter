@@ -3,9 +3,9 @@ package model
 type (
 	User struct {
 		CommonModel
-		Username      string         `json:"username"` // username is uniqe of user in system
-		Password      string         `json:"-"`        // passowrd is user login password
-		Email         string         `json:"email"`    // email feild for register and forgot password processed
+		Username      string         `json:"username" gorm:"uniqueIndex"` // username is unique of user in system
+		Password      string         `json:"-"`                           // password is user login password
+		Email         string         `json:"email" gorm:"uniqueIndex"`    // email field for register and forgot password processed
 		EmailVerifyed bool           `json:"email_verifyed"`
 		FullName      string         `json:"full_name"`
 		ProfileImage  []ProfileImage `json:"profile_image"`
@@ -23,6 +23,6 @@ type (
 
 	Role struct {
 		CommonModel
-		Name string `json:"name"`
+		Name string `json:"name" gorm:"uniqueIndex:idx_role_name"`
 	}
 )

@@ -1,5 +1,5 @@
 # Choose whatever you want, version >= 1.16
-FROM golang:1.23-alpine
+FROM golang
 
 WORKDIR /app
 

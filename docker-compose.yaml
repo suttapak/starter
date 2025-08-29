@@ -12,20 +12,14 @@ services:
 
     restart: "unless-stopped"
   frontend:
-    container_name: frontend
     build:
       context: ./apps/www
+      dockerfile: Dockerfile.dev
     volumes:
-      - ./apps/www/app:/usr/src/app/app
-      - ./apps/www/actions:/usr/src/app/actions
-      - ./apps/www/components:/usr/src/app/components
-      - ./apps/www/config:/usr/src/app/config
-      - ./apps/www/hooks:/usr/src/app/hooks
-      - ./apps/www/lib:/usr/src/app/lib
-      - ./apps/www/styles:/usr/src/app/styles
-      - ./apps/www/types:/usr/src/app/types
-      - ./apps/www/middleware.ts:/usr/src/app/middleware.ts
+      - ./apps/www/src:/usr/src/app/src
       - ./apps/www/public:/usr/src/app/public
+
+    restart: always
 
   backend:
     build:
@@ -42,10 +36,12 @@ services:
     image: postgres:15
     container_name: postgres
     environment:
-      POSTGRES_USER: "username"
-      POSTGRES_PASSWORD: "p@ssw0rd"
-      POSTGRES_DB: "labotron_stack"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
     restart: always
+    ports:
+      - "5432:5432"
     volumes:
       - ./volumes/data/postgres:/var/lib/postgresql/data
     healthcheck:
@@ -59,3 +55,7 @@ services:
     restart: always
     # ports:
     #   - "8080:8080"
+networks:
+  default:
+    name: root_network
+    external: true

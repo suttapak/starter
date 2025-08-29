@@ -5,4 +5,8 @@ type (
 		Email           string
 		VerifyEmailLink string
 	}
+	InviteTeamMemberTemplateDataDto struct {
+		TeamName     string
+		JoinTeamLink string
+	}
 )
