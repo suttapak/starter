@@ -8,9 +8,9 @@ import {
   Tooltip,
   useDisclosure,
 } from "@heroui/react";
-import { t } from "i18next";
 import { Fragment } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 import { ProductImageResponse } from "@/types/product_response";
 import { useFormatImageSrc } from "@/hooks/use-format-image-src";
@@ -20,6 +20,7 @@ import { toastMessage } from "@/utils/toastMessage";
 type Props = { file: ProductImageResponse };
 
 function ProductImage({ file }: Props) {
+  const { t } = useTranslation();
   const { format } = useFormatImageSrc();
   const { onOpen, onClose, ...rest } = useDisclosure();
 
@@ -32,7 +33,7 @@ function ProductImage({ file }: Props) {
       </Tooltip>
       <Modal {...rest}>
         <ModalContent>
-          <ModalHeader>ลบรูปภาพ</ModalHeader>
+          <ModalHeader>{t("product.upload_image.remove_image")}</ModalHeader>
           <ModalFooter>
             <Button
               color="danger"
@@ -48,7 +49,7 @@ function ProductImage({ file }: Props) {
                 )
               }
             >
-              ลบ
+              {t("product.upload_image.remove_image")}
             </Button>
           </ModalFooter>
         </ModalContent>

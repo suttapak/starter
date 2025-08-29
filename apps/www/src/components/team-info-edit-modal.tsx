@@ -75,7 +75,7 @@ const TeamInfoEditModal = (props: Props) => {
                     onValueChange={onChange}
                   />
                 )}
-                rules={{ required: "ชื่อแผนก is required." }}
+                rules={{ required: t("team.state.validation.name") }}
               />
               <Controller
                 control={control}
@@ -98,7 +98,7 @@ const TeamInfoEditModal = (props: Props) => {
                     onValueChange={onChange}
                   />
                 )}
-                rules={{ required: "(Username) ของแผนก is required." }}
+                rules={{ required: t("team.state.validation.username") }}
               />
               <Controller
                 control={control}

@@ -80,7 +80,11 @@
       "email": "Department Email",
       "phone": "Department Phone",
       "address": "Department Address",
-      "created_at": "Created At"
+      "created_at": "Created At",
+      "validation": {
+        "name": "Please enter a department name",
+        "username": "Please enter a department username"
+      }
     },
     "member": {
       "state": {
@@ -128,8 +132,14 @@
       "price": "Price",
       "oum": "Unit of Measure",
       "category": "Category",
-      "available_qty": "Available Quantity",
-      "remaining_qty": "Remaining Quantity"
+      "validation": {
+        "code": "Please enter a product code",
+        "name": "Please enter a product name",
+        "description": "Please enter a product description",
+        "price": "Please enter a product price",
+        "oum": "Please enter a unit of measure",
+        "category": "Please select a product category"
+      }
     },
     "new_product": {
       "title": "Create New Product",

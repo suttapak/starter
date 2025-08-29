@@ -100,7 +100,7 @@ const ProductActionModal = ({ item, isText }: ProductActionModalProps) => {
                     onValueChange={onChange}
                   />
                 )}
-                rules={{ required: "รหัสสินค้า is required." }}
+                rules={{ required: t("product.state.validation.code") }}
               />
               <Controller
                 control={control}
@@ -123,7 +123,7 @@ const ProductActionModal = ({ item, isText }: ProductActionModalProps) => {
                     onValueChange={onChange}
                   />
                 )}
-                rules={{ required: "ชื่อสินค้า is required." }}
+                rules={{ required: t("product.state.validation.name") }}
               />
               <Controller
                 control={control}
@@ -167,7 +167,7 @@ const ProductActionModal = ({ item, isText }: ProductActionModalProps) => {
                     onValueChange={onChange}
                   />
                 )}
-                rules={{ required: "ราคา is required." }}
+                rules={{ required: t("product.state.validation.price") }}
               />
               <Controller
                 control={control}
@@ -190,7 +190,7 @@ const ProductActionModal = ({ item, isText }: ProductActionModalProps) => {
                     onChange={onChange}
                   />
                 )}
-                rules={{ required: "ชื่อสินค้า is required." }}
+                rules={{ required: t("product.state.validation.oum") }}
               />
               <Controller
                 control={control}
@@ -227,7 +227,6 @@ const ProductActionModal = ({ item, isText }: ProductActionModalProps) => {
                     )}
                   </Select>
                 )}
-                rules={{ required: "ชื่อสินค้า is required." }}
               />
             </ModalBody>
             <ModalFooter>
