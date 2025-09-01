@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bytes"
 	"errors"
 	"mime/multipart"
 	"net/http"
@@ -87,12 +86,6 @@ func handlerError(c *gin.Context, err error) {
 	}
 
 	c.AbortWithStatusJSON(status, response)
-}
-
-func handleDownloadExcelFormBuff(c *gin.Context, buff *bytes.Buffer, filename string) {
-	c.Header("Content-Description", "File Transfer")
-	c.Header("Content-Disposition", `attachment; filename="`+filename+`"`)
-	c.Data(http.StatusOK, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", buff.Bytes())
 }
 
 func getTeamId(c *gin.Context) (teamId uint, err error) {

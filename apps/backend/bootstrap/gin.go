@@ -26,10 +26,6 @@ func newGin(conf *config.Config, log logger.AppLogger) *gin.Engine {
 		pprof.Register(r)
 	}
 
-	r.Use(logger.GinLogger(log))
-	// set lang
-	r.Use(i18n.SetLocal)
-
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     conf.CORS.ALLOW_ORIGIN,
 		AllowMethods:     conf.CORS.ALLOW_METHODS,
@@ -37,6 +33,10 @@ func newGin(conf *config.Config, log logger.AppLogger) *gin.Engine {
 		ExposeHeaders:    conf.CORS.EXPOSE_HEADERS,
 		AllowCredentials: conf.CORS.ALLOW_CREDENTIALS,
 	}))
+
+	r.Use(logger.GinLogger(log))
+	// set lang
+	r.Use(i18n.SetLocal)
 
 	r.Static("/static", "./public/static")
 	r.Static("/public/static", "./public/static")

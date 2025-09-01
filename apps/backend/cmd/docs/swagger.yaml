@@ -31,10 +31,50 @@ definitions:
       status:
         type: integer
     type: object
+  controller.Response-int64:
+    properties:
+      data:
+        type: integer
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
   controller.Response-service_AuthResponse:
     properties:
       data:
         $ref: '#/definitions/service.AuthResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.Response-service_CreateTeamResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.CreateTeamResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.Response-service_TeamMemberResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.TeamMemberResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.Response-service_TeamResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.TeamResponse'
       message:
         type: string
       meta: {}
@@ -51,6 +91,69 @@ definitions:
       status:
         type: integer
     type: object
+  controller.Response-string:
+    properties:
+      data:
+        type: string
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
+  controller.ResponsePagination-array_service_TeamMemberResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/service.TeamMemberResponse'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/helpers.Pagination'
+      status:
+        type: integer
+    type: object
+  controller.ResponsePagination-array_service_TeamResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/service.TeamResponse'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/helpers.Pagination'
+      status:
+        type: integer
+    type: object
+  dto.AcceptTeamMemberDto:
+    properties:
+      role_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  dto.CreateTeamDto:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.CreateTeamPendingTeamMemberDto:
+    properties:
+      username:
+        type: string
+    type: object
   dto.LoginDto:
     properties:
       password:
@@ -61,6 +164,13 @@ definitions:
     required:
     - password
     - username
+    type: object
+  dto.UpdateMemberRoleDto:
+    properties:
+      role_id:
+        type: integer
+      user_id:
+        type: integer
     type: object
   dto.UserRegisterDto:
     properties:
@@ -84,11 +194,47 @@ definitions:
       token:
         type: string
     type: object
+  helpers.Pagination:
+    properties:
+      count:
+        type: integer
+      limit:
+        type: integer
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      total_page:
+        type: integer
+    type: object
   service.AuthResponse:
     properties:
       refresh_token:
         type: string
       token:
+        type: string
+    type: object
+  service.CreateTeamResponse:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      updated_at:
+        type: string
+      username:
         type: string
     type: object
   service.Image:
@@ -136,6 +282,74 @@ definitions:
       name:
         type: string
       updated_at:
+        type: string
+    type: object
+  service.TeamMemberResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      team_id:
+        type: integer
+      team_role:
+        $ref: '#/definitions/service.TeamRoleResponse'
+      team_role_id:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        $ref: '#/definitions/service.UserResponse'
+      user_id:
+        type: integer
+    type: object
+  service.TeamResponse:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  service.TeamRoleResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  service.UpdateTeamInfoRequest:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      username:
         type: string
     type: object
   service.UserResponse:
@@ -324,6 +538,582 @@ paths:
             $ref: '#/definitions/controller.Response-any'
       tags:
       - auth
+  /teams/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team Name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponsePagination-array_service_TeamResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: CreateTeamDto
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTeamDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-service_CreateTeamResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-service_TeamResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: UpdateTeamInfoRequest
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateTeamInfoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/accept:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: AcceptTeamMemberDto
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AcceptTeamMemberDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/member-count:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-int64'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/member-role:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: UpdateMemberRoleDto
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateMemberRoleDto'
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/members:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Search
+        in: query
+        name: username
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponsePagination-array_service_TeamMemberResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/pending-member:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: CreateTeamPendingTeamMemberDto
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTeamPendingTeamMemberDto'
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/pending-member-count:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-int64'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/pending-members:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Search
+        in: query
+        name: username
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponsePagination-array_service_TeamMemberResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/request-join:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/shared-link:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/{team_id}/user-me:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-service_TeamMemberResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/join:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: TOKEN
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/join/link:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: TOKEN
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
+  /teams/me:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponsePagination-array_service_TeamResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - teams
   /users/{id}:
     get:
       consumes:
