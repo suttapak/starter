@@ -61,6 +61,16 @@ definitions:
       status:
         type: integer
     type: object
+  controller.Response-service_ProductResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.ProductResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
   controller.Response-service_TeamMemberResponse:
     properties:
       data:
@@ -98,6 +108,19 @@ definitions:
       message:
         type: string
       meta: {}
+      status:
+        type: integer
+    type: object
+  controller.ResponsePagination-array_service_ProductResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/service.ProductResponse'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/helpers.Pagination'
       status:
         type: integer
     type: object
@@ -216,6 +239,27 @@ definitions:
       token:
         type: string
     type: object
+  service.CreateProductRequest:
+    properties:
+      category_id:
+        items:
+          type: integer
+        type: array
+      code:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      uom:
+        type: string
+    required:
+    - name
+    - price
+    - uom
+    type: object
   service.CreateTeamResponse:
     properties:
       address:
@@ -257,6 +301,76 @@ definitions:
         type: string
       width:
         type: integer
+    type: object
+  service.ProductCategoryResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  service.ProductImage:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      image:
+        $ref: '#/definitions/service.Image'
+      image_id:
+        type: integer
+      product_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  service.ProductProductCategoryResponse:
+    properties:
+      category:
+        $ref: '#/definitions/service.ProductCategoryResponse'
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      product_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  service.ProductResponse:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+      product_image:
+        items:
+          $ref: '#/definitions/service.ProductImage'
+        type: array
+      product_product_category:
+        items:
+          $ref: '#/definitions/service.ProductProductCategoryResponse'
+        type: array
+      team_id:
+        type: integer
+      uom:
+        type: string
+      updated_at:
+        type: string
     type: object
   service.ProfileImage:
     properties:
@@ -336,6 +450,28 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  service.UpdateProductRequest:
+    properties:
+      category_id:
+        items:
+          type: integer
+        type: array
+      code:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      uom:
+        type: string
+    required:
+    - code
+    - name
+    - price
+    - uom
     type: object
   service.UpdateTeamInfoRequest:
     properties:
@@ -925,6 +1061,244 @@ paths:
             $ref: '#/definitions/controller.Response-any'
       tags:
       - teams
+  /teams/{team_id}/products:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Code
+        in: query
+        name: code
+        type: string
+      - description: Name
+        in: query
+        name: name
+        type: string
+      - description: UOM
+        in: query
+        name: uom
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponsePagination-array_service_ProductResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: CreateProductRequest
+        in: body
+        name: data
+        schema:
+          $ref: '#/definitions/service.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-service_ProductResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - products
+  /teams/{team_id}/products/{products_id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Products ID
+        in: path
+        name: products_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Products ID
+        in: path
+        name: products_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-service_ProductResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Products ID
+        in: path
+        name: products_id
+        required: true
+        type: integer
+      - description: UpdateProductRequest
+        in: body
+        name: data
+        schema:
+          $ref: '#/definitions/service.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - products
+  /teams/{team_id}/products/{products_id}/upload_image:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Products ID
+        in: path
+        name: products_id
+        required: true
+        type: integer
+      - description: Profile image file
+        in: formData
+        name: files
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-service_ProductResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - products
   /teams/{team_id}/request-join:
     post:
       consumes:
