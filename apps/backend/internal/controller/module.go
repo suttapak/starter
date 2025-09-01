@@ -27,6 +27,4 @@ type (
 		Data    T                  `json:"data"`
 		Meta    helpers.Pagination `json:"meta"`
 	}
-
-	Null struct{}
 )
