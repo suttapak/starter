@@ -61,6 +61,16 @@ definitions:
       status:
         type: integer
     type: object
+  controller.Response-service_ProductCategoryResponse:
+    properties:
+      data:
+        $ref: '#/definitions/service.ProductCategoryResponse'
+      message:
+        type: string
+      meta: {}
+      status:
+        type: integer
+    type: object
   controller.Response-service_ProductResponse:
     properties:
       data:
@@ -108,6 +118,19 @@ definitions:
       message:
         type: string
       meta: {}
+      status:
+        type: integer
+    type: object
+  controller.ResponsePagination-array_service_ProductCategoryResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/service.ProductCategoryResponse'
+        type: array
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/helpers.Pagination'
       status:
         type: integer
     type: object
@@ -238,6 +261,17 @@ definitions:
         type: string
       token:
         type: string
+    type: object
+  service.CreateProductCategoryRequest:
+    properties:
+      name:
+        type: string
+      team_id:
+        description: Add field here
+        type: integer
+    required:
+    - name
+    - team_id
     type: object
   service.CreateProductRequest:
     properties:
@@ -450,6 +484,14 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  service.UpdateProductCategoryRequest:
+    properties:
+      name:
+        description: Add field here
+        type: string
+    required:
+    - name
     type: object
   service.UpdateProductRequest:
     properties:
@@ -1061,6 +1103,197 @@ paths:
             $ref: '#/definitions/controller.Response-any'
       tags:
       - teams
+  /teams/{team_id}/product_category:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ResponsePagination-array_service_ProductCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - product_category
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Product Category ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.CreateProductCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - product_category
+  /teams/{team_id}/product_category/{product_category_id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Product Category ID
+        in: path
+        name: product_category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - product_category
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Limit
+        in: path
+        name: product_category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Response-service_ProductCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - product_category
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Team ID
+        in: path
+        name: team_id
+        required: true
+        type: integer
+      - description: Product Category ID
+        in: path
+        name: product_category_id
+        required: true
+        type: integer
+      - description: Product Category ID
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/service.UpdateProductCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controller.Response-any'
+      tags:
+      - product_category
   /teams/{team_id}/products:
     get:
       consumes:

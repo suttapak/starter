@@ -36,6 +36,18 @@ func getProductCategoryId(c *gin.Context) (uint, error) {
 	return uint(idInt), nil
 }
 
+// GetProductCategories
+//
+//	@Tags		product_category
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id				path		integer	true	"Team ID".
+//	@Param		product_category_id	path		integer	true	"Limit".
+//	@Success	200					{object}	Response[service.ProductCategoryResponse]
+//	@Failure	400					{object}	Response[any]
+//	@Failure	404					{object}	Response[any]
+//	@Failure	500					{object}	Response[any]
+//	@Router		/teams/{team_id}/product_category/{product_category_id} [get]
 func (i *productCategory) GetProductCategory(c *gin.Context) {
 	id, err := getProductCategoryId(c)
 	if err != nil {
@@ -50,6 +62,21 @@ func (i *productCategory) GetProductCategory(c *gin.Context) {
 
 	handleJsonResponse(c, res)
 }
+
+// GetProductCategories
+//
+//	@Tags		product_category
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id	path		integer	true	"Team ID".
+//	@Param		page	query		integer	false	"Page".
+//	@Param		limit	query		integer	false	"Limit".
+//	@Param		name	query		string	false	"Name".
+//	@Success	200		{object}	ResponsePagination[[]service.ProductCategoryResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/{team_id}/product_category [get]
 func (i *productCategory) GetProductCategories(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -74,6 +101,19 @@ func (i *productCategory) GetProductCategories(c *gin.Context) {
 	}
 	handlePaginationJsonResponse(c, res, pg)
 }
+
+// CreateProductCategory
+//
+//	@Tags		product_category
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id	path		integer									true	"Team ID".
+//	@Param		data	body		service.CreateProductCategoryRequest	true	"Product Category ID".
+//	@Success	201		{object}	Response[any]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/{team_id}/product_category [post]
 func (i *productCategory) CreateProductCategory(c *gin.Context) {
 	input := service.CreateProductCategoryRequest{}
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -86,6 +126,20 @@ func (i *productCategory) CreateProductCategory(c *gin.Context) {
 	}
 	handleJsonResponse(c, nil)
 }
+
+// UpdateProductCategory
+//
+//	@Tags		product_category
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id				path		integer									true	"Team ID".
+//	@Param		product_category_id	path		integer									true	"Product Category ID".
+//	@Param		data				body		service.UpdateProductCategoryRequest	true	"Product Category ID".
+//	@Success	201					{object}	Response[any]
+//	@Failure	400					{object}	Response[any]
+//	@Failure	404					{object}	Response[any]
+//	@Failure	500					{object}	Response[any]
+//	@Router		/teams/{team_id}/product_category/{product_category_id} [put]
 func (i *productCategory) UpdateProductCategory(c *gin.Context) {
 	id, err := getProductCategoryId(c)
 	if err != nil {
@@ -104,6 +158,18 @@ func (i *productCategory) UpdateProductCategory(c *gin.Context) {
 	handleJsonResponse(c, nil)
 }
 
+// DeleteProductCategory
+//
+//	@Tags		product_category
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id				path		integer	true	"Team ID".
+//	@Param		product_category_id	path		integer	true	"Product Category ID".
+//	@Success	201					{object}	Response[any]
+//	@Failure	400					{object}	Response[any]
+//	@Failure	404					{object}	Response[any]
+//	@Failure	500					{object}	Response[any]
+//	@Router		/teams/{team_id}/product_category/{product_category_id} [delete]
 func (i *productCategory) DeleteProductCategory(c *gin.Context) {
 	id, err := getProductCategoryId(c)
 	if err != nil {
