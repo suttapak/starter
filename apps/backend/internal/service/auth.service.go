@@ -7,7 +7,6 @@ import (
 	"github.com/suttapak/starter/config"
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/helpers"
-	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/idx"
 	"github.com/suttapak/starter/internal/model"
 	"github.com/suttapak/starter/internal/repository"
@@ -93,7 +92,7 @@ func (a *auth) SendVerifyEmail(ctx context.Context, input SendVerifyEmailDto) (e
 	}
 	// send email
 	if err := a.mailService.NewRequest([]string{userModel.Email}, "Verify Email").
-		ParseVerifyEmailTemplate(ctx, &dto.VerifyEmailTemplateDataDto{
+		ParseVerifyEmailTemplate(ctx, &VerifyEmailTemplateDataDto{
 			Email:           userModel.Email,
 			VerifyEmailLink: fmt.Sprintf("%s/api/v1/auth/email/verify?token=%s", a.config.SERVER.HOST_NAME, token),
 		}).SendMail(ctx); err != nil {

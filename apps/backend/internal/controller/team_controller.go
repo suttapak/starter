@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/suttapak/starter/helpers"
-	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/filter"
 	"github.com/suttapak/starter/internal/service"
 )
@@ -68,8 +67,8 @@ func (t *team) UpdateTeamInfo(c *gin.Context) {
 //	@Tags		teams
 //	@Accept		json
 //	@Produce	json
-//	@Param		team_id	path		integer					true	"Team ID".
-//	@Param		data	body		dto.AcceptTeamMemberDto	true	"AcceptTeamMemberDto".
+//	@Param		team_id	path		integer						true	"Team ID".
+//	@Param		data	body		service.AcceptTeamMemberDto	true	"AcceptTeamMemberDto".
 //	@Success	201		{object}	Response[any]
 //	@Failure	400		{object}	Response[any]
 //	@Failure	404		{object}	Response[any]
@@ -81,7 +80,7 @@ func (t *team) AcceptTeamMember(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	input := dto.AcceptTeamMemberDto{}
+	input := service.AcceptTeamMemberDto{}
 	if err := c.ShouldBindJSON(&input); err != nil {
 		handlerError(c, err)
 		return
@@ -231,8 +230,8 @@ func (t *team) JoinTeamWithToken(c *gin.Context) {
 //	@Tags		teams
 //	@Accept		json
 //	@Produce	json
-//	@Param		data							body		dto.CreateTeamPendingTeamMemberDto	true	"CreateTeamPendingTeamMemberDto"
-//	@Param		team_id							path		integer								true	"Team ID"
+//	@Param		data							body		service.CreateTeamPendingTeamMemberDto	true	"CreateTeamPendingTeamMemberDto"
+//	@Param		team_id							path		integer									true	"Team ID"
 //	@Success	201								{object}	Response[any]
 //	@Failure	400								{object}	Response[any]
 //	@Failure	404								{object}	Response[any]
@@ -244,7 +243,7 @@ func (t *team) SendInviteTeamMember(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	input := dto.CreateTeamPendingTeamMemberDto{}
+	input := service.CreateTeamPendingTeamMemberDto{}
 	if err := c.ShouldBindJSON(&input); err != nil {
 		handlerError(c, err)
 		return
@@ -262,15 +261,15 @@ func (t *team) SendInviteTeamMember(c *gin.Context) {
 //	@Tags		teams
 //	@Accept		json
 //	@Produce	json
-//	@Param		data							body		dto.UpdateMemberRoleDto	true	"UpdateMemberRoleDto"
-//	@Param		team_id							path		integer					true	"Team ID"
+//	@Param		data							body		service.UpdateMemberRoleDto	true	"UpdateMemberRoleDto"
+//	@Param		team_id							path		integer						true	"Team ID"
 //	@Success	201								{object}	Response[any]
 //	@Failure	400								{object}	Response[any]
 //	@Failure	404								{object}	Response[any]
 //	@Failure	500								{object}	Response[any]
 //	@Router		/teams/{team_id}/member-role	[put]
 func (t *team) UpdateMemberRole(c *gin.Context) {
-	input := dto.UpdateMemberRoleDto{}
+	input := service.UpdateMemberRoleDto{}
 	if err := c.ShouldBindJSON(&input); err != nil {
 		handlerError(c, err)
 		return
@@ -476,7 +475,7 @@ func (t *team) GetTeamMemberCount(c *gin.Context) {
 //	@Tags		teams
 //	@Accept		json
 //	@Produce	json
-//	@Param		data	body		dto.CreateTeamDto	true	"CreateTeamDto"
+//	@Param		data	body		service.CreateTeamDto	true	"CreateTeamDto"
 //	@Success	201		{object}	Response[service.CreateTeamResponse]
 //	@Failure	400		{object}	Response[any]
 //	@Failure	404		{object}	Response[any]
@@ -484,7 +483,7 @@ func (t *team) GetTeamMemberCount(c *gin.Context) {
 //	@Router		/teams/	[post]
 func (t *team) Create(c *gin.Context) {
 	var (
-		input dto.CreateTeamDto
+		input service.CreateTeamDto
 	)
 	userId, err := getProtectUserId(c)
 	if err != nil {
