@@ -34,6 +34,17 @@ type (
 )
 
 // UpdateTeamInfo implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id	path		integer							true	"Team ID".
+//	@Param		data	body		service.UpdateTeamInfoRequest	true	"UpdateTeamInfoRequest".
+//	@Success	201		{object}	Response[any]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/{team_id} [put]
 func (t *team) UpdateTeamInfo(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -53,6 +64,17 @@ func (t *team) UpdateTeamInfo(c *gin.Context) {
 }
 
 // AcceptTeamMember implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id	path		integer					true	"Team ID".
+//	@Param		data	body		dto.AcceptTeamMemberDto	true	"AcceptTeamMemberDto".
+//	@Success	201		{object}	Response[any]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/{team_id}/accept [post]
 func (t *team) AcceptTeamMember(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -73,6 +95,16 @@ func (t *team) AcceptTeamMember(c *gin.Context) {
 }
 
 // CreateTeamPendingTeamMember implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id							path		integer	true	"Team ID".
+//	@Success	201								{object}	Response[any]
+//	@Failure	400								{object}	Response[any]
+//	@Failure	404								{object}	Response[any]
+//	@Failure	500								{object}	Response[any]
+//	@Router		/teams/{team_id}/request-join	[post]
 func (t *team) CreateTeamPendingTeamMember(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -93,6 +125,16 @@ func (t *team) CreateTeamPendingTeamMember(c *gin.Context) {
 }
 
 // GetTeamsFilter implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		name	query		string	false	"Team Name".
+//	@Success	200		{object}	ResponsePagination[[]service.TeamResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/	[get]
 func (t *team) GetTeamsFilter(c *gin.Context) {
 	pg, err := helpers.NewPaginate(c)
 	if err != nil {
@@ -113,6 +155,16 @@ func (t *team) GetTeamsFilter(c *gin.Context) {
 }
 
 // CreateShearLink implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id							path		integer	true	"Team ID".
+//	@Success	200								{object}	Response[string]
+//	@Failure	400								{object}	Response[any]
+//	@Failure	404								{object}	Response[any]
+//	@Failure	500								{object}	Response[any]
+//	@Router		/teams/{team_id}/shared-link	[post]
 func (t *team) CreateShearLink(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -128,6 +180,16 @@ func (t *team) CreateShearLink(c *gin.Context) {
 }
 
 // JoinWithShearLink implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		token				query		string	true	"TOKEN"
+//	@Success	200					{object}	Response[any]
+//	@Failure	400					{object}	Response[any]
+//	@Failure	404					{object}	Response[any]
+//	@Failure	500					{object}	Response[any]
+//	@Router		/teams/join/link	[post]
 func (t *team) JoinWithShearLink(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {
@@ -144,6 +206,16 @@ func (t *team) JoinWithShearLink(c *gin.Context) {
 }
 
 // JoinTeamWithToken implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		token		query		string	true	"TOKEN"
+//	@Success	200			{object}	Response[any]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/join	[get]
 func (t *team) JoinTeamWithToken(c *gin.Context) {
 	token := c.Query("token")
 	err := t.teamService.JoinTeamWithToken(c, token)
@@ -155,6 +227,17 @@ func (t *team) JoinTeamWithToken(c *gin.Context) {
 }
 
 // CreateTeamPendingTeamMember implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		data							body		dto.CreateTeamPendingTeamMemberDto	true	"CreateTeamPendingTeamMemberDto"
+//	@Param		team_id							path		integer								true	"Team ID"
+//	@Success	201								{object}	Response[any]
+//	@Failure	400								{object}	Response[any]
+//	@Failure	404								{object}	Response[any]
+//	@Failure	500								{object}	Response[any]
+//	@Router		/teams/{team_id}/pending-member	[post]
 func (t *team) SendInviteTeamMember(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -175,6 +258,17 @@ func (t *team) SendInviteTeamMember(c *gin.Context) {
 }
 
 // UpdateMemberRole implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		data							body		dto.UpdateMemberRoleDto	true	"UpdateMemberRoleDto"
+//	@Param		team_id							path		integer					true	"Team ID"
+//	@Success	201								{object}	Response[any]
+//	@Failure	400								{object}	Response[any]
+//	@Failure	404								{object}	Response[any]
+//	@Failure	500								{object}	Response[any]
+//	@Router		/teams/{team_id}/member-role	[put]
 func (t *team) UpdateMemberRole(c *gin.Context) {
 	input := dto.UpdateMemberRoleDto{}
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -195,6 +289,16 @@ func (t *team) UpdateMemberRole(c *gin.Context) {
 }
 
 // GetTeamUserMe implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id						path		integer	true	"Team ID"
+//	@Success	200							{object}	Response[service.TeamMemberResponse]
+//	@Failure	400							{object}	Response[any]
+//	@Failure	404							{object}	Response[any]
+//	@Failure	500							{object}	Response[any]
+//	@Router		/teams/{team_id}/user-me	[get]
 func (t *team) GetTeamUserMe(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {
@@ -215,6 +319,16 @@ func (t *team) GetTeamUserMe(c *gin.Context) {
 }
 
 // GetPendingTeamMemberCount implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id									path		integer	true	"Team ID"
+//	@Success	200										{object}	Response[int64]
+//	@Failure	400										{object}	Response[any]
+//	@Failure	404										{object}	Response[any]
+//	@Failure	500										{object}	Response[any]
+//	@Router		/teams/{team_id}/pending-member-count	[get]
 func (t *team) GetPendingTeamMemberCount(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -230,6 +344,19 @@ func (t *team) GetPendingTeamMemberCount(c *gin.Context) {
 }
 
 // GetPendingTeamMembers implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id								path		integer	true	"Team ID"
+//	@Param		username							query		string	false	"Search"
+//	@Param		page								query		int		false	"Page"
+//	@Param		limit								query		int		false	"Limit"
+//	@Success	200									{object}	ResponsePagination[[]service.TeamMemberResponse]
+//	@Failure	400									{object}	Response[any]
+//	@Failure	404									{object}	Response[any]
+//	@Failure	500									{object}	Response[any]
+//	@Router		/teams/{team_id}/pending-members	[get]
 func (t *team) GetPendingTeamMembers(c *gin.Context) {
 	pg, err := helpers.NewPaginate(c)
 	if err != nil {
@@ -256,6 +383,16 @@ func (t *team) GetPendingTeamMembers(c *gin.Context) {
 }
 
 // GetTeamByTeamId implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id				path		integer	true	"Team ID"
+//	@Success	200					{object}	Response[service.TeamResponse]
+//	@Failure	400					{object}	Response[any]
+//	@Failure	404					{object}	Response[any]
+//	@Failure	500					{object}	Response[any]
+//	@Router		/teams/{team_id}	[get]
 func (t *team) GetTeamByTeamId(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -271,6 +408,19 @@ func (t *team) GetTeamByTeamId(c *gin.Context) {
 }
 
 // GetTeamMembers implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id						path		integer	true	"Team ID"
+//	@Param		username					query		string	false	"Search"
+//	@Param		page						query		int		false	"Page"
+//	@Param		limit						query		int		false	"Limit"
+//	@Success	200							{object}	ResponsePagination[[]service.TeamMemberResponse]
+//	@Failure	400							{object}	Response[any]
+//	@Failure	404							{object}	Response[any]
+//	@Failure	500							{object}	Response[any]
+//	@Router		/teams/{team_id}/members	[get]
 func (t *team) GetTeamMembers(c *gin.Context) {
 	pg, err := helpers.NewPaginate(c)
 	if err != nil {
@@ -297,6 +447,16 @@ func (t *team) GetTeamMembers(c *gin.Context) {
 }
 
 // GetTeamMemberCount implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id							path		integer	true	"Team ID"
+//	@Success	200								{object}	Response[int64]
+//	@Failure	400								{object}	Response[any]
+//	@Failure	404								{object}	Response[any]
+//	@Failure	500								{object}	Response[any]
+//	@Router		/teams/{team_id}/member-count	[get]
 func (t *team) GetTeamMemberCount(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -312,6 +472,16 @@ func (t *team) GetTeamMemberCount(c *gin.Context) {
 }
 
 // Create implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		data	body		dto.CreateTeamDto	true	"CreateTeamDto"
+//	@Success	201		{object}	Response[service.CreateTeamResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/	[post]
 func (t *team) Create(c *gin.Context) {
 	var (
 		input dto.CreateTeamDto
@@ -334,6 +504,17 @@ func (t *team) Create(c *gin.Context) {
 }
 
 // GetTeamsMe implements Team.
+//
+//	@Tags		teams
+//	@Accept		json
+//	@Produce	json
+//	@Param		page		query		int	false	"Page"
+//	@Param		limit		query		int	false	"Limit"
+//	@Success	200			{object}	ResponsePagination[[]service.TeamResponse]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/me	[get]
 func (t *team) GetTeamsMe(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {

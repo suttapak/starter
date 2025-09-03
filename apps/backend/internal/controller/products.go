@@ -28,6 +28,17 @@ type (
 )
 
 // DeleteProductImage implements Products.
+//
+//	@Tags		products
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id		path		integer	true	"Team ID".
+//	@Param		products_id	path		integer	true	"Products ID".
+//	@Success	201			{object}	Response[any]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/{team_id}/products/{products_id} [delete]
 func (i *products) DeleteProductImage(c *gin.Context) {
 	productId, err := getProductsId(c)
 	if err != nil {
@@ -48,6 +59,18 @@ func (i *products) DeleteProductImage(c *gin.Context) {
 }
 
 // UploadProductImages implements Products.
+//
+//	@Tags		products
+//	@Accept		multipart/form-data
+//	@Produce	json
+//	@Param		team_id		path		integer	true	"Team ID".
+//	@Param		products_id	path		integer	true	"Products ID".
+//	@Param		files		formData	file	true	"Profile image file"
+//	@Success	201			{object}	Response[service.ProductResponse]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/{team_id}/products/{products_id}/upload_image [post]
 func (i *products) UploadProductImages(c *gin.Context) {
 	uId, err := getProtectUserId(c)
 	if err != nil {
@@ -85,6 +108,18 @@ func getProductsId(c *gin.Context) (uint, error) {
 	return uint(idInt), nil
 }
 
+// GetProduct
+//
+//	@Tags		products
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id		path		integer	true	"Team ID".
+//	@Param		products_id	path		integer	true	"Products ID".
+//	@Success	200			{object}	Response[service.ProductResponse]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/{team_id}/products/{products_id} [get]
 func (i *products) GetProduct(c *gin.Context) {
 	id, err := getProductsId(c)
 	if err != nil {
@@ -99,6 +134,23 @@ func (i *products) GetProduct(c *gin.Context) {
 
 	handleJsonResponse(c, res)
 }
+
+// GetProducts
+//
+//	@Tags		products
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id	path		integer	true	"Team ID".
+//	@Param		page	query		integer	false	"Page".
+//	@Param		limit	query		integer	false	"Limit".
+//	@Param		code	query		string	false	"Code".
+//	@Param		name	query		string	false	"Name".
+//	@Param		uom		query		string	false	"UOM".
+//	@Success	200		{object}	ResponsePagination[[]service.ProductResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/{team_id}/products [get]
 func (i *products) GetProducts(c *gin.Context) {
 	id, err := getTeamId(c)
 	if err != nil {
@@ -123,6 +175,19 @@ func (i *products) GetProducts(c *gin.Context) {
 	}
 	handlePaginationJsonResponse(c, res, pg)
 }
+
+// CreateProducts
+//
+//	@Tags		products
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id	path		integer							true	"Team ID".
+//	@Param		data	body		service.CreateProductRequest	false	"CreateProductRequest".
+//	@Success	201		{object}	Response[service.ProductResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/teams/{team_id}/products [post]
 func (i *products) CreateProducts(c *gin.Context) {
 	teamId, err := getTeamId(c)
 	if err != nil {
@@ -141,6 +206,20 @@ func (i *products) CreateProducts(c *gin.Context) {
 	}
 	handleJsonResponse(c, res)
 }
+
+// UpdateProducts
+//
+//	@Tags		products
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id		path		integer							true	"Team ID".
+//	@Param		products_id	path		integer							true	"Products ID".
+//	@Param		data		body		service.UpdateProductRequest	false	"UpdateProductRequest".
+//	@Success	201			{object}	Response[any]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/{team_id}/products/{products_id} [post]
 func (i *products) UpdateProducts(c *gin.Context) {
 	id, err := getProductsId(c)
 	if err != nil {
@@ -159,6 +238,18 @@ func (i *products) UpdateProducts(c *gin.Context) {
 	handleJsonResponse(c, nil)
 }
 
+// DeleteProducts
+//
+//	@Tags		products
+//	@Accept		json
+//	@Produce	json
+//	@Param		team_id		path		integer	true	"Team ID".
+//	@Param		products_id	path		integer	true	"Products ID".
+//	@Success	201			{object}	Response[any]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/teams/{team_id}/products/{products_id} [delete]
 func (i *products) DeleteProducts(c *gin.Context) {
 	id, err := getProductsId(c)
 	if err != nil {

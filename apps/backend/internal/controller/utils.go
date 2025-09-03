@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bytes"
 	"errors"
 	"mime/multipart"
 	"net/http"
@@ -89,12 +88,6 @@ func handlerError(c *gin.Context, err error) {
 	c.AbortWithStatusJSON(status, response)
 }
 
-func handleDownloadExcelFormBuff(c *gin.Context, buff *bytes.Buffer, filename string) {
-	c.Header("Content-Description", "File Transfer")
-	c.Header("Content-Disposition", `attachment; filename="`+filename+`"`)
-	c.Data(http.StatusOK, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", buff.Bytes())
-}
-
 func getTeamId(c *gin.Context) (teamId uint, err error) {
 	teamIdStr := c.Param("team_id")
 	if teamIdStr == "" {
@@ -142,7 +135,7 @@ func getProtectUserId(c *gin.Context) (uId uint, err error) {
 }
 
 func getUserIdFromParam(c *gin.Context) (uId uint, err error) {
-	uIdStr := c.Param("uId")
+	uIdStr := c.Param("id")
 	u, err := strconv.Atoi(uIdStr)
 	if err != nil {
 		return 0, errs.ErrUnauthorized

@@ -19,6 +19,16 @@ type (
 )
 
 // CreateProfileImage implements User.
+//
+//	@Tags		users
+//	@Accept		multipart/form-data
+//	@Produce	json
+//	@Param		file	formData	file	true	"Profile image file"
+//	@Success	201		{object}	Response[service.UserResponse]
+//	@Failure	400		{object}	Response[any]
+//	@Failure	404		{object}	Response[any]
+//	@Failure	500		{object}	Response[any]
+//	@Router		/users/profile-image [post]
 func (a *user) CreateProfileImage(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {
@@ -39,6 +49,15 @@ func (a *user) CreateProfileImage(c *gin.Context) {
 }
 
 // CheckUserIsVerifyEmail implements Auth.
+//
+//	@Tags		users
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{object}	Response[bool]
+//	@Failure	400	{object}	Response[any]
+//	@Failure	404	{object}	Response[any]
+//	@Failure	500	{object}	Response[any]
+//	@Router		/users/verify-email [get]
 func (a *user) CheckUserIsVerifyEmail(c *gin.Context) {
 	userId, err := getProtectUserId(c)
 	if err != nil {
@@ -55,6 +74,16 @@ func (a *user) CheckUserIsVerifyEmail(c *gin.Context) {
 }
 
 // FindUserByUsername implements User.
+//
+//	@Tags		users
+//	@Accept		json
+//	@Produce	json
+//	@Param		username	query		string	false	"Username"
+//	@Success	200			{object}	Response[[]service.UserResponse]
+//	@Failure	400			{object}	Response[any]
+//	@Failure	404			{object}	Response[any]
+//	@Failure	500			{object}	Response[any]
+//	@Router		/users/by-username [get]
 func (u *user) FindUserByUsername(c *gin.Context) {
 	username := c.Query("username")
 	res, err := u.userService.FindUserByUsername(c, username)
@@ -66,6 +95,16 @@ func (u *user) FindUserByUsername(c *gin.Context) {
 }
 
 // GetUserById implements User.
+//
+//	@Tags		users
+//	@Accept		json
+//	@Produce	json
+//	@Param		id	path		string	true	"User ID"
+//	@Success	200	{object}	Response[service.UserResponse]
+//	@Failure	400	{object}	Response[any]
+//	@Failure	404	{object}	Response[any]
+//	@Failure	500	{object}	Response[any]
+//	@Router		/users/{id} [get]
 func (u *user) GetUserById(c *gin.Context) {
 	// get user id form middleware
 	uId, err := getUserIdFromParam(c)
@@ -82,6 +121,15 @@ func (u *user) GetUserById(c *gin.Context) {
 }
 
 // GetUserMe implements User.
+//
+//	@Tags		users
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{object}	Response[service.UserResponse]
+//	@Failure	400	{object}	Response[any]
+//	@Failure	404	{object}	Response[any]
+//	@Failure	500	{object}	Response[any]
+//	@Router		/users/me [get]
 func (u *user) GetUserMe(c *gin.Context) {
 	uId, err := getProtectUserId(c)
 	if err != nil {

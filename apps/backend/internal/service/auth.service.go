@@ -36,7 +36,7 @@ type (
 	AuthResponse struct {
 		Token        string `json:"token"`
 		RefreshToken string `json:"refresh_token"`
-	}
+	} //
 )
 
 // RefreshToken implements Auth.
