@@ -81,7 +81,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.VerifyEmailDto"
+                            "$ref": "#/definitions/service.VerifyEmailDto"
                         }
                     }
                 ],
@@ -128,7 +128,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginDto"
+                            "$ref": "#/definitions/service.LoginDto"
                         }
                     }
                 ],
@@ -217,7 +217,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserRegisterDto"
+                            "$ref": "#/definitions/service.UserRegisterDto"
                         }
                     }
                 ],
@@ -312,7 +312,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateTeamDto"
+                            "$ref": "#/definitions/service.CreateTeamDto"
                         }
                     }
                 ],
@@ -621,7 +621,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.AcceptTeamMemberDto"
+                            "$ref": "#/definitions/service.AcceptTeamMemberDto"
                         }
                     }
                 ],
@@ -719,7 +719,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UpdateMemberRoleDto"
+                            "$ref": "#/definitions/service.UpdateMemberRoleDto"
                         }
                     },
                     {
@@ -842,7 +842,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateTeamPendingTeamMemberDto"
+                            "$ref": "#/definitions/service.CreateTeamPendingTeamMemberDto"
                         }
                     },
                     {
@@ -2277,107 +2277,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.AcceptTeamMemberDto": {
-            "type": "object",
-            "properties": {
-                "role_id": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dto.CreateTeamDto": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.CreateTeamPendingTeamMemberDto": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.LoginDto": {
-            "type": "object",
-            "required": [
-                "password",
-                "username"
-            ],
-            "properties": {
-                "password": {
-                    "type": "string",
-                    "minLength": 8
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.UpdateMemberRoleDto": {
-            "type": "object",
-            "properties": {
-                "role_id": {
-                    "type": "integer"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dto.UserRegisterDto": {
-            "type": "object",
-            "required": [
-                "email",
-                "full_name",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 8
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.VerifyEmailDto": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
         "helpers.Pagination": {
             "type": "object",
             "properties": {
@@ -2397,6 +2296,17 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "total_page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "service.AcceptTeamMemberDto": {
+            "type": "object",
+            "properties": {
+                "role_id": {
+                    "type": "integer"
+                },
+                "user_id": {
                     "type": "integer"
                 }
             }
@@ -2455,6 +2365,37 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "uom": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.CreateTeamDto": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.CreateTeamPendingTeamMemberDto": {
+            "type": "object",
+            "properties": {
+                "username": {
                     "type": "string"
                 }
             }
@@ -2520,6 +2461,22 @@ const docTemplate = `{
                 },
                 "width": {
                     "type": "integer"
+                }
+            }
+        },
+        "service.LoginDto": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -2751,6 +2708,17 @@ const docTemplate = `{
                 }
             }
         },
+        "service.UpdateMemberRoleDto": {
+            "type": "object",
+            "properties": {
+                "role_id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "service.UpdateProductCategoryRequest": {
             "type": "object",
             "required": [
@@ -2818,6 +2786,30 @@ const docTemplate = `{
                 }
             }
         },
+        "service.UserRegisterDto": {
+            "type": "object",
+            "required": [
+                "email",
+                "full_name",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "service.UserResponse": {
             "type": "object",
             "properties": {
@@ -2852,6 +2844,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.VerifyEmailDto": {
+            "type": "object",
+            "properties": {
+                "token": {
                     "type": "string"
                 }
             }

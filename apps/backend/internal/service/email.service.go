@@ -6,7 +6,6 @@ import (
 	"html/template"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/repository"
 
 	"gopkg.in/gomail.v2"
@@ -33,6 +32,14 @@ type (
 		Remark      string
 		ApproveURL  string `validate:"required,url"`
 	}
+	VerifyEmailTemplateDataDto struct {
+		Email           string
+		VerifyEmailLink string
+	}
+	InviteTeamMemberTemplateDataDto struct {
+		TeamName     string
+		JoinTeamLink string
+	}
 )
 
 func (r *RequestApproveTransactionDto) Validate() error {
@@ -48,8 +55,8 @@ type (
 	Email interface {
 		NewRequest(to []string, subject string) Email
 		SendMail(ctx context.Context) error
-		ParseVerifyEmailTemplate(ctx context.Context, body *dto.VerifyEmailTemplateDataDto) Email
-		ParseInviteTeamMemberTemplate(ctx context.Context, body *dto.InviteTeamMemberTemplateDataDto) Email
+		ParseVerifyEmailTemplate(ctx context.Context, body *VerifyEmailTemplateDataDto) Email
+		ParseInviteTeamMemberTemplate(ctx context.Context, body *InviteTeamMemberTemplateDataDto) Email
 		ParseRequestApproveTransactionTemplate(ctx context.Context, body *RequestApproveTransactionDto) Email
 		ParseApproveTransactionTemplate(ctx context.Context, body *RejectAndApproveTransactionDto) Email
 		ParseRejectTransactionTemplate(ctx context.Context, body *RejectAndApproveTransactionDto) Email
@@ -109,7 +116,7 @@ func (e *email) ParseRequestApproveTransactionTemplate(ctx context.Context, body
 }
 
 // ParseInviteTeamMemberTemplate implements Email.
-func (e *email) ParseInviteTeamMemberTemplate(ctx context.Context, body *dto.InviteTeamMemberTemplateDataDto) Email {
+func (e *email) ParseInviteTeamMemberTemplate(ctx context.Context, body *InviteTeamMemberTemplateDataDto) Email {
 	const (
 		templateFile = "./template/mail/join-team.html"
 	)
@@ -137,7 +144,7 @@ func (e *email) SendMail(ctx context.Context) error {
 }
 
 // ParseVerifyEmailTemplate implements Email.
-func (e *email) ParseVerifyEmailTemplate(ctx context.Context, body *dto.VerifyEmailTemplateDataDto) Email {
+func (e *email) ParseVerifyEmailTemplate(ctx context.Context, body *VerifyEmailTemplateDataDto) Email {
 	const (
 		templateFile = "./template/mail/register.html"
 	)

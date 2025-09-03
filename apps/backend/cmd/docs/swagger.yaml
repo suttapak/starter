@@ -173,73 +173,6 @@ definitions:
       status:
         type: integer
     type: object
-  dto.AcceptTeamMemberDto:
-    properties:
-      role_id:
-        type: integer
-      user_id:
-        type: integer
-    type: object
-  dto.CreateTeamDto:
-    properties:
-      address:
-        type: string
-      description:
-        type: string
-      email:
-        type: string
-      name:
-        type: string
-      phone:
-        type: string
-      username:
-        type: string
-    type: object
-  dto.CreateTeamPendingTeamMemberDto:
-    properties:
-      username:
-        type: string
-    type: object
-  dto.LoginDto:
-    properties:
-      password:
-        minLength: 8
-        type: string
-      username:
-        type: string
-    required:
-    - password
-    - username
-    type: object
-  dto.UpdateMemberRoleDto:
-    properties:
-      role_id:
-        type: integer
-      user_id:
-        type: integer
-    type: object
-  dto.UserRegisterDto:
-    properties:
-      email:
-        type: string
-      full_name:
-        type: string
-      password:
-        minLength: 8
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - full_name
-    - password
-    - username
-    type: object
-  dto.VerifyEmailDto:
-    properties:
-      token:
-        type: string
-    type: object
   helpers.Pagination:
     properties:
       count:
@@ -253,6 +186,13 @@ definitions:
       previous_page:
         type: integer
       total_page:
+        type: integer
+    type: object
+  service.AcceptTeamMemberDto:
+    properties:
+      role_id:
+        type: integer
+      user_id:
         type: integer
     type: object
   service.AuthResponse:
@@ -293,6 +233,26 @@ definitions:
     - name
     - price
     - uom
+    type: object
+  service.CreateTeamDto:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  service.CreateTeamPendingTeamMemberDto:
+    properties:
+      username:
+        type: string
     type: object
   service.CreateTeamResponse:
     properties:
@@ -335,6 +295,17 @@ definitions:
         type: string
       width:
         type: integer
+    type: object
+  service.LoginDto:
+    properties:
+      password:
+        minLength: 8
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
     type: object
   service.ProductCategoryResponse:
     properties:
@@ -485,6 +456,13 @@ definitions:
       updated_at:
         type: string
     type: object
+  service.UpdateMemberRoleDto:
+    properties:
+      role_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
   service.UpdateProductCategoryRequest:
     properties:
       name:
@@ -530,6 +508,23 @@ definitions:
       username:
         type: string
     type: object
+  service.UserRegisterDto:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - full_name
+    - password
+    - username
+    type: object
   service.UserResponse:
     properties:
       created_at:
@@ -553,6 +548,11 @@ definitions:
       updated_at:
         type: string
       username:
+        type: string
+    type: object
+  service.VerifyEmailDto:
+    properties:
+      token:
         type: string
     type: object
 externalDocs:
@@ -607,7 +607,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.VerifyEmailDto'
+          $ref: '#/definitions/service.VerifyEmailDto'
       produces:
       - application/json
       responses:
@@ -637,7 +637,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.LoginDto'
+          $ref: '#/definitions/service.LoginDto'
       produces:
       - application/json
       responses:
@@ -694,7 +694,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.UserRegisterDto'
+          $ref: '#/definitions/service.UserRegisterDto'
       produces:
       - application/json
       responses:
@@ -755,7 +755,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateTeamDto'
+          $ref: '#/definitions/service.CreateTeamDto'
       produces:
       - application/json
       responses:
@@ -859,7 +859,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.AcceptTeamMemberDto'
+          $ref: '#/definitions/service.AcceptTeamMemberDto'
       produces:
       - application/json
       responses:
@@ -922,7 +922,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.UpdateMemberRoleDto'
+          $ref: '#/definitions/service.UpdateMemberRoleDto'
       - description: Team ID
         in: path
         name: team_id
@@ -1002,7 +1002,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateTeamPendingTeamMemberDto'
+          $ref: '#/definitions/service.CreateTeamPendingTeamMemberDto'
       - description: Team ID
         in: path
         name: team_id

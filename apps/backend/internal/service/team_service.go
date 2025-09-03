@@ -7,7 +7,6 @@ import (
 	"github.com/suttapak/starter/config"
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/helpers"
-	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/filter"
 	"github.com/suttapak/starter/internal/repository"
 	"github.com/suttapak/starter/logger"
@@ -15,7 +14,7 @@ import (
 
 type (
 	Team interface {
-		Create(ctx context.Context, ownerId uint, input dto.CreateTeamDto) (res *CreateTeamResponse, err error)
+		Create(ctx context.Context, ownerId uint, input CreateTeamDto) (res *CreateTeamResponse, err error)
 		GetTeamsMe(ctx context.Context, pg *helpers.Pagination, userId uint) (res []TeamResponse, err error)
 		GetTeamMemberCount(ctx context.Context, teamId uint) (res int64, err error)
 		GetTeamMembers(ctx context.Context, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []TeamMemberResponse, err error)
@@ -23,14 +22,14 @@ type (
 		GetPendingTeamMemberCount(ctx context.Context, teamId uint) (res int64, err error)
 		GetPendingTeamMembers(ctx context.Context, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []TeamMemberResponse, err error)
 		GetTeamUserMe(ctx context.Context, teamId, userId uint) (res *TeamMemberResponse, err error)
-		UpdateMemberRole(ctx context.Context, teamId uint, input dto.UpdateMemberRoleDto) (err error)
-		SendInviteTeamMember(ctx context.Context, teamId uint, input dto.CreateTeamPendingTeamMemberDto) (err error)
+		UpdateMemberRole(ctx context.Context, teamId uint, input UpdateMemberRoleDto) (err error)
+		SendInviteTeamMember(ctx context.Context, teamId uint, input CreateTeamPendingTeamMemberDto) (err error)
 		JoinTeamWithToken(ctx context.Context, token string) (err error)
 		CreateShearLink(ctx context.Context, teamId uint) (res string, err error)
 		JoinWithShearLink(ctx context.Context, token string, userId uint) (err error)
 		GetTeamsFilter(ctx context.Context, pg *helpers.Pagination, f *filter.TeamFilter) (res []TeamResponse, err error)
 		CreateTeamPendingTeamMember(ctx context.Context, teamId uint, userId uint) (err error)
-		AcceptTeamMember(ctx context.Context, teamId uint, input dto.AcceptTeamMemberDto) (err error)
+		AcceptTeamMember(ctx context.Context, teamId uint, input AcceptTeamMemberDto) (err error)
 
 		UpdateTeamInfo(ctx context.Context, teamId uint, input UpdateTeamInfoRequest) error
 	}
@@ -82,6 +81,25 @@ type (
 		CommonModel
 		Name string `json:"name"`
 	}
+	CreateTeamDto struct {
+		Name        string `json:"name"`
+		Username    string `json:"username"`
+		Address     string `json:"address"`
+		Phone       string `json:"phone"`
+		Email       string `json:"email"`
+		Description string `json:"description"`
+	}
+	UpdateMemberRoleDto struct {
+		UserId uint `json:"user_id"`
+		RoleId uint `json:"role_id"`
+	}
+	CreateTeamPendingTeamMemberDto struct {
+		Username string `json:"username"`
+	}
+	AcceptTeamMemberDto struct {
+		UserID uint `json:"user_id"`
+		RoleID uint `json:"role_id"`
+	}
 )
 
 // UpdateTeamInfo implements Team.
@@ -94,7 +112,7 @@ func (t *team) UpdateTeamInfo(ctx context.Context, teamId uint, input UpdateTeam
 }
 
 // AcceptTeamMember implements Team.
-func (t *team) AcceptTeamMember(ctx context.Context, teamId uint, input dto.AcceptTeamMemberDto) (err error) {
+func (t *team) AcceptTeamMember(ctx context.Context, teamId uint, input AcceptTeamMemberDto) (err error) {
 	// check user is already in team
 	isExist, err := t.teamRepository.CheckUserIsAlreadyInTeam(ctx, nil, teamId, input.UserID)
 	if err != nil {
@@ -211,7 +229,7 @@ func (t *team) JoinTeamWithToken(ctx context.Context, token string) (err error) 
 }
 
 // CreateTeamPendingTeamMember implements Team.
-func (t *team) SendInviteTeamMember(ctx context.Context, teamId uint, input dto.CreateTeamPendingTeamMemberDto) (err error) {
+func (t *team) SendInviteTeamMember(ctx context.Context, teamId uint, input CreateTeamPendingTeamMemberDto) (err error) {
 	userModel, err := t.userRepository.GetUserByEmailOrUsername(ctx, nil, input.Username)
 	if err != nil {
 		t.logger.Error(err)
@@ -240,7 +258,7 @@ func (t *team) SendInviteTeamMember(ctx context.Context, teamId uint, input dto.
 		t.logger.Error(err)
 		return errs.ErrGenerateJWTFail
 	}
-	mailBody := dto.InviteTeamMemberTemplateDataDto{
+	mailBody := InviteTeamMemberTemplateDataDto{
 		TeamName:     "",
 		JoinTeamLink: fmt.Sprintf("%s/api/v1/teams/join?token=%s", t.config.SERVER.HOST_NAME, token),
 	}
@@ -252,7 +270,7 @@ func (t *team) SendInviteTeamMember(ctx context.Context, teamId uint, input dto.
 }
 
 // UpdateMemberRole implements Team.
-func (t *team) UpdateMemberRole(ctx context.Context, teamId uint, input dto.UpdateMemberRoleDto) (err error) {
+func (t *team) UpdateMemberRole(ctx context.Context, teamId uint, input UpdateMemberRoleDto) (err error) {
 	if err := t.teamRepository.UpdateMemberRole(ctx, nil, teamId, input.UserId, input.RoleId); err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -354,7 +372,7 @@ func (t *team) GetTeamsMe(ctx context.Context, pg *helpers.Pagination, userId ui
 }
 
 // Create implements Team.
-func (t *team) Create(ctx context.Context, ownerId uint, input dto.CreateTeamDto) (res *CreateTeamResponse, err error) {
+func (t *team) Create(ctx context.Context, ownerId uint, input CreateTeamDto) (res *CreateTeamResponse, err error) {
 	// check with username is exist
 	exists, err := t.teamRepository.CheckTeamUsernameIsExist(ctx, nil, input.Username)
 	if err != nil {
