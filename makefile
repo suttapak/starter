@@ -8,7 +8,6 @@ build:
 build-web:
 	cd ./apps/www && docker buildx build --platform linux/amd64,linux/arm64 -t o9yst03/stockub-frontend:v1.2 -t o9yst03/stockub-frontend:latest --push  . 	
 dev:
-	cd docker && docker compose down
 	docker compose down
 	docker compose up -d --build
 

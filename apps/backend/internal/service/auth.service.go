@@ -16,11 +16,11 @@ import (
 
 type (
 	Auth interface {
-		Register(ctx context.Context, user dto.UserRegisterDto) (res *AuthResponse, err error)
-		Login(ctx context.Context, body dto.LoginDto) (res *AuthResponse, err error)
+		Register(ctx context.Context, user UserRegisterDto) (res *AuthResponse, err error)
+		Login(ctx context.Context, body LoginDto) (res *AuthResponse, err error)
 		RefreshToken(ctx context.Context, uId uint) (res *AuthResponse, err error)
-		VerifyEmail(ctx context.Context, body dto.VerifyEmailDto) (res *UserResponse, err error)
-		SendVerifyEmail(ctx context.Context, userId dto.SendVerifyEmailDto) (err error)
+		VerifyEmail(ctx context.Context, body VerifyEmailDto) (res *UserResponse, err error)
+		SendVerifyEmail(ctx context.Context, userId SendVerifyEmailDto) (err error)
 	}
 	auth struct {
 		// utils
@@ -36,7 +36,25 @@ type (
 	AuthResponse struct {
 		Token        string `json:"token"`
 		RefreshToken string `json:"refresh_token"`
-	} //
+	}
+	UserRegisterDto struct {
+		Username string `json:"username" binding:"required"`
+		Email    string `json:"email" binding:"required"`
+		Password string `json:"password" binding:"required,min=8"`
+		FullName string `json:"full_name" binding:"required"`
+	}
+
+	LoginDto struct {
+		UserNameEmail string `json:"username" binding:"required"`
+		Password      string `json:"password" binding:"required,min=8"`
+	}
+
+	VerifyEmailDto struct {
+		Token string `json:"token" form:"token"`
+	}
+	SendVerifyEmailDto struct {
+		UserID uint `json:"user_id"`
+	}
 )
 
 // RefreshToken implements Auth.
@@ -60,7 +78,7 @@ func (a *auth) RefreshToken(ctx context.Context, uId uint) (res *AuthResponse, e
 }
 
 // SendVerifyEmail implements Auth.
-func (a *auth) SendVerifyEmail(ctx context.Context, input dto.SendVerifyEmailDto) (err error) {
+func (a *auth) SendVerifyEmail(ctx context.Context, input SendVerifyEmailDto) (err error) {
 	// find user email
 	userModel, err := a.userRepo.FindById(ctx, nil, input.UserID)
 	if err != nil {
@@ -85,7 +103,7 @@ func (a *auth) SendVerifyEmail(ctx context.Context, input dto.SendVerifyEmailDto
 	return
 }
 
-func (a auth) VerifyEmail(ctx context.Context, body dto.VerifyEmailDto) (res *UserResponse, err error) {
+func (a auth) VerifyEmail(ctx context.Context, body VerifyEmailDto) (res *UserResponse, err error) {
 	email, err := a.jwtService.GetUserIdFromExternalToken(ctx, body.Token)
 	if err != nil {
 		a.logger.Error(err)
@@ -103,7 +121,7 @@ func (a auth) VerifyEmail(ctx context.Context, body dto.VerifyEmailDto) (res *Us
 	return
 }
 
-func (a auth) Login(ctx context.Context, body dto.LoginDto) (res *AuthResponse, err error) {
+func (a auth) Login(ctx context.Context, body LoginDto) (res *AuthResponse, err error) {
 	// find user by email or username
 	userModel, err := a.userRepo.GetUserByEmailOrUsername(ctx, nil, body.UserNameEmail)
 	if err != nil || userModel == nil {
@@ -137,7 +155,7 @@ func (a auth) Login(ctx context.Context, body dto.LoginDto) (res *AuthResponse, 
 
 }
 
-func (a auth) Register(ctx context.Context, user dto.UserRegisterDto) (res *AuthResponse, err error) {
+func (a auth) Register(ctx context.Context, user UserRegisterDto) (res *AuthResponse, err error) {
 	var (
 		userModel model.User
 	)

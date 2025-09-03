@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/suttapak/starter/config"
-	"github.com/suttapak/starter/internal/dto"
 	"github.com/suttapak/starter/internal/service"
 )
 
@@ -67,7 +66,7 @@ func (a *auth) SendVerifyEmail(c *gin.Context) {
 		handlerError(c, err)
 		return
 	}
-	input := dto.SendVerifyEmailDto{UserID: userId}
+	input := service.SendVerifyEmailDto{UserID: userId}
 	err = a.authService.SendVerifyEmail(c, input)
 	if err != nil {
 		handlerError(c, err)
@@ -86,7 +85,7 @@ func (a *auth) Logout(c *gin.Context) {
 //	@Tags		auth
 //	@Accept		json
 //	@Produce	json
-//	@Param		data	body	dto.VerifyEmailDto	true	"body data".
+//	@Param		data	body	service.VerifyEmailDto	true	"body data".
 //	@Success	301
 //	@Failure	400	{object}	Response[any]
 //	@Failure	404	{object}	Response[any]
@@ -94,7 +93,7 @@ func (a *auth) Logout(c *gin.Context) {
 //	@Router		/auth/email/verify [post]
 func (a *auth) VerifyEmail(c *gin.Context) {
 	var (
-		body dto.VerifyEmailDto
+		body service.VerifyEmailDto
 	)
 	if err := c.ShouldBindQuery(&body); err != nil {
 		handlerError(c, err)
@@ -113,7 +112,7 @@ func (a *auth) VerifyEmail(c *gin.Context) {
 //	@Tags		auth
 //	@Accept		json
 //	@Produce	json
-//	@Param		data	body		dto.LoginDto	true	"body data".
+//	@Param		data	body		service.LoginDto	true	"body data".
 //	@Success	201		{object}	Response[service.AuthResponse]
 //	@Failure	400		{object}	Response[any]
 //	@Failure	404		{object}	Response[any]
@@ -121,7 +120,7 @@ func (a *auth) VerifyEmail(c *gin.Context) {
 //	@Router		/auth/login [post]
 func (a *auth) Login(c *gin.Context) {
 	//TODO implement me
-	var body dto.LoginDto
+	var body service.LoginDto
 
 	if err := c.ShouldBindBodyWithJSON(&body); err != nil {
 		handlerError(c, err)
@@ -141,14 +140,14 @@ func (a *auth) Login(c *gin.Context) {
 //	@Tags		auth
 //	@Accept		json
 //	@Produce	json
-//	@Param		data	body		dto.UserRegisterDto	true	"body data".
+//	@Param		data	body		service.UserRegisterDto	true	"body data".
 //	@Success	201		{object}	Response[service.AuthResponse]
 //	@Failure	400		{object}	Response[any]
 //	@Failure	404		{object}	Response[any]
 //	@Failure	500		{object}	Response[any]
 //	@Router		/auth/register [post]
 func (a *auth) Register(c *gin.Context) {
-	var user dto.UserRegisterDto
+	var user service.UserRegisterDto
 	if err := c.ShouldBindBodyWithJSON(&user); err != nil {
 		handlerError(c, err)
 		return
