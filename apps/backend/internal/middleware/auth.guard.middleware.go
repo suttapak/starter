@@ -53,7 +53,7 @@ func (a *authGuardMiddleware) TeamPermission(c *gin.Context) {
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
-	isExist, err := a.teamRepo.CheckUserIsAlreadyInTeam(c, nil, uint(teamId), uId)
+	isExist, err := a.teamRepo.ExistUserInTeamByTeamId(c, nil, uint(teamId), uId)
 	if err != nil {
 		handlerError(c, errs.ErrUnauthorized)
 		return

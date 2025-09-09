@@ -13,23 +13,23 @@ import (
 type (
 	Team interface {
 		Create(ctx context.Context, tx *gorm.DB, ownerId uint, params CreateTeamParams) (res *model.Team, err error)
-		GetTeamsMe(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, userId uint) (res []model.Team, err error)
-		CheckTeamUsernameIsExist(ctx context.Context, tx *gorm.DB, teamUsername string) (isExist bool, err error)
-		GetTeamMemberCount(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error)
-		GetPendingTeamMemberCount(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error)
-		GetTeamMembers(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error)
-		GetPendingTeamMembers(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error)
-		GetTeamByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (res *model.Team, err error)
-		GetTeamUserMe(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error)
+		FindByUserId(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, userId uint) (res []model.Team, err error)
+		ExistByUsername(ctx context.Context, tx *gorm.DB, teamUsername string) (isExist bool, err error)
+		CountMemberByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error)
+		CountPendingMemberByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error)
+		FindAllMemberByTeamId(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error)
+		FindAllPendingMemberByTeamId(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error)
+		FindByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (res *model.Team, err error)
+		FindByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error)
 		UpdateMemberRole(ctx context.Context, tx *gorm.DB, teamId, userId, roleId uint) (err error)
-		CreateTeamPendingTeamMember(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error)
-		CheckUserIsAlreadyInTeam(ctx context.Context, tx *gorm.DB, teamId, userId uint) (isExist bool, err error)
-		JoinTeam(ctx context.Context, tx *gorm.DB, teamId, userId uint) (err error)
-		GetTeamsFilter(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamFilter) (res []model.Team, err error)
-		GetTeamMemberByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error)
+		CreatePendingMember(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error)
+		ExistUserInTeamByTeamId(ctx context.Context, tx *gorm.DB, teamId, userId uint) (isExist bool, err error)
+		CreateMemberByUserId(ctx context.Context, tx *gorm.DB, teamId, userId uint) (err error)
+		FindAll(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamFilter) (res []model.Team, err error)
+		FindMemberByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error)
 		AcceptTeamMember(ctx context.Context, tx *gorm.DB, teamId, userId, roleId uint) (err error)
 
-		UpdateTeamInfo(ctx context.Context, tx *gorm.DB, teamId uint, params UpdateTeamInfoParams) (err error)
+		Update(ctx context.Context, tx *gorm.DB, teamId uint, params UpdateTeamInfoParams) (err error)
 		FindAllEmailOfTeamAdminAndOwner(ctx context.Context, tx *gorm.DB, teamId uint) ([]FindAllTeamAdminAndOwnerResponse, error)
 	}
 	team struct {
@@ -89,8 +89,8 @@ func (i *team) FindAllEmailOfTeamAdminAndOwner(ctx context.Context, tx *gorm.DB,
 	return res, err
 }
 
-// UpdateTeamInfo implements Team.
-func (t *team) UpdateTeamInfo(ctx context.Context, tx *gorm.DB, teamId uint, params UpdateTeamInfoParams) (err error) {
+// Update implements Team.
+func (t *team) Update(ctx context.Context, tx *gorm.DB, teamId uint, params UpdateTeamInfoParams) (err error) {
 	team := model.Team{
 		Name:        params.Name,
 		Username:    params.Username,
@@ -119,8 +119,8 @@ func (t *team) AcceptTeamMember(ctx context.Context, tx *gorm.DB, teamId uint, u
 	return tx.Where("team_id = ? and user_id = ?", teamId, userId).Updates(&member).Error
 }
 
-// GetTeamMemberByTeamIdAndUserId implements Team.
-func (t *team) GetTeamMemberByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (res *model.TeamMember, err error) {
+// FindMemberByTeamIdAndUserId implements Team.
+func (t *team) FindMemberByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (res *model.TeamMember, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -130,8 +130,8 @@ func (t *team) GetTeamMemberByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, 
 	return
 }
 
-// GetTeamsFilter implements Team.
-func (t *team) GetTeamsFilter(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamFilter) (res []model.Team, err error) {
+// FindAll implements Team.
+func (t *team) FindAll(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamFilter) (res []model.Team, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -149,8 +149,8 @@ func (t *team) GetTeamsFilter(ctx context.Context, tx *gorm.DB, pg *helpers.Pagi
 
 }
 
-// JoinTeam implements Team.
-func (t *team) JoinTeam(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (err error) {
+// CreateMemberByUserId implements Team.
+func (t *team) CreateMemberByUserId(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -163,7 +163,7 @@ func (t *team) JoinTeam(ctx context.Context, tx *gorm.DB, teamId uint, userId ui
 	return tx.Create(&member).Error
 }
 
-func (t *team) CheckUserIsAlreadyInTeam(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (bool, error) {
+func (t *team) ExistUserInTeamByTeamId(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (bool, error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -177,8 +177,8 @@ func (t *team) CheckUserIsAlreadyInTeam(ctx context.Context, tx *gorm.DB, teamId
 	return exists, err
 }
 
-// CreateTeamPendingTeamMember adds a user to a team as a pending member.
-func (t *team) CreateTeamPendingTeamMember(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (*model.TeamMember, error) {
+// CreatePendingMember adds a user to a team as a pending member.
+func (t *team) CreatePendingMember(ctx context.Context, tx *gorm.DB, teamId uint, userId uint) (*model.TeamMember, error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -208,8 +208,8 @@ func (t *team) UpdateMemberRole(ctx context.Context, tx *gorm.DB, teamId uint, u
 	return
 }
 
-// GetTeamUserMe implements Team.
-func (t *team) GetTeamUserMe(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error) {
+// FindByTeamIdAndUserId implements Team.
+func (t *team) FindByTeamIdAndUserId(ctx context.Context, tx *gorm.DB, teamId, userId uint) (res *model.TeamMember, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -217,8 +217,8 @@ func (t *team) GetTeamUserMe(ctx context.Context, tx *gorm.DB, teamId, userId ui
 	return
 }
 
-// GetPendingTeamMembers implements Team.
-func (t *team) GetPendingTeamMembers(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error) {
+// FindAllPendingMemberByTeamId implements Team.
+func (t *team) FindAllPendingMemberByTeamId(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -237,8 +237,8 @@ func (t *team) GetPendingTeamMembers(ctx context.Context, tx *gorm.DB, pg *helpe
 	return
 }
 
-// GetPendingTeamMemberCount implements Team.
-func (t *team) GetPendingTeamMemberCount(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error) {
+// CountPendingMemberByTeamId implements Team.
+func (t *team) CountPendingMemberByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -248,8 +248,8 @@ func (t *team) GetPendingTeamMemberCount(ctx context.Context, tx *gorm.DB, teamI
 	return
 }
 
-// GetTeamByTeamId implements Team.
-func (t *team) GetTeamByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (res *model.Team, err error) {
+// FindByTeamId implements Team.
+func (t *team) FindByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (res *model.Team, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -257,8 +257,8 @@ func (t *team) GetTeamByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (r
 	return
 }
 
-// GetTeamMembers implements Team.
-func (t *team) GetTeamMembers(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error) {
+// FindAllMemberByTeamId implements Team.
+func (t *team) FindAllMemberByTeamId(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []model.TeamMember, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -277,8 +277,8 @@ func (t *team) GetTeamMembers(ctx context.Context, tx *gorm.DB, pg *helpers.Pagi
 	return
 }
 
-// GetTeamMemberCount implements Team.
-func (t *team) GetTeamMemberCount(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error) {
+// CountMemberByTeamId implements Team.
+func (t *team) CountMemberByTeamId(ctx context.Context, tx *gorm.DB, teamId uint) (count int64, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -288,8 +288,8 @@ func (t *team) GetTeamMemberCount(ctx context.Context, tx *gorm.DB, teamId uint)
 	return
 }
 
-// CheckTeamUsernameIsExist implements Team.
-func (t *team) CheckTeamUsernameIsExist(ctx context.Context, tx *gorm.DB, teamUsername string) (exists bool, err error) {
+// ExistByUsername implements Team.
+func (t *team) ExistByUsername(ctx context.Context, tx *gorm.DB, teamUsername string) (exists bool, err error) {
 	if tx == nil {
 		tx = t.db
 	}
@@ -300,8 +300,8 @@ func (t *team) CheckTeamUsernameIsExist(ctx context.Context, tx *gorm.DB, teamUs
 	return exists, err
 }
 
-// GetTeamsMe implements Team.
-func (t *team) GetTeamsMe(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, userId uint) (res []model.Team, err error) {
+// FindByUserId implements Team.
+func (t *team) FindByUserId(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, userId uint) (res []model.Team, err error) {
 	if tx == nil {
 		tx = t.db
 	}

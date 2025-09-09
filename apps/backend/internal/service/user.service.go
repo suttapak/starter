@@ -101,7 +101,7 @@ func (a *userService) CreateProfileImage(ctx context.Context, userId uint, fileH
 		Type:   imgStats.mimeType,
 		UserID: userId,
 	}
-	imageModel, err := a.image.CreateImage(ctx, nil, userId, &m)
+	imageModel, err := a.image.Save(ctx, nil, userId, &m)
 	if err != nil {
 		a.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -118,7 +118,7 @@ func (a *userService) CreateProfileImage(ctx context.Context, userId uint, fileH
 
 // CheckUserIsVerifyEmail implements Auth.
 func (a *userService) CheckUserIsVerifyEmail(ctx context.Context, userId uint) (bool, error) {
-	res, err := a.user.CheckUserIsVerifyEmail(ctx, nil, userId)
+	res, err := a.user.IsVerifyEmailByUserId(ctx, nil, userId)
 	if err != nil {
 		a.logger.Error(err)
 		return false, errs.HandleGorm(err)

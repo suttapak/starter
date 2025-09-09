@@ -11,15 +11,15 @@ import (
 
 type (
 	Products interface {
-		GetProduct(ctx context.Context, tx *gorm.DB, id uint) (*model.Product, error)
-		GetProducts(ctx context.Context, tx *gorm.DB, teamId uint, pg *helpers.Pagination, f *filter.ProductsFilter) ([]model.Product, error)
-		CreateProducts(ctx context.Context, tx *gorm.DB, teamId uint, m *CreateProductsRequest) (*model.Product, error)
-		UpdateProducts(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductsRequest) error
-		DeleteProducts(ctx context.Context, tx *gorm.DB, id uint) error
+		FindById(ctx context.Context, tx *gorm.DB, id uint) (*model.Product, error)
+		FindAll(ctx context.Context, tx *gorm.DB, teamId uint, pg *helpers.Pagination, f *filter.ProductsFilter) ([]model.Product, error)
+		Create(ctx context.Context, tx *gorm.DB, teamId uint, m *CreateProductsRequest) (*model.Product, error)
+		Save(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductsRequest) error
+		DeleteById(ctx context.Context, tx *gorm.DB, id uint) error
 
-		FindProductImage(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductImage, error)
-		CreateProductImage(ctx context.Context, tx *gorm.DB, productId uint, imageId uint) error
-		DeleteProductImage(ctx context.Context, tx *gorm.DB, productImageId uint) error
+		FindImage(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductImage, error)
+		CreateImage(ctx context.Context, tx *gorm.DB, productId uint, imageId uint) error
+		DeleteImageById(ctx context.Context, tx *gorm.DB, productImageId uint) error
 	}
 	CreateProductsRequest struct {
 		Code        string `json:"code"`
@@ -44,8 +44,8 @@ type (
 	}
 )
 
-// FindProductImage implements Products.
-func (i *products) FindProductImage(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductImage, error) {
+// FindImage implements Products.
+func (i *products) FindImage(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductImage, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -54,16 +54,16 @@ func (i *products) FindProductImage(ctx context.Context, tx *gorm.DB, id uint) (
 	return &res, err
 }
 
-// DeleteProductImage implements Products.
-func (i *products) DeleteProductImage(ctx context.Context, tx *gorm.DB, productImageId uint) error {
+// DeleteImageById implements Products.
+func (i *products) DeleteImageById(ctx context.Context, tx *gorm.DB, productImageId uint) error {
 	if tx == nil {
 		tx = i.db
 	}
 	return tx.WithContext(ctx).Where("id = ?", productImageId).Delete(&model.ProductImage{}).Error
 }
 
-// CreateProductImage implements Products.
-func (i *products) CreateProductImage(ctx context.Context, tx *gorm.DB, productId uint, imageId uint) error {
+// CreateImage implements Products.
+func (i *products) CreateImage(ctx context.Context, tx *gorm.DB, productId uint, imageId uint) error {
 	if tx == nil {
 		tx = i.db
 	}
@@ -75,7 +75,7 @@ func (i *products) CreateProductImage(ctx context.Context, tx *gorm.DB, productI
 
 }
 
-func (i *products) GetProduct(ctx context.Context, tx *gorm.DB, id uint) (*model.Product, error) {
+func (i *products) FindById(ctx context.Context, tx *gorm.DB, id uint) (*model.Product, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -87,7 +87,7 @@ func (i *products) GetProduct(ctx context.Context, tx *gorm.DB, id uint) (*model
 	return &res, err
 }
 
-func (i *products) GetProducts(ctx context.Context, tx *gorm.DB, id uint, pg *helpers.Pagination, f *filter.ProductsFilter) ([]model.Product, error) {
+func (i *products) FindAll(ctx context.Context, tx *gorm.DB, id uint, pg *helpers.Pagination, f *filter.ProductsFilter) ([]model.Product, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -122,7 +122,7 @@ func (i *products) GetProducts(ctx context.Context, tx *gorm.DB, id uint, pg *he
 	return res, err
 }
 
-func (i *products) CreateProducts(ctx context.Context, tx *gorm.DB, teamId uint, m *CreateProductsRequest) (*model.Product, error) {
+func (i *products) Create(ctx context.Context, tx *gorm.DB, teamId uint, m *CreateProductsRequest) (*model.Product, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -146,7 +146,7 @@ func (i *products) CreateProducts(ctx context.Context, tx *gorm.DB, teamId uint,
 	return &input, err
 }
 
-func (i *products) UpdateProducts(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductsRequest) error {
+func (i *products) Save(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductsRequest) error {
 	if tx == nil {
 		tx = i.db
 	}
@@ -178,7 +178,7 @@ func (i *products) UpdateProducts(ctx context.Context, tx *gorm.DB, id uint, m *
 	return tx.Model(&model.Product{}).Where("id = ?", id).Updates(&input).Error
 }
 
-func (i *products) DeleteProducts(ctx context.Context, tx *gorm.DB, id uint) error {
+func (i *products) DeleteById(ctx context.Context, tx *gorm.DB, id uint) error {
 	if tx == nil {
 		tx = i.db
 	}

@@ -11,11 +11,11 @@ import (
 
 type (
 	ProductCategory interface {
-		GetProductCategory(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductCategory, error)
-		GetProductCategories(ctx context.Context, tx *gorm.DB, teamId uint, pg *helpers.Pagination, f *filter.ProductCategoryFilter) ([]model.ProductCategory, error)
-		CreateProductCategory(ctx context.Context, tx *gorm.DB, m *CreateProductCategoryRequest) error
-		UpdateProductCategory(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductCategoryRequest) error
-		DeleteProductCategory(ctx context.Context, tx *gorm.DB, id uint) error
+		FindById(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductCategory, error)
+		FindAll(ctx context.Context, tx *gorm.DB, teamId uint, pg *helpers.Pagination, f *filter.ProductCategoryFilter) ([]model.ProductCategory, error)
+		Create(ctx context.Context, tx *gorm.DB, m *CreateProductCategoryRequest) error
+		Save(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductCategoryRequest) error
+		DeleteById(ctx context.Context, tx *gorm.DB, id uint) error
 	}
 
 	CreateProductCategoryRequest struct {
@@ -32,7 +32,7 @@ type (
 	}
 )
 
-func (i *productCategory) GetProductCategory(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductCategory, error) {
+func (i *productCategory) FindById(ctx context.Context, tx *gorm.DB, id uint) (*model.ProductCategory, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -41,7 +41,7 @@ func (i *productCategory) GetProductCategory(ctx context.Context, tx *gorm.DB, i
 	return &res, err
 }
 
-func (i *productCategory) GetProductCategories(ctx context.Context, tx *gorm.DB, teamId uint, pg *helpers.Pagination, f *filter.ProductCategoryFilter) ([]model.ProductCategory, error) {
+func (i *productCategory) FindAll(ctx context.Context, tx *gorm.DB, teamId uint, pg *helpers.Pagination, f *filter.ProductCategoryFilter) ([]model.ProductCategory, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -58,7 +58,7 @@ func (i *productCategory) GetProductCategories(ctx context.Context, tx *gorm.DB,
 	return res, err
 }
 
-func (i *productCategory) CreateProductCategory(ctx context.Context, tx *gorm.DB, m *CreateProductCategoryRequest) error {
+func (i *productCategory) Create(ctx context.Context, tx *gorm.DB, m *CreateProductCategoryRequest) error {
 	if tx == nil {
 		tx = i.db
 	}
@@ -70,7 +70,7 @@ func (i *productCategory) CreateProductCategory(ctx context.Context, tx *gorm.DB
 	return err
 }
 
-func (i *productCategory) UpdateProductCategory(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductCategoryRequest) error {
+func (i *productCategory) Save(ctx context.Context, tx *gorm.DB, id uint, m *UpdateProductCategoryRequest) error {
 	if tx == nil {
 		tx = i.db
 	}
@@ -81,7 +81,7 @@ func (i *productCategory) UpdateProductCategory(ctx context.Context, tx *gorm.DB
 	return err
 }
 
-func (i *productCategory) DeleteProductCategory(ctx context.Context, tx *gorm.DB, id uint) error {
+func (i *productCategory) DeleteById(ctx context.Context, tx *gorm.DB, id uint) error {
 	if tx == nil {
 		tx = i.db
 	}

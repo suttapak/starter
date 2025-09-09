@@ -11,11 +11,11 @@ import (
 
 type (
 	Report interface {
-		GetReport(ctx context.Context, tx *gorm.DB, id uint) (*model.ReportTemplate, error)
-		GetReports(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.ReportFilter) ([]model.ReportTemplate, error)
-		CreateReport(ctx context.Context, tx *gorm.DB, m *model.ReportTemplate) error
-		UpdateReport(ctx context.Context, tx *gorm.DB, id uint, m *model.ReportTemplate) error
-		DeleteReport(ctx context.Context, tx *gorm.DB, id uint) error
+		FindById(ctx context.Context, tx *gorm.DB, id uint) (*model.ReportTemplate, error)
+		FindAll(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.ReportFilter) ([]model.ReportTemplate, error)
+		Create(ctx context.Context, tx *gorm.DB, m *model.ReportTemplate) error
+		Save(ctx context.Context, tx *gorm.DB, id uint, m *model.ReportTemplate) error
+		DeleteById(ctx context.Context, tx *gorm.DB, id uint) error
 	}
 
 	report struct {
@@ -23,7 +23,7 @@ type (
 	}
 )
 
-func (i *report) GetReport(ctx context.Context, tx *gorm.DB, id uint) (*model.ReportTemplate, error) {
+func (i *report) FindById(ctx context.Context, tx *gorm.DB, id uint) (*model.ReportTemplate, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -32,7 +32,7 @@ func (i *report) GetReport(ctx context.Context, tx *gorm.DB, id uint) (*model.Re
 	return &res, err
 }
 
-func (i *report) GetReports(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.ReportFilter) ([]model.ReportTemplate, error) {
+func (i *report) FindAll(ctx context.Context, tx *gorm.DB, pg *helpers.Pagination, f *filter.ReportFilter) ([]model.ReportTemplate, error) {
 	if tx == nil {
 		tx = i.db
 	}
@@ -43,7 +43,7 @@ func (i *report) GetReports(ctx context.Context, tx *gorm.DB, pg *helpers.Pagina
 	return res, err
 }
 
-func (i *report) CreateReport(ctx context.Context, tx *gorm.DB, m *model.ReportTemplate) error {
+func (i *report) Create(ctx context.Context, tx *gorm.DB, m *model.ReportTemplate) error {
 	if tx == nil {
 		tx = i.db
 	}
@@ -51,7 +51,7 @@ func (i *report) CreateReport(ctx context.Context, tx *gorm.DB, m *model.ReportT
 	return err
 }
 
-func (i *report) UpdateReport(ctx context.Context, tx *gorm.DB, id uint, m *model.ReportTemplate) error {
+func (i *report) Save(ctx context.Context, tx *gorm.DB, id uint, m *model.ReportTemplate) error {
 	if tx == nil {
 		tx = i.db
 	}
@@ -59,7 +59,7 @@ func (i *report) UpdateReport(ctx context.Context, tx *gorm.DB, id uint, m *mode
 	return err
 }
 
-func (i *report) DeleteReport(ctx context.Context, tx *gorm.DB, id uint) error {
+func (i *report) DeleteById(ctx context.Context, tx *gorm.DB, id uint) error {
 	if tx == nil {
 		tx = i.db
 	}

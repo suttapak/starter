@@ -48,7 +48,7 @@ type (
 )
 
 func (i *productCategory) GetProductCategory(ctx context.Context, id uint) (*ProductCategoryResponse, error) {
-	model, err := i.productCategory.GetProductCategory(ctx, nil, id)
+	model, err := i.productCategory.FindById(ctx, nil, id)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -61,7 +61,7 @@ func (i *productCategory) GetProductCategory(ctx context.Context, id uint) (*Pro
 }
 
 func (i *productCategory) GetProductCategories(ctx context.Context, teamId uint, pg *helpers.Pagination, f *filter.ProductCategoryFilter) ([]ProductCategoryResponse, error) {
-	models, err := i.productCategory.GetProductCategories(ctx, nil, teamId, pg, f)
+	models, err := i.productCategory.FindAll(ctx, nil, teamId, pg, f)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -75,7 +75,7 @@ func (i *productCategory) GetProductCategories(ctx context.Context, teamId uint,
 
 func (i *productCategory) CreateProductCategory(ctx context.Context, input *CreateProductCategoryRequest) error {
 	body := repository.CreateProductCategoryRequest(*input)
-	if err := i.productCategory.CreateProductCategory(ctx, nil, &body); err != nil {
+	if err := i.productCategory.Create(ctx, nil, &body); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
@@ -83,14 +83,14 @@ func (i *productCategory) CreateProductCategory(ctx context.Context, input *Crea
 }
 func (i *productCategory) UpdateProductCategory(ctx context.Context, id uint, input *UpdateProductCategoryRequest) error {
 	body := repository.UpdateProductCategoryRequest(*input)
-	if err := i.productCategory.UpdateProductCategory(ctx, nil, id, &body); err != nil {
+	if err := i.productCategory.Save(ctx, nil, id, &body); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
 	return nil
 }
 func (i *productCategory) DeleteProductCategory(ctx context.Context, id uint) error {
-	if err := i.productCategory.DeleteProductCategory(ctx, nil, id); err != nil {
+	if err := i.productCategory.DeleteById(ctx, nil, id); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}

@@ -18,7 +18,7 @@ type (
 		FindById(ctx context.Context, tx *gorm.DB, uId uint) (user *model.User, err error)
 		VerifyEmail(ctx context.Context, tx *gorm.DB, userId uint) (user *model.User, err error)
 		FindByUsername(ctx context.Context, tx *gorm.DB, username string) (user []model.User, err error)
-		CheckUserIsVerifyEmail(ctx context.Context, tx *gorm.DB, userId uint) (bool, error)
+		IsVerifyEmailByUserId(ctx context.Context, tx *gorm.DB, userId uint) (bool, error)
 		// Create Image Profile From Image ID
 		CreateImageProfile(ctx context.Context, tx *gorm.DB, userId uint, imageId uint) error
 	}
@@ -40,8 +40,8 @@ func (u *user) CreateImageProfile(ctx context.Context, tx *gorm.DB, userId uint,
 
 }
 
-// CheckUserIsVerifyEmail checks if a user's email is verified.
-func (u *user) CheckUserIsVerifyEmail(ctx context.Context, tx *gorm.DB, userId uint) (bool, error) {
+// IsVerifyEmailByUserId checks if a user's email is verified.
+func (u *user) IsVerifyEmailByUserId(ctx context.Context, tx *gorm.DB, userId uint) (bool, error) {
 	if tx == nil {
 		tx = u.db
 	}
@@ -115,7 +115,6 @@ func (u *user) VerifyEmail(ctx context.Context, tx *gorm.DB, userId uint) (user 
 }
 
 func (u *user) GetUserByEmailOrUsername(ctx context.Context, tx *gorm.DB, emailOrUsername string) (user *model.User, err error) {
-	//TODO implement me
 	if tx == nil {
 		tx = u.db
 	}
