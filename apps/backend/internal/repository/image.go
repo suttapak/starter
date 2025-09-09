@@ -9,24 +9,24 @@ import (
 
 type (
 	Image interface {
-		CreateImage(ctx context.Context, tx *gorm.DB, userId uint, image *model.Image) (*model.Image, error)
-		DeleteImage(ctx context.Context, tx *gorm.DB, imageId uint) error
+		Save(ctx context.Context, tx *gorm.DB, userId uint, image *model.Image) (*model.Image, error)
+		Delete(ctx context.Context, tx *gorm.DB, imageId uint) error
 	}
 	image struct {
 		db *gorm.DB
 	}
 )
 
-// DeleteImage implements Image.
-func (i *image) DeleteImage(ctx context.Context, tx *gorm.DB, imageId uint) error {
+// Delete implements Image.
+func (i *image) Delete(ctx context.Context, tx *gorm.DB, imageId uint) error {
 	if tx == nil {
 		tx = i.db
 	}
 	return tx.WithContext(ctx).Delete(&model.Image{}, imageId).Error
 }
 
-// CreateImage implements Image.
-func (i *image) CreateImage(ctx context.Context, tx *gorm.DB, userId uint, image *model.Image) (*model.Image, error) {
+// Save implements Image.
+func (i *image) Save(ctx context.Context, tx *gorm.DB, userId uint, image *model.Image) (*model.Image, error) {
 	if tx == nil {
 		tx = i.db
 	}

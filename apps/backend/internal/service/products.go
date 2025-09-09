@@ -80,7 +80,7 @@ func (i *products) DeleteProductImage(ctx context.Context, productId, productIma
 	// begin tx
 	tx := i.db.BeginTx()
 	// get product image
-	productImageModel, err := i.products.FindProductImage(ctx, tx, productImageId)
+	productImageModel, err := i.products.FindImage(ctx, tx, productImageId)
 	if err != nil {
 		i.logger.Error(err)
 		return errs.ErrInternal
@@ -89,13 +89,13 @@ func (i *products) DeleteProductImage(ctx context.Context, productId, productIma
 		return errs.ErrForbidden
 	}
 	// remove image
-	if err := i.imageRepo.DeleteImage(ctx, tx, productImageModel.ImageID); err != nil {
+	if err := i.imageRepo.Delete(ctx, tx, productImageModel.ImageID); err != nil {
 		i.logger.Error(err)
 		i.db.RollbackTx(tx)
 		return errs.ErrInternal
 	}
 	// remove product image
-	if err := i.products.DeleteProductImage(ctx, tx, productImageId); err != nil {
+	if err := i.products.DeleteImageById(ctx, tx, productImageId); err != nil {
 		i.logger.Error(err)
 		i.db.RollbackTx(tx)
 		return errs.ErrInternal
@@ -116,7 +116,7 @@ func (i *products) UploadProductImages(ctx context.Context, userId, productId ui
 	success := []*model.Image{}
 	rollback := func() {
 		for _, img := range success {
-			if err := i.imageRepo.DeleteImage(ctx, nil, img.ID); err != nil {
+			if err := i.imageRepo.Delete(ctx, nil, img.ID); err != nil {
 				i.logger.Error(err)
 			}
 		}
@@ -161,13 +161,13 @@ func (i *products) UploadProductImages(ctx context.Context, userId, productId ui
 			Type:   imgStats.mimeType,
 			UserID: userId,
 		}
-		imageModel, err := i.imageRepo.CreateImage(ctx, nil, userId, &m)
+		imageModel, err := i.imageRepo.Save(ctx, nil, userId, &m)
 		if err != nil {
 			i.logger.Error(err)
 			rollback()
 			return nil, errs.HandleGorm(err)
 		}
-		if err := i.products.CreateProductImage(ctx, nil, productId, imageModel.ID); err != nil {
+		if err := i.products.CreateImage(ctx, nil, productId, imageModel.ID); err != nil {
 			i.logger.Error(err)
 			rollback()
 			return nil, errs.HandleGorm(err)
@@ -195,7 +195,7 @@ func (i *products) getDownloadExcelHeader(local i18n.Local) []string {
 
 func (i *products) GetProduct(ctx context.Context, id uint) (*ProductResponse, error) {
 
-	model, err := i.products.GetProduct(ctx, nil, id)
+	model, err := i.products.FindById(ctx, nil, id)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -208,7 +208,7 @@ func (i *products) GetProduct(ctx context.Context, id uint) (*ProductResponse, e
 }
 
 func (i *products) GetProducts(ctx context.Context, id uint, pg *helpers.Pagination, f *filter.ProductsFilter) ([]ProductResponse, error) {
-	models, err := i.products.GetProducts(ctx, nil, id, pg, f)
+	models, err := i.products.FindAll(ctx, nil, id, pg, f)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -241,7 +241,7 @@ func (i *products) CreateProducts(ctx context.Context, teamId uint, input *Creat
 		CategoryID:  input.CategoryID,
 	}
 	body := repository.CreateProductsRequest(data)
-	productModel, err := i.products.CreateProducts(ctx, nil, teamId, &body)
+	productModel, err := i.products.Create(ctx, nil, teamId, &body)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -262,14 +262,14 @@ func (i *products) UpdateProducts(ctx context.Context, id uint, input *UpdatePro
 	}
 
 	body := repository.UpdateProductsRequest(data)
-	if err := i.products.UpdateProducts(ctx, nil, id, &body); err != nil {
+	if err := i.products.Save(ctx, nil, id, &body); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
 	return nil
 }
 func (i *products) DeleteProducts(ctx context.Context, id uint) error {
-	if err := i.products.DeleteProducts(ctx, nil, id); err != nil {
+	if err := i.products.DeleteById(ctx, nil, id); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}

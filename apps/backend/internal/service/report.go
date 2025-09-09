@@ -61,7 +61,7 @@ type (
 )
 
 func (i *report) GetReport(ctx context.Context, id uint) (*ReportResponse, error) {
-	model, err := i.report.GetReport(ctx, nil, id)
+	model, err := i.report.FindById(ctx, nil, id)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -74,7 +74,7 @@ func (i *report) GetReport(ctx context.Context, id uint) (*ReportResponse, error
 }
 
 func (i *report) GetReports(ctx context.Context, pg *helpers.Pagination, f *filter.ReportFilter) ([]ReportResponse, error) {
-	models, err := i.report.GetReports(ctx, nil, pg, f)
+	models, err := i.report.FindAll(ctx, nil, pg, f)
 	if err != nil {
 		i.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -112,14 +112,14 @@ func (i *report) CreateReport(ctx context.Context, req *CreateReportRequest, fil
 		Icon:                   "file",
 		ReportJsonSchemaTypeID: idx.ReportJsonSchemaTypeCommonId,
 	}
-	if err := i.report.CreateReport(ctx, nil, &modelData); err != nil {
+	if err := i.report.Create(ctx, nil, &modelData); err != nil {
 		i.logger.Error(err)
 	}
 	return nil
 }
 func (i *report) UpdateReport(ctx context.Context, id uint, input *UpdateReportRequest, file *multipart.FileHeader) error {
 	if file != nil {
-		report, err := i.report.GetReport(ctx, nil, id)
+		report, err := i.report.FindById(ctx, nil, id)
 		if err != nil {
 			i.logger.Error(err)
 			return errs.HandleGorm(err)
@@ -146,14 +146,14 @@ func (i *report) UpdateReport(ctx context.Context, id uint, input *UpdateReportR
 		Name:        input.Name,
 		DisplayName: strings.TrimSpace(input.Name),
 	}
-	if err := i.report.UpdateReport(ctx, nil, id, &body); err != nil {
+	if err := i.report.Save(ctx, nil, id, &body); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
 	return nil
 }
 func (i *report) DeleteReport(ctx context.Context, id uint) error {
-	if err := i.report.DeleteReport(ctx, nil, id); err != nil {
+	if err := i.report.DeleteById(ctx, nil, id); err != nil {
 		i.logger.Error(err)
 		return errs.HandleGorm(err)
 	}

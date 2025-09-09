@@ -104,7 +104,7 @@ type (
 
 // UpdateTeamInfo implements Team.
 func (t *team) UpdateTeamInfo(ctx context.Context, teamId uint, input UpdateTeamInfoRequest) error {
-	if err := t.teamRepository.UpdateTeamInfo(ctx, nil, teamId, repository.UpdateTeamInfoParams(input)); err != nil {
+	if err := t.teamRepository.Update(ctx, nil, teamId, repository.UpdateTeamInfoParams(input)); err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
@@ -114,7 +114,7 @@ func (t *team) UpdateTeamInfo(ctx context.Context, teamId uint, input UpdateTeam
 // AcceptTeamMember implements Team.
 func (t *team) AcceptTeamMember(ctx context.Context, teamId uint, input AcceptTeamMemberDto) (err error) {
 	// check user is already in team
-	isExist, err := t.teamRepository.CheckUserIsAlreadyInTeam(ctx, nil, teamId, input.UserID)
+	isExist, err := t.teamRepository.ExistUserInTeamByTeamId(ctx, nil, teamId, input.UserID)
 	if err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -122,7 +122,7 @@ func (t *team) AcceptTeamMember(ctx context.Context, teamId uint, input AcceptTe
 	if !isExist {
 		return errs.ErrUserAlreadyInTeam
 	}
-	model, err := t.teamRepository.GetTeamMemberByTeamIdAndUserId(ctx, nil, teamId, input.UserID)
+	model, err := t.teamRepository.FindMemberByTeamIdAndUserId(ctx, nil, teamId, input.UserID)
 	if err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -140,7 +140,7 @@ func (t *team) AcceptTeamMember(ctx context.Context, teamId uint, input AcceptTe
 // CreateTeamPendingTeamMember implements Team.
 func (t *team) CreateTeamPendingTeamMember(ctx context.Context, teamId uint, userId uint) (err error) {
 	// check user is already in team
-	isExist, err := t.teamRepository.CheckUserIsAlreadyInTeam(ctx, nil, teamId, userId)
+	isExist, err := t.teamRepository.ExistUserInTeamByTeamId(ctx, nil, teamId, userId)
 	if err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -148,7 +148,7 @@ func (t *team) CreateTeamPendingTeamMember(ctx context.Context, teamId uint, use
 	if isExist {
 		return errs.ErrUserAlreadyInTeam
 	}
-	if _, err := t.teamRepository.CreateTeamPendingTeamMember(ctx, nil, teamId, userId); err != nil {
+	if _, err := t.teamRepository.CreatePendingMember(ctx, nil, teamId, userId); err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
@@ -157,7 +157,7 @@ func (t *team) CreateTeamPendingTeamMember(ctx context.Context, teamId uint, use
 
 // GetTeamsFilter implements Team.
 func (t *team) GetTeamsFilter(ctx context.Context, pg *helpers.Pagination, f *filter.TeamFilter) (res []TeamResponse, err error) {
-	models, err := t.teamRepository.GetTeamsFilter(ctx, nil, pg, f)
+	models, err := t.teamRepository.FindAll(ctx, nil, pg, f)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -188,7 +188,7 @@ func (t *team) JoinWithShearLink(ctx context.Context, token string, userId uint)
 	}
 	teamId := resToken.TeamId
 	// check user is already in team
-	isExist, err := t.teamRepository.CheckUserIsAlreadyInTeam(ctx, nil, teamId, userId)
+	isExist, err := t.teamRepository.ExistUserInTeamByTeamId(ctx, nil, teamId, userId)
 	if err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -196,7 +196,7 @@ func (t *team) JoinWithShearLink(ctx context.Context, token string, userId uint)
 	if isExist {
 		return errs.ErrUserAlreadyInTeam
 	}
-	if err := t.teamRepository.JoinTeam(ctx, nil, teamId, userId); err != nil {
+	if err := t.teamRepository.CreateMemberByUserId(ctx, nil, teamId, userId); err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
@@ -213,7 +213,7 @@ func (t *team) JoinTeamWithToken(ctx context.Context, token string) (err error) 
 	userId := resToken.UserId
 	teamId := resToken.TeamId
 	// check user is already in team
-	isExist, err := t.teamRepository.CheckUserIsAlreadyInTeam(ctx, nil, teamId, userId)
+	isExist, err := t.teamRepository.ExistUserInTeamByTeamId(ctx, nil, teamId, userId)
 	if err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -221,7 +221,7 @@ func (t *team) JoinTeamWithToken(ctx context.Context, token string) (err error) 
 	if isExist {
 		return errs.ErrUserAlreadyInTeam
 	}
-	if err := t.teamRepository.JoinTeam(ctx, nil, teamId, userId); err != nil {
+	if err := t.teamRepository.CreateMemberByUserId(ctx, nil, teamId, userId); err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
 	}
@@ -237,7 +237,7 @@ func (t *team) SendInviteTeamMember(ctx context.Context, teamId uint, input Crea
 	}
 	userId := userModel.ID
 	// check user is already in team
-	isExist, err := t.teamRepository.CheckUserIsAlreadyInTeam(ctx, nil, teamId, userId)
+	isExist, err := t.teamRepository.ExistUserInTeamByTeamId(ctx, nil, teamId, userId)
 	if err != nil {
 		t.logger.Error(err)
 		return errs.HandleGorm(err)
@@ -280,7 +280,7 @@ func (t *team) UpdateMemberRole(ctx context.Context, teamId uint, input UpdateMe
 
 // GetTeamUserMe implements Team.
 func (t *team) GetTeamUserMe(ctx context.Context, teamId uint, userId uint) (res *TeamMemberResponse, err error) {
-	model, err := t.teamRepository.GetTeamUserMe(ctx, nil, teamId, userId)
+	model, err := t.teamRepository.FindByTeamIdAndUserId(ctx, nil, teamId, userId)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -294,7 +294,7 @@ func (t *team) GetTeamUserMe(ctx context.Context, teamId uint, userId uint) (res
 
 // GetPendingTeamMemberCount implements Team.
 func (t *team) GetPendingTeamMemberCount(ctx context.Context, teamId uint) (res int64, err error) {
-	res, err = t.teamRepository.GetPendingTeamMemberCount(ctx, nil, teamId)
+	res, err = t.teamRepository.CountPendingMemberByTeamId(ctx, nil, teamId)
 	if err != nil {
 		t.logger.Error(err)
 		return 0, errs.HandleGorm(err)
@@ -304,7 +304,7 @@ func (t *team) GetPendingTeamMemberCount(ctx context.Context, teamId uint) (res 
 
 // GetPendingTeamMembers implements Team.
 func (t *team) GetPendingTeamMembers(ctx context.Context, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []TeamMemberResponse, err error) {
-	model, err := t.teamRepository.GetPendingTeamMembers(ctx, nil, pg, f, teamId)
+	model, err := t.teamRepository.FindAllPendingMemberByTeamId(ctx, nil, pg, f, teamId)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -319,7 +319,7 @@ func (t *team) GetPendingTeamMembers(ctx context.Context, pg *helpers.Pagination
 
 // GetTeamByTeamId implements Team.
 func (t *team) GetTeamByTeamId(ctx context.Context, teamId uint) (res *TeamResponse, err error) {
-	model, err := t.teamRepository.GetTeamByTeamId(ctx, nil, teamId)
+	model, err := t.teamRepository.FindByTeamId(ctx, nil, teamId)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -334,7 +334,7 @@ func (t *team) GetTeamByTeamId(ctx context.Context, teamId uint) (res *TeamRespo
 
 // GetTeamMembers implements Team.
 func (t *team) GetTeamMembers(ctx context.Context, pg *helpers.Pagination, f *filter.TeamMemberFilter, teamId uint) (res []TeamMemberResponse, err error) {
-	model, err := t.teamRepository.GetTeamMembers(ctx, nil, pg, f, teamId)
+	model, err := t.teamRepository.FindAllMemberByTeamId(ctx, nil, pg, f, teamId)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -349,7 +349,7 @@ func (t *team) GetTeamMembers(ctx context.Context, pg *helpers.Pagination, f *fi
 
 // GetTeamMemberCount implements Team.
 func (t *team) GetTeamMemberCount(ctx context.Context, teamId uint) (res int64, err error) {
-	res, err = t.teamRepository.GetTeamMemberCount(ctx, nil, teamId)
+	res, err = t.teamRepository.CountMemberByTeamId(ctx, nil, teamId)
 	if err != nil {
 		t.logger.Error(err)
 		return 0, errs.HandleGorm(err)
@@ -359,7 +359,7 @@ func (t *team) GetTeamMemberCount(ctx context.Context, teamId uint) (res int64, 
 
 // GetTeamsMe implements Team.
 func (t *team) GetTeamsMe(ctx context.Context, pg *helpers.Pagination, userId uint) (res []TeamResponse, err error) {
-	models, err := t.teamRepository.GetTeamsMe(ctx, nil, pg, userId)
+	models, err := t.teamRepository.FindByUserId(ctx, nil, pg, userId)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
@@ -374,7 +374,7 @@ func (t *team) GetTeamsMe(ctx context.Context, pg *helpers.Pagination, userId ui
 // Create implements Team.
 func (t *team) Create(ctx context.Context, ownerId uint, input CreateTeamDto) (res *CreateTeamResponse, err error) {
 	// check with username is exist
-	exists, err := t.teamRepository.CheckTeamUsernameIsExist(ctx, nil, input.Username)
+	exists, err := t.teamRepository.ExistByUsername(ctx, nil, input.Username)
 	if err != nil {
 		t.logger.Error(err)
 		return nil, errs.HandleGorm(err)
