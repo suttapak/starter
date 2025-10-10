@@ -4,9 +4,9 @@ import "go.uber.org/fx"
 
 var Module = fx.Options(
 	fx.Provide(NewAuth),
-	fx.Provide(newJWT),
-	fx.Provide(newEmailService),
-	fx.Provide(newUserService),
+	fx.Provide(NewJWT),
+	fx.Provide(NewEmail),
+	fx.Provide(NewUser),
 	fx.Provide(NewTeam),
 	fx.Provide(NewProducts),
 	fx.Provide(NewProductCategory),

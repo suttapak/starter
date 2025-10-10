@@ -1,6 +1,5 @@
 services:
   proxy:
-    container_name: proxy
     image: nginx:alpine
     ports:
       - "8080:80"

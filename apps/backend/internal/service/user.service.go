@@ -155,7 +155,7 @@ func (u *userService) GetUserByUserId(ctx context.Context, uId uint) (res *UserR
 	return
 }
 
-func newUserService(
+func NewUser(
 	user repository.User,
 	image repository.Image,
 	imageService ImageFileService,

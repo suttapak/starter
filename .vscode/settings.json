@@ -6,5 +6,15 @@
   "files.autoSave": "onFocusChange",
   "prettier.trailingComma": "all",
   "prettier.printWidth": 80,
-  "cSpell.words": ["CARBIN", "prefault"]
+  "cSpell.words": [
+    "buildx",
+    "CARBIN",
+    "gomail",
+    "jmoiron",
+    "mtemplate",
+    "prefault",
+    "sqlx",
+    "stockub",
+    "verifyed"
+  ]
 }

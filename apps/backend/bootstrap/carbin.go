@@ -1,19 +1,29 @@
 package bootstrap
 
 import (
+	_ "embed"
+
+	"github.com/jmoiron/sqlx"
 	"github.com/suttapak/starter/config"
 
+	sqladapter "github.com/Blank-Xu/sql-adapter"
 	"github.com/casbin/casbin/v2"
-	gormadapter "github.com/casbin/gorm-adapter/v3"
-	"gorm.io/gorm"
+	"github.com/casbin/casbin/v2/model"
 )
 
-func newCarbin(cfg *config.Config, db *gorm.DB) (*casbin.Enforcer, error) {
-	a, err := gormadapter.NewAdapterByDB(db)
+//go:embed carbin/authz_model.conf
+var carbinModel string
+
+func NewCarbin(cfg *config.Config, db *sqlx.DB) (*casbin.Enforcer, error) {
+	model, err := model.NewModelFromString(carbinModel)
 	if err != nil {
 		return nil, err
 	}
-	e, err := casbin.NewEnforcer(cfg.CARBIN.MODEL, a)
+	a, err := sqladapter.NewAdapter(db.DB, "postgres", "casbin_rule")
+	if err != nil {
+		return nil, err
+	}
+	e, err := casbin.NewEnforcer(model, a)
 	if err != nil {
 		return nil, err
 	}

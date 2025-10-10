@@ -209,7 +209,7 @@ func (j *jwtService) GenerateRefreshToken(ctx context.Context, userId uint) (tok
 	return t.SignedString(key)
 }
 
-func newJWT(logger logger.AppLogger, conf *config.Config, helper helpers.Helper) JWTService {
+func NewJWT(logger logger.AppLogger, conf *config.Config, helper helpers.Helper) JWTService {
 	return &jwtService{
 		logger: logger,
 		conf:   conf,

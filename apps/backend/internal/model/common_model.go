@@ -1,16 +1,15 @@
 package model
 
 import (
+	"database/sql"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type (
 	CommonModel struct {
-		ID        uint           `gorm:"primaryKey" json:"id"`
-		CreatedAt time.Time      `json:"created_at"`
-		UpdatedAt time.Time      `json:"updated_at"`
-		DeletedAt gorm.DeletedAt `gorm:"index"`
+		ID        uint         `db:"id" json:"id"`
+		CreatedAt time.Time    `db:"created_at" json:"created_at"`
+		UpdatedAt time.Time    `db:"updated_at" json:"updated_at"`
+		DeletedAt sql.NullTime `db:"deleted_at" json:"deleted_at,omitempty"`
 	}
 )

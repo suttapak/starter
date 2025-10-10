@@ -6,6 +6,6 @@ import (
 
 var Module = fx.Options(
 	fx.Provide(newGin),
-	fx.Provide(newCarbin),
+	fx.Provide(NewCarbin),
 	fx.Invoke(useGin),
 )

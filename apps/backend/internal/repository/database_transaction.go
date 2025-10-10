@@ -1,42 +1,93 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"context"
+	"fmt"
+
+	"github.com/jmoiron/sqlx"
+)
 
 type (
 	DatabaseTransaction interface {
-		BeginTx() *gorm.DB
-		CommitTx(tx *gorm.DB) error
-		RollbackTx(tx *gorm.DB) error
+		BeginTx(ctx context.Context) (*sqlx.Tx, error)
+		CommitTx(tx *sqlx.Tx) error
+		RollbackTx(tx *sqlx.Tx) error
+		// WithTransaction executes a function within a transaction
+		WithTransaction(ctx context.Context, fn func(*sqlx.Tx) error) error
 	}
 
-	databaseTransaction struct {
-		db *gorm.DB
+	databaseTransactionSqlx struct {
+		db *sqlx.DB
 	}
 )
 
-// BeginTx implements DatabaseTransaction.
-func (d *databaseTransaction) BeginTx() *gorm.DB {
-	return d.db.Begin()
+// NewDatabaseTransaction creates a new database transaction helper
+func NewDatabaseTransaction(db *sqlx.DB) DatabaseTransaction {
+	return &databaseTransactionSqlx{db: db}
 }
 
-// CommitTx implements DatabaseTransaction.
-func (d *databaseTransaction) CommitTx(tx *gorm.DB) error {
-	if tx != nil {
-		return tx.Commit().Error
+// BeginTx starts a new transaction
+func (d *databaseTransactionSqlx) BeginTx(ctx context.Context) (*sqlx.Tx, error) {
+	tx, err := d.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return nil, fmt.Errorf("failed to begin transaction: %w", err)
 	}
+	return tx, nil
+}
+
+// CommitTx commits a transaction
+func (d *databaseTransactionSqlx) CommitTx(tx *sqlx.Tx) error {
+	if tx == nil {
+		return nil
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
 	return nil
 }
 
-// RollbackTx implements DatabaseTransaction.
-func (d *databaseTransaction) RollbackTx(tx *gorm.DB) error {
-	if tx != nil {
-		return tx.Rollback().Error
+// RollbackTx rolls back a transaction
+func (d *databaseTransactionSqlx) RollbackTx(tx *sqlx.Tx) error {
+	if tx == nil {
+		return nil
 	}
+
+	if err := tx.Rollback(); err != nil {
+		return fmt.Errorf("failed to rollback transaction: %w", err)
+	}
+
 	return nil
 }
 
-func NewDatabaseTransaction(db *gorm.DB) DatabaseTransaction {
-	return &databaseTransaction{
-		db: db,
+// WithTransaction executes a function within a transaction with automatic commit/rollback
+func (d *databaseTransactionSqlx) WithTransaction(ctx context.Context, fn func(*sqlx.Tx) error) error {
+	tx, err := d.BeginTx(ctx)
+	if err != nil {
+		return err
 	}
+
+	// Defer rollback in case of panic
+	defer func() {
+		if p := recover(); p != nil {
+			_ = d.RollbackTx(tx)
+			panic(p) // re-throw panic after rollback
+		}
+	}()
+
+	// Execute the function
+	if err := fn(tx); err != nil {
+		if rbErr := d.RollbackTx(tx); rbErr != nil {
+			return fmt.Errorf("failed to rollback after error: %v (original error: %w)", rbErr, err)
+		}
+		return err
+	}
+
+	// Commit the transaction
+	if err := d.CommitTx(tx); err != nil {
+		return err
+	}
+
+	return nil
 }

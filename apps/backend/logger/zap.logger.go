@@ -32,7 +32,7 @@ func ensureDir(path string) error {
 	return nil
 }
 
-func newAppLogger() (AppLogger, error) {
+func NewAppLogger() (AppLogger, error) {
 	// Ensure logs directory exists
 	if err := ensureDir("./logs"); err != nil {
 		log.Fatalf("Failed to create log directory: %s, error: %v", "logs", err)

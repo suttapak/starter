@@ -1,18 +1,23 @@
 package repository
 
-import "go.uber.org/fx"
+import (
+	"go.uber.org/fx"
+)
 
 var (
 	Module = fx.Options(
-		fx.Provide(newUserRepository),
-		fx.Provide(newMailRepository),
-		fx.Provide(newTeam),
+		// Migrated repositories using sqlx
+		fx.Provide(NewUser),
 		fx.Provide(NewDatabaseTransaction),
-		fx.Provide(NewProducts),
-		fx.Provide(NewProductCategory),
-		fx.Provide(NewAutoIncrementSequence),
-		fx.Provide(NewODT),
-		fx.Provide(NewReport),
 		fx.Provide(NewImage),
+		fx.Provide(NewAutoIncrementSequence),
+		fx.Provide(NewReport),
+		fx.Provide(NewTeam),
+		fx.Provide(NewProductCategory),
+		fx.Provide(NewProducts),
+		fx.Provide(NewODT),
+
+		// Legacy repositories - still using GORM
+		fx.Provide(newMailRepository),
 	)
 )

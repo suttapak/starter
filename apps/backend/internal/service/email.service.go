@@ -3,10 +3,13 @@ package service
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"html/template"
+	"io/fs"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/suttapak/starter/internal/repository"
+	"github.com/suttapak/starter/mtemplate"
 
 	"gopkg.in/gomail.v2"
 )
@@ -42,6 +45,25 @@ type (
 	}
 )
 
+func listFiles(fsys fs.FS, dir string, indent string) {
+	entries, err := fs.ReadDir(fsys, dir)
+	if err != nil {
+		fmt.Printf("error reading %s: %v\n", dir, err)
+		return
+	}
+
+	for _, e := range entries {
+		name := e.Name()
+		if e.IsDir() {
+			fmt.Printf("%s📁 %s/\n", indent, name)
+			// Recursive call for subdirectories
+			listFiles(fsys, dir+"/"+name, indent+"  ")
+		} else {
+			fmt.Printf("%s📄 %s\n", indent, name)
+		}
+	}
+}
+
 func (r *RequestApproveTransactionDto) Validate() error {
 	validate := validator.New()
 	return validate.Struct(r)
@@ -57,9 +79,6 @@ type (
 		SendMail(ctx context.Context) error
 		ParseVerifyEmailTemplate(ctx context.Context, body *VerifyEmailTemplateDataDto) Email
 		ParseInviteTeamMemberTemplate(ctx context.Context, body *InviteTeamMemberTemplateDataDto) Email
-		ParseRequestApproveTransactionTemplate(ctx context.Context, body *RequestApproveTransactionDto) Email
-		ParseApproveTransactionTemplate(ctx context.Context, body *RejectAndApproveTransactionDto) Email
-		ParseRejectTransactionTemplate(ctx context.Context, body *RejectAndApproveTransactionDto) Email
 	}
 	email struct {
 		to      []string
@@ -70,55 +89,10 @@ type (
 	}
 )
 
-// ParseApproveTransactionTemplate implements Email.
-func (e *email) ParseApproveTransactionTemplate(ctx context.Context, body *RejectAndApproveTransactionDto) Email {
-	const (
-		templateFile = "./template/mail/approve-transaction.html"
-	)
-	if err := body.Validate(); err != nil {
-		e.err = err
-		return e
-	}
-	if err := e.parseTemplate(ctx, templateFile, body); err != nil {
-		e.err = err
-	}
-	return e
-}
-
-// ParseRejectTransactionTemplate implements Email.
-func (e *email) ParseRejectTransactionTemplate(ctx context.Context, body *RejectAndApproveTransactionDto) Email {
-	const (
-		templateFile = "./template/mail/reject-transaction.html"
-	)
-	if err := body.Validate(); err != nil {
-		e.err = err
-		return e
-	}
-	if err := e.parseTemplate(ctx, templateFile, body); err != nil {
-		e.err = err
-	}
-	return e
-}
-
-// ParseRequestApproveTransactionTemplate implements Email.
-func (e *email) ParseRequestApproveTransactionTemplate(ctx context.Context, body *RequestApproveTransactionDto) Email {
-	const (
-		templateFile = "./template/mail/request-approve-transaction.html"
-	)
-	if err := body.Validate(); err != nil {
-		e.err = err
-		return e
-	}
-	if err := e.parseTemplate(ctx, templateFile, body); err != nil {
-		e.err = err
-	}
-	return e
-}
-
 // ParseInviteTeamMemberTemplate implements Email.
 func (e *email) ParseInviteTeamMemberTemplate(ctx context.Context, body *InviteTeamMemberTemplateDataDto) Email {
 	const (
-		templateFile = "./template/mail/join-team.html"
+		templateFile = "mail/join-team.html"
 	)
 	if err := e.parseTemplate(ctx, templateFile, body); err != nil {
 		e.err = err
@@ -146,7 +120,7 @@ func (e *email) SendMail(ctx context.Context) error {
 // ParseVerifyEmailTemplate implements Email.
 func (e *email) ParseVerifyEmailTemplate(ctx context.Context, body *VerifyEmailTemplateDataDto) Email {
 	const (
-		templateFile = "./template/mail/register.html"
+		templateFile = "mail/register.html"
 	)
 	if err := e.parseTemplate(ctx, templateFile, body); err != nil {
 		e.err = err
@@ -156,8 +130,9 @@ func (e *email) ParseVerifyEmailTemplate(ctx context.Context, body *VerifyEmailT
 
 // ParseTemplate implements Email.
 func (e *email) parseTemplate(ctx context.Context, file string, data any) error {
+	listFiles(mtemplate.EmailTemplateFS, "mail", "")
 	_ = ctx
-	t, err := template.ParseFiles(file)
+	t, err := template.ParseFS(mtemplate.EmailTemplateFS, file)
 	if err != nil {
 		return err
 	}
@@ -178,6 +153,6 @@ func (e *email) NewRequest(to []string, subject string) Email {
 	}
 }
 
-func newEmailService(mail repository.MailRepository) Email {
+func NewEmail(mail repository.MailRepository) Email {
 	return &email{mail: mail}
 }

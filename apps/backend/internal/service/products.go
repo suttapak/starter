@@ -78,7 +78,11 @@ type (
 // DeleteProductImage implements Products.
 func (i *products) DeleteProductImage(ctx context.Context, productId, productImageId uint) error {
 	// begin tx
-	tx := i.db.BeginTx()
+	tx, err := i.db.BeginTx(ctx)
+	if err != nil {
+		i.logger.Error(err)
+		return errs.ErrInternal
+	}
 	// get product image
 	productImageModel, err := i.products.FindImage(ctx, tx, productImageId)
 	if err != nil {

@@ -182,7 +182,7 @@ func (a *authGuardMiddleware) ProtectRefreshToken(c *gin.Context) {
 	c.Next()
 }
 
-func newAuthGuardMiddleware(
+func NewAuthGuardMiddleware(
 	jwt service.JWTService,
 	enforcer *casbin.Enforcer,
 	logger logger.AppLogger,
