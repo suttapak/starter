@@ -1,6 +1,7 @@
 package errs
 
 import (
+	"database/sql"
 	"errors"
 	"net/http"
 
@@ -58,7 +59,7 @@ func (e AppError) Error() string {
 	return e.Message
 }
 
-func HandleGorm(err error, defaultError ...AppError) error {
+func HandleSqlErr(err error, defaultError ...AppError) error {
 	if err == nil {
 		return nil
 	}
@@ -67,6 +68,8 @@ func HandleGorm(err error, defaultError ...AppError) error {
 		return ErrNotFound
 	case errors.Is(err, gorm.ErrDuplicatedKey):
 		return ErrDuplicatedKey
+	case errors.Is(err, sql.ErrNoRows):
+		return ErrNotFound
 	default:
 		if errPg, ok := err.(*pgconn.PgError); ok {
 			switch errPg.Code {

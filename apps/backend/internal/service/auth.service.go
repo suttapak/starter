@@ -82,7 +82,7 @@ func (a *auth) SendVerifyEmail(ctx context.Context, input SendVerifyEmailDto) (e
 	userModel, err := a.userRepo.FindById(ctx, nil, input.UserID)
 	if err != nil {
 		a.logger.Error(err)
-		return errs.HandleGorm(err)
+		return errs.HandleSqlErr(err)
 	}
 	// generate token
 	token, err := a.jwtService.GenerateExternalToken(ctx, input.UserID)

@@ -88,10 +88,10 @@ func (t *teamSqlx) Create(ctx context.Context, tx *sqlx.Tx, ownerId uint, params
 	team := &model.Team{
 		Name:        params.Name,
 		Username:    params.Username,
-		Address:     params.Address,
-		Phone:       params.Phone,
-		Email:       params.Email,
-		Description: params.Description,
+		Address:     &params.Address,
+		Phone:       &params.Phone,
+		Email:       &params.Email,
+		Description: &params.Description,
 	}
 
 	err := sqlx.GetContext(ctx, db, team, teamQuery,

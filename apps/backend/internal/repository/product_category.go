@@ -2,8 +2,6 @@ package repository
 
 import (
 	"context"
-	"database/sql"
-	"errors"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
@@ -59,14 +57,7 @@ func (p *productCategorySqlx) FindById(ctx context.Context, tx *sqlx.Tx, id uint
 	`
 
 	err := sqlx.GetContext(ctx, db, &category, query, id)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("product category not found")
-		}
-		return nil, fmt.Errorf("failed to find product category: %w", err)
-	}
-
-	return &category, nil
+	return &category, err
 }
 
 // FindAll retrieves all product categories for a team with pagination

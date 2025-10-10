@@ -15,6 +15,7 @@
     "prefault",
     "sqlx",
     "stockub",
+    "testutil",
     "verifyed"
   ]
 }

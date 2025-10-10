@@ -24,9 +24,9 @@ func handlePaginationJsonResponse(c *gin.Context, json any, pg *helpers.Paginati
 	case http.MethodPost:
 		status = http.StatusCreated
 	case http.MethodPut, http.MethodPatch:
-		status = http.StatusAccepted
+		status = http.StatusCreated
 	case http.MethodDelete:
-		status = http.StatusNoContent
+		status = http.StatusCreated
 	}
 
 	// Create response object
@@ -54,9 +54,9 @@ func handleJsonResponse(c *gin.Context, json any, msg ...string) {
 	case http.MethodPost:
 		status = http.StatusCreated
 	case http.MethodPut, http.MethodPatch:
-		status = http.StatusAccepted
+		status = http.StatusCreated
 	case http.MethodDelete:
-		status = http.StatusNoContent
+		status = http.StatusCreated
 	}
 
 	// Create response object

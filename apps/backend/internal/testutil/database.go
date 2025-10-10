@@ -11,15 +11,8 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/stretchr/testify/require"
 	"github.com/suttapak/starter/database"
-	"go.uber.org/zap"
+	"github.com/suttapak/starter/logger"
 )
-
-// testLogger implements a simple logger for tests
-type testLogger struct{}
-
-func (t *testLogger) Info(message string, fields ...zap.Field)       {}
-func (t *testLogger) Debug(message string, fields ...zap.Field)      {}
-func (t *testLogger) Error(message interface{}, fields ...zap.Field) {}
 
 // SetupTestDB sets up a test database connection and runs migrations
 func SetupTestDB(t *testing.T) *sqlx.DB {
@@ -43,7 +36,7 @@ func SetupTestDB(t *testing.T) *sqlx.DB {
 	require.NoError(t, err, "Failed to connect to test database")
 
 	// Create a simple test logger
-	testLogger := &testLogger{}
+	testLogger := logger.NewLoggerMock()
 
 	// Run migrations
 	err = database.RunMigrations(db.DB, testLogger)
@@ -74,7 +67,9 @@ func TeardownTestDB(t *testing.T, db *sqlx.DB) {
 
 		ctx := context.Background()
 		for _, table := range tables {
-			_, err := db.ExecContext(ctx, fmt.Sprintf("DELETE FROM %s", table))
+			query := fmt.Sprintf(`TRUNCATE TABLE %s RESTART IDENTITY CASCADE`, table)
+
+			_, err := db.ExecContext(ctx, query)
 			if err != nil {
 				t.Logf("Warning: failed to clean table %s: %v", table, err)
 			}
@@ -98,9 +93,10 @@ func SeedRoles(t *testing.T, db *sqlx.DB) {
 	}
 
 	roles := []map[string]interface{}{
-		{"name": "admin"},
-		{"name": "user"},
-		{"name": "manager"},
+		{"name": "User"},
+		{"name": "Moderator"},
+		{"name": "Admin"},
+		{"name": "SuperAdmin"},
 	}
 
 	for _, role := range roles {
@@ -126,9 +122,9 @@ func SeedTeamRoles(t *testing.T, db *sqlx.DB) {
 	}
 
 	teamRoles := []map[string]interface{}{
-		{"name": "owner"},
-		{"name": "member"},
-		{"name": "viewer"},
+		{"name": "Owner"},
+		{"name": "Admin"},
+		{"name": "Member"},
 	}
 
 	for _, role := range teamRoles {

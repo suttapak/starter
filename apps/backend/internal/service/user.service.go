@@ -104,12 +104,12 @@ func (a *userService) CreateProfileImage(ctx context.Context, userId uint, fileH
 	imageModel, err := a.image.Save(ctx, nil, userId, &m)
 	if err != nil {
 		a.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 	// save user image
 	if err := a.user.CreateImageProfile(ctx, nil, userId, imageModel.ID); err != nil {
 		a.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 	// create profile image response
 	res, err = a.GetUserByUserId(ctx, userId)
@@ -121,7 +121,7 @@ func (a *userService) CheckUserIsVerifyEmail(ctx context.Context, userId uint) (
 	res, err := a.user.IsVerifyEmailByUserId(ctx, nil, userId)
 	if err != nil {
 		a.logger.Error(err)
-		return false, errs.HandleGorm(err)
+		return false, errs.HandleSqlErr(err)
 	}
 	return res, nil
 }
@@ -132,7 +132,7 @@ func (u *userService) FindUserByUsername(ctx context.Context, username string) (
 	model, err := u.user.FindByUsername(ctx, nil, strings.ToLower(username))
 	if err != nil {
 		u.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 
 	if err := u.help.ParseJson(model, &res); err != nil {
@@ -146,7 +146,7 @@ func (u *userService) GetUserByUserId(ctx context.Context, uId uint) (res *UserR
 	userModel, err := u.user.FindById(ctx, nil, uId)
 	if err != nil {
 		u.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 
 	if err := u.help.ParseJson(userModel, &res); err != nil {

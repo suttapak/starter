@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -34,31 +35,37 @@ type (
 func (a *authGuardMiddleware) TeamPermission(c *gin.Context) {
 	userIdStr, ok := c.Get("user_id")
 	if !ok {
+		a.logger.Error("can not get user id")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	uId, ok := userIdStr.(uint)
 	if !ok {
+		a.logger.Error("user id is not uint")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	teamIdStr := c.Param("team_id")
 	teamId, err := strconv.Atoi(teamIdStr)
 	if err != nil {
+		a.logger.Error("can not get teamId")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	member, err := a.team.GetTeamUserMe(c, uint(teamId), uId)
 	if err != nil {
+		a.logger.Error(err)
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	isExist, err := a.teamRepo.ExistUserInTeamByTeamId(c, nil, uint(teamId), uId)
 	if err != nil {
+		a.logger.Error(err)
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	if !isExist {
+		a.logger.Error("user not in team")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
@@ -75,6 +82,8 @@ func (a *authGuardMiddleware) TeamPermission(c *gin.Context) {
 		return
 	}
 	if !allowed {
+		fmt.Println(strconv.Itoa(int(member.TeamRoleID)), c.Request.URL.Path, c.Request.Method)
+		a.logger.Debug("not allow in team permission")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
@@ -85,16 +94,19 @@ func (a *authGuardMiddleware) TeamPermission(c *gin.Context) {
 func (a *authGuardMiddleware) Permission(c *gin.Context) {
 	userIdStr, ok := c.Get("user_id")
 	if !ok {
+		a.logger.Error("can not get userId")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	uId, ok := userIdStr.(uint)
 	if !ok {
+		a.logger.Error("user id not uint")
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}
 	user, err := a.user.GetUserByUserId(c, uId)
 	if err != nil {
+		a.logger.Error(err)
 		handlerError(c, errs.ErrUnauthorized)
 		return
 	}

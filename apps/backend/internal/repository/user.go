@@ -139,10 +139,7 @@ func (u *userSqlx) FindById(ctx context.Context, tx *sqlx.Tx, uId uint) (*model.
 
 	err := sqlx.GetContext(ctx, db, &user, query, uId)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("user not found")
-		}
-		return nil, fmt.Errorf("failed to find user: %w", err)
+		return nil, err
 	}
 
 	// Load role

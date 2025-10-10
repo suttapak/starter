@@ -21,7 +21,7 @@ func CreateTestUser(t *testing.T, db *sqlx.DB, email, username, password string)
 
 	// Get default role ID
 	var roleID int
-	err = db.GetContext(ctx, &roleID, "SELECT id FROM roles WHERE name = $1", "user")
+	err = db.GetContext(ctx, &roleID, "SELECT id FROM roles WHERE name = $1", "User")
 	require.NoError(t, err)
 
 	// Create user
@@ -58,24 +58,26 @@ func CreateTestUser(t *testing.T, db *sqlx.DB, email, username, password string)
 }
 
 // CreateTestTeam creates a test team in the database
-func CreateTestTeam(t *testing.T, db *sqlx.DB, name, description string, ownerID int) *model.Team {
+func CreateTestTeam(t *testing.T, db *sqlx.DB, name, username, description string, ownerID int) *model.Team {
 	ctx := context.Background()
 
 	team := &model.Team{
 		Name:        name,
-		Description: description,
+		Username:    username,
+		Description: &description,
 	}
 	team.CreatedAt = time.Now()
 	team.UpdatedAt = time.Now()
 
 	query := `
-		INSERT INTO teams (name, description, created_at, updated_at)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO teams (name, username, description, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id
 	`
 
 	err := db.GetContext(ctx, &team.ID, query,
 		team.Name,
+		team.Username,
 		team.Description,
 		team.CreatedAt,
 		team.UpdatedAt,
@@ -84,7 +86,7 @@ func CreateTestTeam(t *testing.T, db *sqlx.DB, name, description string, ownerID
 
 	// Get team role ID for owner
 	var roleID uint
-	err = db.GetContext(ctx, &roleID, "SELECT id FROM team_roles WHERE name = $1", "owner")
+	err = db.GetContext(ctx, &roleID, "SELECT id FROM team_roles WHERE name = $1", "Owner")
 	require.NoError(t, err)
 
 	// Add owner as team member
@@ -99,28 +101,32 @@ func CreateTestTeam(t *testing.T, db *sqlx.DB, name, description string, ownerID
 }
 
 // CreateTestProduct creates a test product in the database
-func CreateTestProduct(t *testing.T, db *sqlx.DB, name, description string, price float64, teamID int) *model.Product {
+func CreateTestProduct(t *testing.T, db *sqlx.DB, code, name, description string, price int, teamID int) *model.Product {
 	ctx := context.Background()
 
 	product := &model.Product{
+		Code:        code,
 		Name:        name,
 		Description: description,
 		Price:       int64(price * 100), // Convert to cents
 		TeamID:      uint(teamID),
+		UOM:         "ชิ้น",
 	}
 	product.CreatedAt = time.Now()
 	product.UpdatedAt = time.Now()
 
 	query := `
-		INSERT INTO products (name, description, price, team_id, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6)
+		INSERT INTO products (code, name, description, price, uom, team_id, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 		RETURNING id
 	`
 
 	err := db.GetContext(ctx, &product.ID, query,
+		product.Code,
 		product.Name,
 		product.Description,
 		product.Price,
+		product.UOM,
 		product.TeamID,
 		product.CreatedAt,
 		product.UpdatedAt,

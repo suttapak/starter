@@ -73,21 +73,13 @@ func (p *productsSqlx) FindById(ctx context.Context, tx *sqlx.Tx, id uint) (*mod
 
 	err := sqlx.GetContext(ctx, db, &product, query, id)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, fmt.Errorf("product not found")
-		}
-		return nil, fmt.Errorf("failed to find product: %w", err)
+		return nil, err
 	}
 
 	// Load ProductProductCategory relations
-	if err := p.loadProductCategories(ctx, db, &product); err != nil {
-		return nil, err
-	}
+	p.loadProductCategories(ctx, db, &product)
 
-	// Load ProductImage relations
-	if err := p.loadProductImages(ctx, db, &product); err != nil {
-		return nil, err
-	}
+	p.loadProductImages(ctx, db, &product)
 
 	return &product, nil
 }
@@ -301,19 +293,19 @@ func (p *productsSqlx) Save(ctx context.Context, tx *sqlx.Tx, id uint, m *Update
 		id,
 	)
 	if err != nil {
-		return fmt.Errorf("failed to update product: %w", err)
+		return err
 	}
 
 	rows, _ := result.RowsAffected()
 	if rows == 0 {
-		return fmt.Errorf("product not found")
+		return sql.ErrNoRows
 	}
 
 	// Delete old categories (soft delete not needed for junction table)
 	deleteQuery := `DELETE FROM product_product_categories WHERE product_id = $1`
 	_, err = db.ExecContext(ctx, deleteQuery, id)
 	if err != nil {
-		return fmt.Errorf("failed to delete old product categories: %w", err)
+		return err
 	}
 
 	// Insert new categories
@@ -325,7 +317,7 @@ func (p *productsSqlx) Save(ctx context.Context, tx *sqlx.Tx, id uint, m *Update
 			`
 			_, err := db.ExecContext(ctx, categoryQuery, id, categoryID)
 			if err != nil {
-				return fmt.Errorf("failed to create product category relation: %w", err)
+				return err
 			}
 		}
 	}
@@ -345,12 +337,12 @@ func (p *productsSqlx) DeleteById(ctx context.Context, tx *sqlx.Tx, id uint) err
 
 	result, err := db.ExecContext(ctx, query, id)
 	if err != nil {
-		return fmt.Errorf("failed to delete product: %w", err)
+		return err
 	}
 
 	rows, _ := result.RowsAffected()
 	if rows == 0 {
-		return fmt.Errorf("product not found")
+		return sql.ErrNoRows
 	}
 
 	return nil
@@ -444,7 +436,7 @@ func (p *productsSqlx) loadProductCategories(ctx context.Context, db sqlx.ExtCon
 	var categories []model.ProductProductCategory
 	err := sqlx.SelectContext(ctx, db, &categories, query, product.ID)
 	if err != nil {
-		return fmt.Errorf("failed to load product categories: %w", err)
+		return err
 	}
 
 	// Load ProductCategory for each relation
@@ -456,9 +448,7 @@ func (p *productsSqlx) loadProductCategories(ctx context.Context, db sqlx.ExtCon
 		`
 		category := &model.ProductCategory{}
 		if err := sqlx.GetContext(ctx, db, category, categoryQuery, categories[i].ProductCategoryID); err != nil {
-			if !errors.Is(err, sql.ErrNoRows) {
-				return fmt.Errorf("failed to load product category: %w", err)
-			}
+			return err
 		} else {
 			categories[i].ProductCategory = category
 		}
@@ -479,7 +469,7 @@ func (p *productsSqlx) loadProductImages(ctx context.Context, db sqlx.ExtContext
 	var images []model.ProductImage
 	err := sqlx.SelectContext(ctx, db, &images, query, product.ID)
 	if err != nil {
-		return fmt.Errorf("failed to load product images: %w", err)
+		return err
 	}
 
 	// Load Image for each ProductImage
@@ -491,9 +481,7 @@ func (p *productsSqlx) loadProductImages(ctx context.Context, db sqlx.ExtContext
 		`
 		image := &model.Image{}
 		if err := sqlx.GetContext(ctx, db, image, imageQuery, images[i].ImageID); err != nil {
-			if !errors.Is(err, sql.ErrNoRows) {
-				return fmt.Errorf("failed to load image: %w", err)
-			}
+			return err
 		} else {
 			images[i].Image = image
 		}

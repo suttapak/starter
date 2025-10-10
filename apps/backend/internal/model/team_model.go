@@ -4,11 +4,11 @@ type (
 	Team struct {
 		CommonModel
 		Name        string       `db:"name" json:"name"`
-		Address     string       `db:"address" json:"address"`
-		Phone       string       `db:"phone" json:"phone"`
-		Email       string       `db:"email" json:"email"`
+		Address     *string      `db:"address" json:"address"`
+		Phone       *string      `db:"phone" json:"phone"`
+		Email       *string      `db:"email" json:"email"`
 		Username    string       `db:"username" json:"username"`
-		Description string       `db:"description" json:"description"`
+		Description *string      `db:"description" json:"description"`
 		TeamMembers []TeamMember `db:"-" json:"team_members,omitempty"`
 		Products    []Product    `db:"-" json:"products,omitempty"`
 	}

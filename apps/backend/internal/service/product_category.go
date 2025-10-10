@@ -51,7 +51,7 @@ func (i *productCategory) GetProductCategory(ctx context.Context, id uint) (*Pro
 	model, err := i.productCategory.FindById(ctx, nil, id)
 	if err != nil {
 		i.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 	var res ProductCategoryResponse
 	if err := i.helper.ParseJson(model, &res); err != nil {
@@ -64,7 +64,7 @@ func (i *productCategory) GetProductCategories(ctx context.Context, teamId uint,
 	models, err := i.productCategory.FindAll(ctx, nil, teamId, pg, f)
 	if err != nil {
 		i.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 	var res []ProductCategoryResponse
 	if err := i.helper.ParseJson(models, &res); err != nil {
@@ -77,7 +77,7 @@ func (i *productCategory) CreateProductCategory(ctx context.Context, input *Crea
 	body := repository.CreateProductCategoryRequest(*input)
 	if err := i.productCategory.Create(ctx, nil, &body); err != nil {
 		i.logger.Error(err)
-		return errs.HandleGorm(err)
+		return errs.HandleSqlErr(err)
 	}
 	return nil
 }
@@ -85,14 +85,14 @@ func (i *productCategory) UpdateProductCategory(ctx context.Context, id uint, in
 	body := repository.UpdateProductCategoryRequest(*input)
 	if err := i.productCategory.Save(ctx, nil, id, &body); err != nil {
 		i.logger.Error(err)
-		return errs.HandleGorm(err)
+		return errs.HandleSqlErr(err)
 	}
 	return nil
 }
 func (i *productCategory) DeleteProductCategory(ctx context.Context, id uint) error {
 	if err := i.productCategory.DeleteById(ctx, nil, id); err != nil {
 		i.logger.Error(err)
-		return errs.HandleGorm(err)
+		return errs.HandleSqlErr(err)
 	}
 	return nil
 }

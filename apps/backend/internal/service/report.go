@@ -64,7 +64,7 @@ func (i *report) GetReport(ctx context.Context, id uint) (*ReportResponse, error
 	model, err := i.report.FindById(ctx, nil, id)
 	if err != nil {
 		i.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 	var res ReportResponse
 	if err := i.helper.ParseJson(model, &res); err != nil {
@@ -77,7 +77,7 @@ func (i *report) GetReports(ctx context.Context, pg *helpers.Pagination, f *filt
 	models, err := i.report.FindAll(ctx, nil, pg, f)
 	if err != nil {
 		i.logger.Error(err)
-		return nil, errs.HandleGorm(err)
+		return nil, errs.HandleSqlErr(err)
 	}
 	var res []ReportResponse
 	if err := i.helper.ParseJson(models, &res); err != nil {
@@ -122,7 +122,7 @@ func (i *report) UpdateReport(ctx context.Context, id uint, input *UpdateReportR
 		report, err := i.report.FindById(ctx, nil, id)
 		if err != nil {
 			i.logger.Error(err)
-			return errs.HandleGorm(err)
+			return errs.HandleSqlErr(err)
 		}
 		f, err := file.Open()
 		if err != nil {
@@ -139,7 +139,7 @@ func (i *report) UpdateReport(ctx context.Context, id uint, input *UpdateReportR
 		reader := bytes.NewReader(buf.Bytes())
 		if err := i.odt.UpdateTemplate(report.Code, reader); err != nil {
 			i.logger.Error(err)
-			return errs.HandleGorm(err)
+			return errs.HandleSqlErr(err)
 		}
 	}
 	body := model.ReportTemplate{
@@ -148,14 +148,14 @@ func (i *report) UpdateReport(ctx context.Context, id uint, input *UpdateReportR
 	}
 	if err := i.report.Save(ctx, nil, id, &body); err != nil {
 		i.logger.Error(err)
-		return errs.HandleGorm(err)
+		return errs.HandleSqlErr(err)
 	}
 	return nil
 }
 func (i *report) DeleteReport(ctx context.Context, id uint) error {
 	if err := i.report.DeleteById(ctx, nil, id); err != nil {
 		i.logger.Error(err)
-		return errs.HandleGorm(err)
+		return errs.HandleSqlErr(err)
 	}
 	return nil
 }
