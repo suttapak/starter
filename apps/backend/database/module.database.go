@@ -12,12 +12,3 @@ var Module = fx.Options(
 		return RunMigrations(db.DB, log)
 	}),
 )
-
-// Legacy GORM module - keep for reference during migration
-// var ModuleGORM = fx.Options(
-// 	fx.Provide(newGorm),
-// 	fx.Invoke(migrateDb),
-// 	fx.Invoke(seedRole),
-// 	fx.Invoke(seedTeamRole),
-// 	fx.Invoke(seedReportJsonSchemaType),
-// )

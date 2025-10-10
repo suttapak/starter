@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/jackc/pgx/v5/pgconn"
-	"gorm.io/gorm"
 )
 
 var (
@@ -64,10 +63,6 @@ func HandleSqlErr(err error, defaultError ...AppError) error {
 		return nil
 	}
 	switch {
-	case errors.Is(err, gorm.ErrRecordNotFound):
-		return ErrNotFound
-	case errors.Is(err, gorm.ErrDuplicatedKey):
-		return ErrDuplicatedKey
 	case errors.Is(err, sql.ErrNoRows):
 		return ErrNotFound
 	default:

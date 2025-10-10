@@ -14,7 +14,6 @@ func newSqlx(conf *config.Config) (*sqlx.DB, error) {
 	}
 
 	// Parse DSN and convert to PostgreSQL connection string
-	// GORM DSN format: "host=db user=suttapak password=p@ssw0rd dbname=starter port=5432 sslmode=disable TimeZone=Asia/Bangkok"
 	// sqlx needs standard PostgreSQL connection string
 
 	db, err := sqlx.Connect("postgres", conf.DB.DSN)

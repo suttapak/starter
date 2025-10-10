@@ -17,7 +17,6 @@ var (
 		fx.Provide(NewProducts),
 		fx.Provide(NewODT),
 
-		// Legacy repositories - still using GORM
 		fx.Provide(newMailRepository),
 	)
 )

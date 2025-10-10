@@ -56,7 +56,7 @@ type (
 
 	Role struct {
 		CommonModel
-		Name string `json:"name" gorm:"uniqueIndex:idx_role_name"`
+		Name string `json:"name"`
 	}
 	Image struct {
 		CommonModel

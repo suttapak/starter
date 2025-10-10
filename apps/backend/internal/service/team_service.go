@@ -70,8 +70,8 @@ type (
 	}
 	TeamMemberResponse struct {
 		CommonModel
-		TeamID     uint             `json:"team_id" gorm:"primaryKey"`
-		UserID     uint             `json:"user_id" gorm:"primaryKey"`
+		TeamID     uint             `json:"team_id"`
+		UserID     uint             `json:"user_id"`
 		TeamRoleID uint             `json:"team_role_id"`
 		User       UserResponse     `json:"user"`
 		TeamRole   TeamRoleResponse `json:"team_role"`

@@ -1,12 +1,9 @@
 package route
 
 import (
-	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/gin-gonic/gin"
 	"github.com/suttapak/starter/internal/controller"
 	"github.com/suttapak/starter/internal/middleware"
-	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type (
@@ -49,53 +46,4 @@ func useTeam(t *team) {
 		r.POST("/:team_id/accept", t.teamController.AcceptTeamMember)
 		r.PUT("/:team_id", t.teamController.UpdateTeamInfo)
 	}
-}
-
-func seedTeamPermission(db *gorm.DB) {
-	/*
-		TeamRoleOwnerID = iota + 1
-		TeamRoleAdminID
-		TeamRoleMemberID
-	*/
-	// v1 for role id, v2 for path, v3 for method
-	var permission = []gormadapter.CasbinRule{
-		{
-			Ptype: "p",
-			V0:    "1",
-			V1:    "*",
-			V2:    "*",
-		},
-		{
-			Ptype: "p",
-			V0:    "2",
-			V1:    "*",
-			V2:    "*",
-		},
-		{
-			Ptype: "p",
-			V0:    "3",
-			V1:    "/teams/*",
-			V2:    "GET",
-		},
-		{
-			Ptype: "p",
-			V0:    "3",
-			V1:    "/teams",
-			V2:    "POST",
-		},
-		{
-			Ptype: "p",
-			V0:    "3",
-			V1:    "/teams/join/link",
-			V2:    "POST",
-		},
-		{
-			Ptype: "p",
-			V0:    "3",
-			V1:    "/teams/{id}/request-join",
-			V2:    "POST",
-		},
-	}
-	db.Clauses(clause.OnConflict{DoNothing: true}).Create(&permission)
-
 }
