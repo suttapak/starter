@@ -48,7 +48,7 @@ const ProductActionModal = ({ item, isText }: ProductActionModalProps) => {
       description: item.description || "",
       uom: item.uom,
       price: item.price * 0.01 || 0,
-      category_id: item.product_product_category.map((c) => c.category.id),
+      category_id: item.product_product_category?.map((c) => c.category.id),
     },
   });
 

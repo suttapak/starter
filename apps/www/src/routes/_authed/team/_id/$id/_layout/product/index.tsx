@@ -213,7 +213,7 @@ function RouteComponent() {
               </TableCell>
               <TableCell>{item.uom}</TableCell>
               <TableCell className="flex flex-wrap gap-0.5">
-                {item.product_product_category.map((cate) => (
+                {item.product_product_category?.map((cate) => (
                   <Chip key={cate.id} color="secondary" variant="bordered">
                     {cate.category.name}
                   </Chip>

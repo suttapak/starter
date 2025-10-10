@@ -13,7 +13,7 @@ export interface ProductResponse extends CommonModel {
   description: string;
   uom: string;
   price: number;
-  product_product_category: ProductCategory[];
+  product_product_category?: ProductCategory[];
   product_image?: ProductImageResponse[];
 }
 
