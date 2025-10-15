@@ -95,17 +95,17 @@ func (i *products) DeleteProductImage(ctx context.Context, productId, productIma
 	// remove image
 	if err := i.imageRepo.Delete(ctx, tx, productImageModel.ImageID); err != nil {
 		i.logger.Error(err)
-		i.db.RollbackTx(tx)
+		i.db.RollbackTx(tx) //nolint:errcheck
 		return errs.ErrInternal
 	}
 	// remove product image
 	if err := i.products.DeleteImageById(ctx, tx, productImageId); err != nil {
 		i.logger.Error(err)
-		i.db.RollbackTx(tx)
+		i.db.RollbackTx(tx) //nolint:errcheck
 		return errs.ErrInternal
 	}
 	// remove file in disk
-	i.db.CommitTx(tx)
+	i.db.CommitTx(tx) //nolint:errcheck
 	if err := i.imageService.DeleteFile(productImageModel.Image.Path); err != nil {
 		i.logger.Error(err)
 		// i.products.RollbackTx(tx)
@@ -179,22 +179,6 @@ func (i *products) UploadProductImages(ctx context.Context, userId, productId ui
 		success = append(success, imageModel)
 	}
 	return i.GetProduct(ctx, productId)
-}
-
-func (i *products) getDownloadExcelHeader(local i18n.Local) []string {
-	header := []string{
-		i.i18n.GetMessage(local, "excel_header_download_stock.index"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.product_code"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.product_name"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.product_description"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.product_price"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.product_uom"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.product_category"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.available_qty"),
-		i.i18n.GetMessage(local, "excel_header_download_stock.remaining_qty"),
-	}
-
-	return header
 }
 
 func (i *products) GetProduct(ctx context.Context, id uint) (*ProductResponse, error) {

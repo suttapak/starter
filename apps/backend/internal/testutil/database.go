@@ -17,7 +17,7 @@ import (
 // SetupTestDB sets up a test database connection and runs migrations
 func SetupTestDB(t *testing.T) *sqlx.DB {
 	// Set config path for test environment
-	os.Setenv("CONFIG_PATH", "../../configs.test.toml")
+	os.Setenv("CONFIG_PATH", "../../configs.test.toml") //nolint:errcheck
 
 	// Database connection string for tests
 	dsn := "host=localhost user=test_user password=test_password dbname=test_db port=5433 sslmode=disable TimeZone=Asia/Bangkok"
@@ -75,7 +75,7 @@ func TeardownTestDB(t *testing.T, db *sqlx.DB) {
 			}
 		}
 
-		db.Close()
+		db.Close() //nolint:errcheck
 	}
 }
 

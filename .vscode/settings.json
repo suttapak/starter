@@ -12,6 +12,7 @@
     "gomail",
     "jmoiron",
     "mtemplate",
+    "nolint",
     "prefault",
     "sqlx",
     "stockub",

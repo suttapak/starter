@@ -88,10 +88,11 @@ func newAppConfig() *Config {
 	viper.SetDefault("CARBIN", CARBIN{})
 	viper.SetDefault("LabODT", LabODT{})
 
-	viper.WriteConfig()
+	if err := viper.WriteConfig(); err != nil {
+		panic(err)
+	}
 
-	err = viper.Unmarshal(conf)
-	if err != nil {
+	if err := viper.Unmarshal(conf); err != nil {
 		panic(err)
 	}
 	return conf

@@ -77,9 +77,9 @@ func (p *productsSqlx) FindById(ctx context.Context, tx *sqlx.Tx, id uint) (*mod
 	}
 
 	// Load ProductProductCategory relations
-	p.loadProductCategories(ctx, db, &product)
+	p.loadProductCategories(ctx, db, &product) //nolint:errcheck
 
-	p.loadProductImages(ctx, db, &product)
+	p.loadProductImages(ctx, db, &product) //nolint:errcheck
 
 	return &product, nil
 }
@@ -140,7 +140,6 @@ func (p *productsSqlx) FindAll(ctx context.Context, tx *sqlx.Tx, teamId uint, pg
 			if f.UOM != "" {
 				query += fmt.Sprintf(` AND uom ILIKE $%d`, argIdx)
 				filterArgs = append(filterArgs, "%"+f.UOM+"%")
-				argIdx++
 			}
 		}
 
@@ -193,7 +192,6 @@ func (p *productsSqlx) FindAll(ctx context.Context, tx *sqlx.Tx, teamId uint, pg
 		}
 		if f.UOM != "" {
 			query += fmt.Sprintf(` AND uom ILIKE $%d`, idx)
-			idx++
 		}
 	}
 

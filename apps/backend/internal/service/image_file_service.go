@@ -48,7 +48,7 @@ func (s *imageFileService) IsImageFromFileHeader(fh *multipart.FileHeader) (bool
 	if err != nil {
 		return false, err
 	}
-	defer file.Close()
+	defer file.Close() //nolint:errcheck
 	// Try to decode the file as an image
 	if _, _, err = image.Decode(file); err != nil {
 		return false, err
@@ -71,7 +71,7 @@ func (s *imageFileService) GetImageStatsFromFileHeader(fh *multipart.FileHeader)
 	if err != nil {
 		return nil, err
 	}
-	defer f.Close()
+	defer f.Close() //nolint:errcheck
 	img, _, err := image.Decode(f)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (s *imageFileService) GetMimeTypeFromFileHeader(fh *multipart.FileHeader) (
 	if err != nil {
 		return "", err
 	}
-	defer f.Close()
+	defer f.Close() //nolint:errcheck
 
 	buf := make([]byte, 512)
 	if _, err := f.Read(buf); err != nil {
@@ -121,7 +121,7 @@ func (s *imageFileService) SaveFileFromFileHeader(fh *multipart.FileHeader, file
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer f.Close() //nolint:errcheck
 
 	if err := s.ensureFileDir(filePath); err != nil {
 		return err
@@ -131,7 +131,7 @@ func (s *imageFileService) SaveFileFromFileHeader(fh *multipart.FileHeader, file
 	if err != nil {
 		return err
 	}
-	defer out.Close()
+	defer out.Close() //nolint:errcheck
 
 	_, err = io.Copy(out, f)
 	return err

@@ -33,7 +33,7 @@ type TestServer struct {
 func SetupTestServer(t *testing.T) *TestServer {
 	// Set test mode
 	testutil.SetupTestMode()
-	os.Setenv("CONFIG_PATH", "../../configs.test.toml")
+	os.Setenv("CONFIG_PATH", "../../configs.test.toml") //nolint:errcheck
 
 	// Setup database
 	db := testutil.SetupTestDB(t)

@@ -133,7 +133,7 @@ func (a *authGuardMiddleware) Protect(c *gin.Context) {
 	var (
 		token string
 	)
-	token, err := c.Cookie("session")
+	token, _ = c.Cookie("session")
 	if token == "" {
 		token = c.GetHeader("Authorization")
 		splitToken := strings.Split(token, " ")

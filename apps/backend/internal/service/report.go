@@ -92,7 +92,7 @@ func (i *report) CreateReport(ctx context.Context, req *CreateReportRequest, fil
 		i.logger.Error(err)
 		return errs.ErrBadRequest
 	}
-	defer f.Close()
+	defer f.Close() //nolint:errcheck
 	buf := bytes.NewBuffer(nil)
 	if _, err := buf.ReadFrom(f); err != nil {
 		i.logger.Error(err)
@@ -129,7 +129,7 @@ func (i *report) UpdateReport(ctx context.Context, id uint, input *UpdateReportR
 			i.logger.Error(err)
 			return errs.ErrBadRequest
 		}
-		defer f.Close()
+		defer f.Close() //nolint:errcheck
 		buf := bytes.NewBuffer(nil)
 		if _, err := buf.ReadFrom(f); err != nil {
 			i.logger.Error(err)

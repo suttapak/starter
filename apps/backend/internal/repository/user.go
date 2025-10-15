@@ -160,7 +160,7 @@ func (u *userSqlx) FindById(ctx context.Context, tx *sqlx.Tx, uId uint) (*model.
 
 	rows, err := db.QueryxContext(ctx, imagesQuery, uId)
 	if err == nil {
-		defer rows.Close()
+		defer rows.Close() //nolint:errcheck
 		for rows.Next() {
 			var pi model.ProfileImage
 			var img model.Image

@@ -60,7 +60,7 @@ func (e excel) Build(df *ExcelDataFrame, st ...RowStyle) (*bytes.Buffer, error) 
 
 	for i, row := range df.Rows {
 		for j, c := range row {
-			cell := fmt.Sprintf("%s", string(rune(65+j))) // Column A, B, C, etc.
+			cell := string(rune(65 + j)) // Column A, B, C, etc.
 			if err := f.SetCellValue(sheet, fmt.Sprintf("%s%d", cell, i+2), c); err != nil {
 				return nil, err
 			}

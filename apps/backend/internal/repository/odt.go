@@ -68,6 +68,9 @@ func (l odt) RenderPDF(id string, data map[string]interface{}, filename ...strin
 		SetAuthScheme("Bearer").
 		SetAuthToken(l.conf.LabODT.Token).
 		Get(l.conf.LabODT.Url + result.Data)
+	if err != nil {
+		return nil, err
+	}
 
 	if !res.IsSuccess() {
 		return nil, errs.New(res.StatusCode(), string(res.Body()))
