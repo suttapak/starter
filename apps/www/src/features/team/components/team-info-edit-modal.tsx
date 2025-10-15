@@ -1,3 +1,5 @@
+import type { TeamResponse } from "../types/team";
+
 import {
   Input,
   Textarea,
@@ -15,10 +17,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
-import { toastMessage } from "@/core/utils/toastMessage";
-import type { TeamResponse } from "../types/team";
 import { useUpdateTeamInfo } from "../api/use-team";
 import { updateTeamSchema, type UpdateTeamDto } from "../schemas";
+
+import { toastMessage } from "@/core/utils/toastMessage";
 
 type Props = {
   item: TeamResponse;

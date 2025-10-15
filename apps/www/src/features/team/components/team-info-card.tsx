@@ -1,7 +1,7 @@
+import type { TeamResponse } from "../types/team";
+
 import { Card, CardHeader, CardBody, Input, Textarea } from "@heroui/react";
 import { useTranslation } from "react-i18next";
-
-import type { TeamResponse } from "../types/team";
 
 type Props = {
   item: TeamResponse;

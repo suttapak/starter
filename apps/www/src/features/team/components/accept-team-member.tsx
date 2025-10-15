@@ -1,3 +1,5 @@
+import type { TeamMemberResponse } from "../types/team-member";
+
 import React from "react";
 import {
   Button,
@@ -14,9 +16,9 @@ import { MoreVertical } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
-import { toastMessage } from "@/core/utils/toastMessage";
-import type { TeamMemberResponse } from "../types/team-member";
 import { useAcceptTeamMember } from "../api/use-team";
+
+import { toastMessage } from "@/core/utils/toastMessage";
 
 type Props = {
   team: TeamMemberResponse;

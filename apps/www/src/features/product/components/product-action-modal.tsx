@@ -1,3 +1,5 @@
+import type { ProductResponse } from "../types/product";
+
 import {
   Button,
   Form,
@@ -20,11 +22,11 @@ import { MoreVertical } from "lucide-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { toastMessage } from "@/core/utils/toastMessage";
-import { useGetProductCategoryInProductPage } from "@/features/product-category";
 import { useUpdateProduct } from "../api/use-product";
 import { createUpdateSchema, type UpdateProductDto } from "../schemas";
-import type { ProductResponse } from "../types/product";
+
+import { toastMessage } from "@/core/utils/toastMessage";
+import { useGetProductCategoryInProductPage } from "@/features/product-category";
 
 type ProductActionModalProps = {
   item: ProductResponse;

@@ -1,8 +1,9 @@
+import type { Response } from "@/shared/types";
+import type { UserResponse } from "../types/user";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getJson, postJson } from "@/core/utils/fetch";
-import type { Response } from "@/shared/types";
-import type { UserResponse } from "../types/user";
 
 const keys = {
   userMe: ["users", "me"] as const,

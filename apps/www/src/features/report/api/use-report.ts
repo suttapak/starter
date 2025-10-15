@@ -1,11 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
-
-import { deleteJson, getJson, postJson, putJson } from "@/core/utils/fetch";
 import type { PaginatedResponse } from "@/shared/types";
 import type { ReportResponse } from "../types/report";
 import type { UploadReportTemplateDto } from "../schemas/upload-report-template.schema";
 import type { UpdateReportTemplateDto } from "../schemas/update-report-template.schema";
+
+import { useSearch } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { deleteJson, getJson, postJson, putJson } from "@/core/utils/fetch";
 
 const keys = {
   report: (page: number, limit: number) => ["report", page, limit],

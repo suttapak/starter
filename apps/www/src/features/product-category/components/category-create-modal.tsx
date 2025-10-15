@@ -15,12 +15,13 @@ import toast from "react-hot-toast";
 import { PlusCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { toastMessage } from "@/core/utils/toastMessage";
 import { useCreateProductCategory } from "../api/use-product-category";
 import {
   createProductCategorySchema,
   type CreateProductCategoryDto,
 } from "../schemas";
+
+import { toastMessage } from "@/core/utils/toastMessage";
 
 const CategoryCreateModal = () => {
   const { t } = useTranslation();

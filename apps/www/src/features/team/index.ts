@@ -1,9 +1,6 @@
 // Types
 export type { TeamResponse } from "./types/team";
-export type {
-  TeamMemberResponse,
-  TeamRoleResponse,
-} from "./types/team-member";
+export type { TeamMemberResponse, TeamRoleResponse } from "./types/team-member";
 
 // Schemas
 export * from "./schemas";

@@ -1,3 +1,5 @@
+import type { ProductImageResponse } from "../types/product";
+
 import {
   Button,
   Image,
@@ -12,10 +14,10 @@ import { Fragment } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
+import { useDeleteProductImage } from "../api/use-product";
+
 import { useFormatImageSrc } from "@/core/hooks/use-format-image-src";
 import { toastMessage } from "@/core/utils/toastMessage";
-import { useDeleteProductImage } from "../api/use-product";
-import type { ProductImageResponse } from "../types/product";
 
 type Props = { file: ProductImageResponse };
 

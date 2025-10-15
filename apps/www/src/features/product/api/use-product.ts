@@ -1,16 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams, useSearch } from "@tanstack/react-router";
-import { t } from "i18next";
-
 import type { PaginatedResponse, Response } from "@/shared/types";
-import { deleteJson, getJson, postJson, putJson } from "@/core/utils/fetch";
 import type { ProductResponse } from "../types/product";
 import type { CreateProductDto } from "../schemas/create-product.schema";
 import type { UpdateProductDto } from "../schemas/update-product.schema";
+
+import { t } from "i18next";
+import { useParams, useSearch } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import {
   uploadProductImageSchema,
   type UploadProductImageDto,
 } from "../schemas/upload-product-image.schema";
+
+import { deleteJson, getJson, postJson, putJson } from "@/core/utils/fetch";
 
 export const keys = {
   products: (
