@@ -5,8 +5,8 @@ import { Box, FilePlus, Search } from "lucide-react";
 import { useDateFormatter } from "@react-aria/i18n";
 import { useTranslation } from "react-i18next";
 
-import { useGetTeamMe } from "@/hooks/use-team";
-import MSplashPage from "@/components/splash";
+import MSplashPage from "@/core/components/splash";
+import { useGetTeamMe } from "@/features/team";
 
 export const Route = createFileRoute("/_authed/team/_team/")({
   component: RouteComponent,

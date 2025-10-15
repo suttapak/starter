@@ -3,10 +3,10 @@ import { cn } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 import { UserLock } from "lucide-react";
 
-import { NavbarAuthedAdmin } from "@/components/navbar-authed-admin";
+import { NavbarAuthedAdmin } from "@/core/components/navbar-authed-admin";
 import MNavbarMenuItems, {
   MNavbarMenuItemsProps,
-} from "@/components/navbar-menu-item";
+} from "@/core/components/navbar-menu-item";
 
 export const Route = createFileRoute("/_authed/admin/_layout")({
   component: RouteComponent,

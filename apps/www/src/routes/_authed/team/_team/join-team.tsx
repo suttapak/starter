@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 import { Box } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { useJoinTeam } from "@/hooks/use-team";
-import { toastMessage } from "@/utils/toastMessage";
+import { toastMessage } from "@/core/utils";
+import { useJoinTeam } from "@/features/team";
 
 const validateSearch = z.object({
   token: z.string(),

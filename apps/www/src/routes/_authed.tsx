@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-router";
 
 import { useAuth } from "@/auth";
-import MSplashPage from "@/components/splash";
+import MSplashPage from "@/core/components/splash";
 
 export const Route = createFileRoute("/_authed")({
   component: RouteComponent,

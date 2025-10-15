@@ -19,11 +19,11 @@ import { useRef, useState } from "react";
 import { Plus, Upload } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { useGetProduct, useUploadProductImages } from "@/hooks/use-product";
-import MSplashPage from "@/components/splash";
-import ProductActionModal from "@/components/product-action-modal";
-import { toastMessage } from "@/utils/toastMessage";
-import ProductImage from "@/components/product-image";
+import MSplashPage from "@/core/components/splash";
+import { toastMessage } from "@/core/utils";
+import { useGetProduct, useUploadProductImages } from "@/features/product";
+import ProductActionModal from "@/features/product/components/product-action-modal";
+import ProductImage from "@/features/product/components/product-image";
 const validateSearch = z.object({
   page: z.number().prefault(1),
   limit: z.number().prefault(10),

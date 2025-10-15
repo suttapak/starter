@@ -15,9 +15,9 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
 
-import { LoginDto, loginSchema, useLogin } from "@/hooks/use-auth";
-import { toastMessage } from "@/utils/toastMessage";
 import { useAuth } from "@/auth";
+import { LoginDto, loginSchema, useLogin } from "@/features/auth";
+import { toastMessage } from "@/core/utils";
 
 const loginRedirect = z.object({
   redirect: z.string().optional(),

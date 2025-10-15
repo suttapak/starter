@@ -13,8 +13,8 @@ import {
 import { z } from "zod";
 import { t } from "i18next";
 
-import { useGetTeamMemberPending } from "@/hooks/use-team";
-import AcceptTeamMember from "@/components/accept-team-member";
+import { useGetTeamMemberPending } from "@/features/team";
+import AcceptTeamMember from "@/features/team/components/accept-team-member";
 
 const validateSearch = z.object({
   page: z.number().prefault(1),

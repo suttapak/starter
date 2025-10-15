@@ -21,15 +21,15 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useCallback, useRef, useState } from "react";
 
-import MSplashPage from "@/components/splash";
+import MSplashPage from "@/core/components/splash";
+import { useLocale } from "@/core/hooks";
+import { toastMessage } from "@/core/utils";
+import { useSendVerifyEmail } from "@/features/auth";
 import {
   useGetImageProfile,
   useGetUserMe,
   useUploadProfileImage,
-} from "@/hooks/use-user";
-import { useSendVerifyEmail } from "@/hooks/use-auth";
-import { toastMessage } from "@/utils/toastMessage";
-import { useLocale } from "@/hooks/use-locale";
+} from "@/features/user";
 
 export const Route = createFileRoute("/_authed/_user/profile")({
   component: RouteComponent,

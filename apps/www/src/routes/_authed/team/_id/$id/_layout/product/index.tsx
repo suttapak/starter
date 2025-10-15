@@ -23,9 +23,9 @@ import {
 import { PlusCircle, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { useGetProducts } from "@/hooks/use-product";
-import ProductActionModal from "@/components/product-action-modal";
-import { useFormatImageSrc } from "@/hooks/use-format-image-src";
+import { useFormatImageSrc } from "@/core/hooks";
+import { useGetProducts } from "@/features/product";
+import ProductActionModal from "@/features/product/components/product-action-modal";
 
 const productSearchParamsSchema = z.object({
   page: z.number().prefault(1),

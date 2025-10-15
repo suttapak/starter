@@ -7,8 +7,8 @@ import React, {
   useState,
 } from "react";
 
-import { useGetMutateUserMe } from "./hooks/use-user";
-import { useRefreshToken } from "./hooks/use-auth";
+import { useGetMutateUserMe } from "@/features/user";
+import { useRefreshToken } from "@/features/auth";
 
 const isValidToken = (accessToken: string) => {
   if (!accessToken) {

@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-import { NavbarPublic } from "@/components/navbar-public";
+import { NavbarPublic } from "@/core/components/navbar-public";
 
 export const Route = createFileRoute("/_public")({
   component: RouteComponent,

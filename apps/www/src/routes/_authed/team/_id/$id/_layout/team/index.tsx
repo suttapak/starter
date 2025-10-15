@@ -15,10 +15,10 @@ import React from "react";
 import { Share } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { useGetTeamById, useShareTeam } from "@/hooks/use-team";
-import { toastMessage } from "@/utils/toastMessage";
-import TeamInfoCard from "@/components/team-info-card";
-import TeamInfoEditModal from "@/components/team-info-edit-modal";
+import { toastMessage } from "@/core/utils";
+import { useGetTeamById, useShareTeam } from "@/features/team";
+import TeamInfoCard from "@/features/team/components/team-info-card";
+import TeamInfoEditModal from "@/features/team/components/team-info-edit-modal";
 
 export const Route = createFileRoute("/_authed/team/_id/$id/_layout/team/")({
   component: RouteComponent,

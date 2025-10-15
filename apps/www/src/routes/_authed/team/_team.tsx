@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-import { NavbarAuthed } from "@/components/navbar-authed";
+import { NavbarAuthed } from "@/core/components/navbar-authed";
 
 export const Route = createFileRoute("/_authed/team/_team")({
   component: RouteComponent,

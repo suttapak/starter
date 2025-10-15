@@ -14,7 +14,7 @@ import { z } from "zod";
 import { MoreHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { useGetTeamMembers } from "@/hooks/use-team";
+import { useGetTeamMembers } from "@/features/team";
 
 const validateSearch = z.object({
   page: z.number().prefault(1),

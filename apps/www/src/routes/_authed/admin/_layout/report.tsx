@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { Pagination } from "@heroui/react";
 
-import { useFindAllReportTemplate } from "@/hooks/use-report";
-import MSplashPage from "@/components/splash";
-import UploadReportTemplateModal from "@/components/upload-report-template-modal";
-import ReportTemplateCard from "@/components/report-template-card";
+import MSplashPage from "@/core/components/splash";
+import { useFindAllReportTemplate } from "@/features/report";
+import ReportTemplateCard from "@/features/report/components/report-template-card";
+import UploadReportTemplateModal from "@/features/report/components/upload-report-template-modal";
 const validateSearch = z.object({
   page: z.number().prefault(1),
   limit: z.number().prefault(10),

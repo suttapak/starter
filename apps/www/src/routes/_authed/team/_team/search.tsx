@@ -13,8 +13,8 @@ import {
 } from "@heroui/react";
 import { useTranslation } from "react-i18next";
 
-import { useSearchTeam } from "@/hooks/use-team";
-import TeamRequestJoinModal from "@/components/team-request-join-modal";
+import { useSearchTeam } from "@/features/team";
+import TeamRequestJoinModal from "@/features/team/components/team-request-join-modal";
 const validateSearch = z.object({
   name: z.string().optional(),
   page: z.number().prefault(1),

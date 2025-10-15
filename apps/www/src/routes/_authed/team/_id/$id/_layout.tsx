@@ -11,11 +11,11 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { NavbarAuthedTeam } from "@/components/navbar-authed-team";
+import { NavbarAuthedTeam } from "@/core/components/navbar-authed-team";
 import MNavbarMenuItems, {
   MNavbarMenuItemsProps,
-} from "@/components/navbar-menu-item";
-import { useGetTeamById } from "@/hooks/use-team";
+} from "@/core/components/navbar-menu-item";
+import { useGetTeamById } from "@/features/team";
 
 export const Route = createFileRoute("/_authed/team/_id/$id/_layout")({
   component: RouteComponent,

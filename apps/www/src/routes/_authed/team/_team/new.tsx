@@ -14,12 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
-import { toastMessage } from "@/utils/toastMessage";
+import { toastMessage } from "@/core/utils";
 import {
   CreateTeamDto,
   createTeamSchema,
   useCreateTeam,
-} from "@/hooks/use-team";
+} from "@/features/team";
 export const Route = createFileRoute("/_authed/team/_team/new")({
   component: RouteComponent,
 });

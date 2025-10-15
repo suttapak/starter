@@ -27,15 +27,15 @@ import { useTranslation } from "react-i18next";
 import { useRef, useState } from "react";
 import { Plus } from "lucide-react";
 
+import { toastMessage } from "@/core/utils";
 import {
   CreateProductDto,
   createProductSchema,
   useCreateProduct,
   useUploadProductImages,
-} from "@/hooks/use-product";
-import { useGetProductCategoryInProductPage } from "@/hooks/use-product-category";
-import { toastMessage } from "@/utils/toastMessage";
-import { uom } from "@/global/constant/uom";
+} from "@/features/product";
+import { useGetProductCategoryInProductPage } from "@/features/product-category";
+import { uom } from "@/shared/constants/uom";
 
 export const Route = createFileRoute(
   "/_authed/team/_id/$id/_layout/product/new",

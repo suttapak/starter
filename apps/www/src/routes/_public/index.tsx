@@ -2,7 +2,7 @@ import { button, link, Snippet } from "@heroui/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-import { subtitle, title } from "@/components/primitives";
+import { subtitle, title } from "@/core/components/primitives";
 export const Route = createFileRoute("/_public/")({
   component: Index,
 });

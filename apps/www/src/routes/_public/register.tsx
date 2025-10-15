@@ -16,8 +16,8 @@ import toast from "react-hot-toast";
 import { User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { RegisterDto, registerSchema, useRegister } from "@/hooks/use-auth";
-import { toastMessage } from "@/utils/toastMessage";
+import { RegisterDto, registerSchema, useRegister } from "@/features/auth";
+import { toastMessage } from "@/core/utils";
 export const Route = createFileRoute("/_public/register")({
   component: RouteComponent,
 });

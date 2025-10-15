@@ -12,9 +12,9 @@ import {
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
 
-import { useGetProductCategory } from "@/hooks/use-product-category";
-import CategoryEditModal from "@/components/category-edit-modal";
-import CategoryCreateModal from "@/components/category-create-modal";
+import { useGetProductCategory } from "@/features/product-category";
+import CategoryCreateModal from "@/features/product-category/components/category-create-modal";
+import CategoryEditModal from "@/features/product-category/components/category-edit-modal";
 
 const categorySearchParamsSchema = z.object({
   page: z.number().prefault(1),
