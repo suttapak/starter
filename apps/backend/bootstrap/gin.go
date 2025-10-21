@@ -5,7 +5,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/domain/config"
 	"github.com/suttapak/starter/i18n"
 	"github.com/suttapak/starter/logger"
 

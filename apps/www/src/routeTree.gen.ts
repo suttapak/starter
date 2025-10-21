@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as AuthedRouteImport } from './routes/_authed'
@@ -18,31 +16,8 @@ import { Route as PublicRegisterRouteImport } from './routes/_public/register'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicAboutRouteImport } from './routes/_public/about'
 import { Route as AuthedUserRouteImport } from './routes/_authed/_user'
-import { Route as AuthedTeamTeamRouteImport } from './routes/_authed/team/_team'
-import { Route as AuthedTeamIdRouteImport } from './routes/_authed/team/_id'
-import { Route as AuthedAdminLayoutRouteImport } from './routes/_authed/admin/_layout'
 import { Route as AuthedUserVerifyEmailSuccessRouteImport } from './routes/_authed/_user/verify-email-success'
 import { Route as AuthedUserProfileRouteImport } from './routes/_authed/_user/profile'
-import { Route as AuthedTeamTeamIndexRouteImport } from './routes/_authed/team/_team/index'
-import { Route as AuthedAdminLayoutIndexRouteImport } from './routes/_authed/admin/_layout/index'
-import { Route as AuthedTeamTeamSettingRouteImport } from './routes/_authed/team/_team/setting'
-import { Route as AuthedTeamTeamSearchRouteImport } from './routes/_authed/team/_team/search'
-import { Route as AuthedTeamTeamNewRouteImport } from './routes/_authed/team/_team/new'
-import { Route as AuthedTeamTeamJoinTeamRouteImport } from './routes/_authed/team/_team/join-team'
-import { Route as AuthedAdminLayoutReportRouteImport } from './routes/_authed/admin/_layout/report'
-import { Route as AuthedTeamIdIdLayoutRouteImport } from './routes/_authed/team/_id/$id/_layout'
-import { Route as AuthedTeamIdIdLayoutIndexRouteImport } from './routes/_authed/team/_id/$id/_layout/index'
-import { Route as AuthedTeamIdIdLayoutTeamIndexRouteImport } from './routes/_authed/team/_id/$id/_layout/team/index'
-import { Route as AuthedTeamIdIdLayoutProductIndexRouteImport } from './routes/_authed/team/_id/$id/_layout/product/index'
-import { Route as AuthedTeamIdIdLayoutTeamMemberPendingRouteImport } from './routes/_authed/team/_id/$id/_layout/team/member-pending'
-import { Route as AuthedTeamIdIdLayoutTeamMemberRouteImport } from './routes/_authed/team/_id/$id/_layout/team/member'
-import { Route as AuthedTeamIdIdLayoutProductNewRouteImport } from './routes/_authed/team/_id/$id/_layout/product/new'
-import { Route as AuthedTeamIdIdLayoutProductCategoryRouteImport } from './routes/_authed/team/_id/$id/_layout/product/category'
-import { Route as AuthedTeamIdIdLayoutProductPidIndexRouteImport } from './routes/_authed/team/_id/$id/_layout/product/$pid/index'
-
-const AuthedTeamRouteImport = createFileRoute('/_authed/team')()
-const AuthedAdminRouteImport = createFileRoute('/_authed/admin')()
-const AuthedTeamIdIdRouteImport = createFileRoute('/_authed/team/_id/$id')()
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -51,16 +26,6 @@ const PublicRoute = PublicRouteImport.update({
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AuthedTeamRoute = AuthedTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
-  getParentRoute: () => AuthedRoute,
-} as any)
-const AuthedAdminRoute = AuthedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthedRoute,
 } as any)
 const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
@@ -86,18 +51,6 @@ const AuthedUserRoute = AuthedUserRouteImport.update({
   id: '/_user',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthedTeamTeamRoute = AuthedTeamTeamRouteImport.update({
-  id: '/_team',
-  getParentRoute: () => AuthedTeamRoute,
-} as any)
-const AuthedTeamIdRoute = AuthedTeamIdRouteImport.update({
-  id: '/_id',
-  getParentRoute: () => AuthedTeamRoute,
-} as any)
-const AuthedAdminLayoutRoute = AuthedAdminLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => AuthedAdminRoute,
-} as any)
 const AuthedUserVerifyEmailSuccessRoute =
   AuthedUserVerifyEmailSuccessRouteImport.update({
     id: '/verify-email-success',
@@ -109,98 +62,6 @@ const AuthedUserProfileRoute = AuthedUserProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthedUserRoute,
 } as any)
-const AuthedTeamIdIdRoute = AuthedTeamIdIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthedTeamIdRoute,
-} as any)
-const AuthedTeamTeamIndexRoute = AuthedTeamTeamIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthedTeamTeamRoute,
-} as any)
-const AuthedAdminLayoutIndexRoute = AuthedAdminLayoutIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthedAdminLayoutRoute,
-} as any)
-const AuthedTeamTeamSettingRoute = AuthedTeamTeamSettingRouteImport.update({
-  id: '/setting',
-  path: '/setting',
-  getParentRoute: () => AuthedTeamTeamRoute,
-} as any)
-const AuthedTeamTeamSearchRoute = AuthedTeamTeamSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => AuthedTeamTeamRoute,
-} as any)
-const AuthedTeamTeamNewRoute = AuthedTeamTeamNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => AuthedTeamTeamRoute,
-} as any)
-const AuthedTeamTeamJoinTeamRoute = AuthedTeamTeamJoinTeamRouteImport.update({
-  id: '/join-team',
-  path: '/join-team',
-  getParentRoute: () => AuthedTeamTeamRoute,
-} as any)
-const AuthedAdminLayoutReportRoute = AuthedAdminLayoutReportRouteImport.update({
-  id: '/report',
-  path: '/report',
-  getParentRoute: () => AuthedAdminLayoutRoute,
-} as any)
-const AuthedTeamIdIdLayoutRoute = AuthedTeamIdIdLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => AuthedTeamIdIdRoute,
-} as any)
-const AuthedTeamIdIdLayoutIndexRoute =
-  AuthedTeamIdIdLayoutIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutTeamIndexRoute =
-  AuthedTeamIdIdLayoutTeamIndexRouteImport.update({
-    id: '/team/',
-    path: '/team/',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutProductIndexRoute =
-  AuthedTeamIdIdLayoutProductIndexRouteImport.update({
-    id: '/product/',
-    path: '/product/',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutTeamMemberPendingRoute =
-  AuthedTeamIdIdLayoutTeamMemberPendingRouteImport.update({
-    id: '/team/member-pending',
-    path: '/team/member-pending',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutTeamMemberRoute =
-  AuthedTeamIdIdLayoutTeamMemberRouteImport.update({
-    id: '/team/member',
-    path: '/team/member',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutProductNewRoute =
-  AuthedTeamIdIdLayoutProductNewRouteImport.update({
-    id: '/product/new',
-    path: '/product/new',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutProductCategoryRoute =
-  AuthedTeamIdIdLayoutProductCategoryRouteImport.update({
-    id: '/product/category',
-    path: '/product/category',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
-const AuthedTeamIdIdLayoutProductPidIndexRoute =
-  AuthedTeamIdIdLayoutProductPidIndexRouteImport.update({
-    id: '/product/$pid/',
-    path: '/product/$pid/',
-    getParentRoute: () => AuthedTeamIdIdLayoutRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/about': typeof PublicAboutRoute
@@ -209,24 +70,6 @@ export interface FileRoutesByFullPath {
   '/': typeof PublicIndexRoute
   '/profile': typeof AuthedUserProfileRoute
   '/verify-email-success': typeof AuthedUserVerifyEmailSuccessRoute
-  '/admin': typeof AuthedAdminLayoutRouteWithChildren
-  '/team': typeof AuthedTeamTeamRouteWithChildren
-  '/admin/report': typeof AuthedAdminLayoutReportRoute
-  '/team/join-team': typeof AuthedTeamTeamJoinTeamRoute
-  '/team/new': typeof AuthedTeamTeamNewRoute
-  '/team/search': typeof AuthedTeamTeamSearchRoute
-  '/team/setting': typeof AuthedTeamTeamSettingRoute
-  '/admin/': typeof AuthedAdminLayoutIndexRoute
-  '/team/': typeof AuthedTeamTeamIndexRoute
-  '/team/$id': typeof AuthedTeamIdIdLayoutRouteWithChildren
-  '/team/$id/': typeof AuthedTeamIdIdLayoutIndexRoute
-  '/team/$id/product/category': typeof AuthedTeamIdIdLayoutProductCategoryRoute
-  '/team/$id/product/new': typeof AuthedTeamIdIdLayoutProductNewRoute
-  '/team/$id/team/member': typeof AuthedTeamIdIdLayoutTeamMemberRoute
-  '/team/$id/team/member-pending': typeof AuthedTeamIdIdLayoutTeamMemberPendingRoute
-  '/team/$id/product': typeof AuthedTeamIdIdLayoutProductIndexRoute
-  '/team/$id/team': typeof AuthedTeamIdIdLayoutTeamIndexRoute
-  '/team/$id/product/$pid': typeof AuthedTeamIdIdLayoutProductPidIndexRoute
 }
 export interface FileRoutesByTo {
   '/about': typeof PublicAboutRoute
@@ -235,21 +78,6 @@ export interface FileRoutesByTo {
   '/': typeof PublicIndexRoute
   '/profile': typeof AuthedUserProfileRoute
   '/verify-email-success': typeof AuthedUserVerifyEmailSuccessRoute
-  '/admin': typeof AuthedAdminLayoutIndexRoute
-  '/team': typeof AuthedTeamTeamIndexRoute
-  '/admin/report': typeof AuthedAdminLayoutReportRoute
-  '/team/join-team': typeof AuthedTeamTeamJoinTeamRoute
-  '/team/new': typeof AuthedTeamTeamNewRoute
-  '/team/search': typeof AuthedTeamTeamSearchRoute
-  '/team/setting': typeof AuthedTeamTeamSettingRoute
-  '/team/$id': typeof AuthedTeamIdIdLayoutIndexRoute
-  '/team/$id/product/category': typeof AuthedTeamIdIdLayoutProductCategoryRoute
-  '/team/$id/product/new': typeof AuthedTeamIdIdLayoutProductNewRoute
-  '/team/$id/team/member': typeof AuthedTeamIdIdLayoutTeamMemberRoute
-  '/team/$id/team/member-pending': typeof AuthedTeamIdIdLayoutTeamMemberPendingRoute
-  '/team/$id/product': typeof AuthedTeamIdIdLayoutProductIndexRoute
-  '/team/$id/team': typeof AuthedTeamIdIdLayoutTeamIndexRoute
-  '/team/$id/product/$pid': typeof AuthedTeamIdIdLayoutProductPidIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -262,28 +90,6 @@ export interface FileRoutesById {
   '/_public/': typeof PublicIndexRoute
   '/_authed/_user/profile': typeof AuthedUserProfileRoute
   '/_authed/_user/verify-email-success': typeof AuthedUserVerifyEmailSuccessRoute
-  '/_authed/admin': typeof AuthedAdminRouteWithChildren
-  '/_authed/admin/_layout': typeof AuthedAdminLayoutRouteWithChildren
-  '/_authed/team': typeof AuthedTeamRouteWithChildren
-  '/_authed/team/_id': typeof AuthedTeamIdRouteWithChildren
-  '/_authed/team/_team': typeof AuthedTeamTeamRouteWithChildren
-  '/_authed/admin/_layout/report': typeof AuthedAdminLayoutReportRoute
-  '/_authed/team/_team/join-team': typeof AuthedTeamTeamJoinTeamRoute
-  '/_authed/team/_team/new': typeof AuthedTeamTeamNewRoute
-  '/_authed/team/_team/search': typeof AuthedTeamTeamSearchRoute
-  '/_authed/team/_team/setting': typeof AuthedTeamTeamSettingRoute
-  '/_authed/admin/_layout/': typeof AuthedAdminLayoutIndexRoute
-  '/_authed/team/_team/': typeof AuthedTeamTeamIndexRoute
-  '/_authed/team/_id/$id': typeof AuthedTeamIdIdRouteWithChildren
-  '/_authed/team/_id/$id/_layout': typeof AuthedTeamIdIdLayoutRouteWithChildren
-  '/_authed/team/_id/$id/_layout/': typeof AuthedTeamIdIdLayoutIndexRoute
-  '/_authed/team/_id/$id/_layout/product/category': typeof AuthedTeamIdIdLayoutProductCategoryRoute
-  '/_authed/team/_id/$id/_layout/product/new': typeof AuthedTeamIdIdLayoutProductNewRoute
-  '/_authed/team/_id/$id/_layout/team/member': typeof AuthedTeamIdIdLayoutTeamMemberRoute
-  '/_authed/team/_id/$id/_layout/team/member-pending': typeof AuthedTeamIdIdLayoutTeamMemberPendingRoute
-  '/_authed/team/_id/$id/_layout/product/': typeof AuthedTeamIdIdLayoutProductIndexRoute
-  '/_authed/team/_id/$id/_layout/team/': typeof AuthedTeamIdIdLayoutTeamIndexRoute
-  '/_authed/team/_id/$id/_layout/product/$pid/': typeof AuthedTeamIdIdLayoutProductPidIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -294,24 +100,6 @@ export interface FileRouteTypes {
     | '/'
     | '/profile'
     | '/verify-email-success'
-    | '/admin'
-    | '/team'
-    | '/admin/report'
-    | '/team/join-team'
-    | '/team/new'
-    | '/team/search'
-    | '/team/setting'
-    | '/admin/'
-    | '/team/'
-    | '/team/$id'
-    | '/team/$id/'
-    | '/team/$id/product/category'
-    | '/team/$id/product/new'
-    | '/team/$id/team/member'
-    | '/team/$id/team/member-pending'
-    | '/team/$id/product'
-    | '/team/$id/team'
-    | '/team/$id/product/$pid'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/about'
@@ -320,21 +108,6 @@ export interface FileRouteTypes {
     | '/'
     | '/profile'
     | '/verify-email-success'
-    | '/admin'
-    | '/team'
-    | '/admin/report'
-    | '/team/join-team'
-    | '/team/new'
-    | '/team/search'
-    | '/team/setting'
-    | '/team/$id'
-    | '/team/$id/product/category'
-    | '/team/$id/product/new'
-    | '/team/$id/team/member'
-    | '/team/$id/team/member-pending'
-    | '/team/$id/product'
-    | '/team/$id/team'
-    | '/team/$id/product/$pid'
   id:
     | '__root__'
     | '/_authed'
@@ -346,28 +119,6 @@ export interface FileRouteTypes {
     | '/_public/'
     | '/_authed/_user/profile'
     | '/_authed/_user/verify-email-success'
-    | '/_authed/admin'
-    | '/_authed/admin/_layout'
-    | '/_authed/team'
-    | '/_authed/team/_id'
-    | '/_authed/team/_team'
-    | '/_authed/admin/_layout/report'
-    | '/_authed/team/_team/join-team'
-    | '/_authed/team/_team/new'
-    | '/_authed/team/_team/search'
-    | '/_authed/team/_team/setting'
-    | '/_authed/admin/_layout/'
-    | '/_authed/team/_team/'
-    | '/_authed/team/_id/$id'
-    | '/_authed/team/_id/$id/_layout'
-    | '/_authed/team/_id/$id/_layout/'
-    | '/_authed/team/_id/$id/_layout/product/category'
-    | '/_authed/team/_id/$id/_layout/product/new'
-    | '/_authed/team/_id/$id/_layout/team/member'
-    | '/_authed/team/_id/$id/_layout/team/member-pending'
-    | '/_authed/team/_id/$id/_layout/product/'
-    | '/_authed/team/_id/$id/_layout/team/'
-    | '/_authed/team/_id/$id/_layout/product/$pid/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -390,20 +141,6 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof AuthedRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_authed/team': {
-      id: '/_authed/team'
-      path: '/team'
-      fullPath: '/team'
-      preLoaderRoute: typeof AuthedTeamRouteImport
-      parentRoute: typeof AuthedRoute
-    }
-    '/_authed/admin': {
-      id: '/_authed/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthedAdminRouteImport
-      parentRoute: typeof AuthedRoute
     }
     '/_public/': {
       id: '/_public/'
@@ -440,27 +177,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedUserRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/team/_team': {
-      id: '/_authed/team/_team'
-      path: ''
-      fullPath: '/team'
-      preLoaderRoute: typeof AuthedTeamTeamRouteImport
-      parentRoute: typeof AuthedTeamRoute
-    }
-    '/_authed/team/_id': {
-      id: '/_authed/team/_id'
-      path: '/team'
-      fullPath: '/team'
-      preLoaderRoute: typeof AuthedTeamIdRouteImport
-      parentRoute: typeof AuthedTeamRoute
-    }
-    '/_authed/admin/_layout': {
-      id: '/_authed/admin/_layout'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthedAdminLayoutRouteImport
-      parentRoute: typeof AuthedAdminRoute
-    }
     '/_authed/_user/verify-email-success': {
       id: '/_authed/_user/verify-email-success'
       path: '/verify-email-success'
@@ -474,125 +190,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/profile'
       preLoaderRoute: typeof AuthedUserProfileRouteImport
       parentRoute: typeof AuthedUserRoute
-    }
-    '/_authed/team/_id/$id': {
-      id: '/_authed/team/_id/$id'
-      path: '/$id'
-      fullPath: '/team/$id'
-      preLoaderRoute: typeof AuthedTeamIdIdRouteImport
-      parentRoute: typeof AuthedTeamIdRoute
-    }
-    '/_authed/team/_team/': {
-      id: '/_authed/team/_team/'
-      path: '/'
-      fullPath: '/team/'
-      preLoaderRoute: typeof AuthedTeamTeamIndexRouteImport
-      parentRoute: typeof AuthedTeamTeamRoute
-    }
-    '/_authed/admin/_layout/': {
-      id: '/_authed/admin/_layout/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthedAdminLayoutIndexRouteImport
-      parentRoute: typeof AuthedAdminLayoutRoute
-    }
-    '/_authed/team/_team/setting': {
-      id: '/_authed/team/_team/setting'
-      path: '/setting'
-      fullPath: '/team/setting'
-      preLoaderRoute: typeof AuthedTeamTeamSettingRouteImport
-      parentRoute: typeof AuthedTeamTeamRoute
-    }
-    '/_authed/team/_team/search': {
-      id: '/_authed/team/_team/search'
-      path: '/search'
-      fullPath: '/team/search'
-      preLoaderRoute: typeof AuthedTeamTeamSearchRouteImport
-      parentRoute: typeof AuthedTeamTeamRoute
-    }
-    '/_authed/team/_team/new': {
-      id: '/_authed/team/_team/new'
-      path: '/new'
-      fullPath: '/team/new'
-      preLoaderRoute: typeof AuthedTeamTeamNewRouteImport
-      parentRoute: typeof AuthedTeamTeamRoute
-    }
-    '/_authed/team/_team/join-team': {
-      id: '/_authed/team/_team/join-team'
-      path: '/join-team'
-      fullPath: '/team/join-team'
-      preLoaderRoute: typeof AuthedTeamTeamJoinTeamRouteImport
-      parentRoute: typeof AuthedTeamTeamRoute
-    }
-    '/_authed/admin/_layout/report': {
-      id: '/_authed/admin/_layout/report'
-      path: '/report'
-      fullPath: '/admin/report'
-      preLoaderRoute: typeof AuthedAdminLayoutReportRouteImport
-      parentRoute: typeof AuthedAdminLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout': {
-      id: '/_authed/team/_id/$id/_layout'
-      path: '/$id'
-      fullPath: '/team/$id'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutRouteImport
-      parentRoute: typeof AuthedTeamIdIdRoute
-    }
-    '/_authed/team/_id/$id/_layout/': {
-      id: '/_authed/team/_id/$id/_layout/'
-      path: '/'
-      fullPath: '/team/$id/'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutIndexRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/team/': {
-      id: '/_authed/team/_id/$id/_layout/team/'
-      path: '/team'
-      fullPath: '/team/$id/team'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutTeamIndexRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/product/': {
-      id: '/_authed/team/_id/$id/_layout/product/'
-      path: '/product'
-      fullPath: '/team/$id/product'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutProductIndexRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/team/member-pending': {
-      id: '/_authed/team/_id/$id/_layout/team/member-pending'
-      path: '/team/member-pending'
-      fullPath: '/team/$id/team/member-pending'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutTeamMemberPendingRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/team/member': {
-      id: '/_authed/team/_id/$id/_layout/team/member'
-      path: '/team/member'
-      fullPath: '/team/$id/team/member'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutTeamMemberRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/product/new': {
-      id: '/_authed/team/_id/$id/_layout/product/new'
-      path: '/product/new'
-      fullPath: '/team/$id/product/new'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutProductNewRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/product/category': {
-      id: '/_authed/team/_id/$id/_layout/product/category'
-      path: '/product/category'
-      fullPath: '/team/$id/product/category'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutProductCategoryRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
-    }
-    '/_authed/team/_id/$id/_layout/product/$pid/': {
-      id: '/_authed/team/_id/$id/_layout/product/$pid/'
-      path: '/product/$pid'
-      fullPath: '/team/$id/product/$pid'
-      preLoaderRoute: typeof AuthedTeamIdIdLayoutProductPidIndexRouteImport
-      parentRoute: typeof AuthedTeamIdIdLayoutRoute
     }
   }
 }
@@ -611,127 +208,12 @@ const AuthedUserRouteWithChildren = AuthedUserRoute._addFileChildren(
   AuthedUserRouteChildren,
 )
 
-interface AuthedAdminLayoutRouteChildren {
-  AuthedAdminLayoutReportRoute: typeof AuthedAdminLayoutReportRoute
-  AuthedAdminLayoutIndexRoute: typeof AuthedAdminLayoutIndexRoute
-}
-
-const AuthedAdminLayoutRouteChildren: AuthedAdminLayoutRouteChildren = {
-  AuthedAdminLayoutReportRoute: AuthedAdminLayoutReportRoute,
-  AuthedAdminLayoutIndexRoute: AuthedAdminLayoutIndexRoute,
-}
-
-const AuthedAdminLayoutRouteWithChildren =
-  AuthedAdminLayoutRoute._addFileChildren(AuthedAdminLayoutRouteChildren)
-
-interface AuthedAdminRouteChildren {
-  AuthedAdminLayoutRoute: typeof AuthedAdminLayoutRouteWithChildren
-}
-
-const AuthedAdminRouteChildren: AuthedAdminRouteChildren = {
-  AuthedAdminLayoutRoute: AuthedAdminLayoutRouteWithChildren,
-}
-
-const AuthedAdminRouteWithChildren = AuthedAdminRoute._addFileChildren(
-  AuthedAdminRouteChildren,
-)
-
-interface AuthedTeamIdIdLayoutRouteChildren {
-  AuthedTeamIdIdLayoutIndexRoute: typeof AuthedTeamIdIdLayoutIndexRoute
-  AuthedTeamIdIdLayoutProductCategoryRoute: typeof AuthedTeamIdIdLayoutProductCategoryRoute
-  AuthedTeamIdIdLayoutProductNewRoute: typeof AuthedTeamIdIdLayoutProductNewRoute
-  AuthedTeamIdIdLayoutTeamMemberRoute: typeof AuthedTeamIdIdLayoutTeamMemberRoute
-  AuthedTeamIdIdLayoutTeamMemberPendingRoute: typeof AuthedTeamIdIdLayoutTeamMemberPendingRoute
-  AuthedTeamIdIdLayoutProductIndexRoute: typeof AuthedTeamIdIdLayoutProductIndexRoute
-  AuthedTeamIdIdLayoutTeamIndexRoute: typeof AuthedTeamIdIdLayoutTeamIndexRoute
-  AuthedTeamIdIdLayoutProductPidIndexRoute: typeof AuthedTeamIdIdLayoutProductPidIndexRoute
-}
-
-const AuthedTeamIdIdLayoutRouteChildren: AuthedTeamIdIdLayoutRouteChildren = {
-  AuthedTeamIdIdLayoutIndexRoute: AuthedTeamIdIdLayoutIndexRoute,
-  AuthedTeamIdIdLayoutProductCategoryRoute:
-    AuthedTeamIdIdLayoutProductCategoryRoute,
-  AuthedTeamIdIdLayoutProductNewRoute: AuthedTeamIdIdLayoutProductNewRoute,
-  AuthedTeamIdIdLayoutTeamMemberRoute: AuthedTeamIdIdLayoutTeamMemberRoute,
-  AuthedTeamIdIdLayoutTeamMemberPendingRoute:
-    AuthedTeamIdIdLayoutTeamMemberPendingRoute,
-  AuthedTeamIdIdLayoutProductIndexRoute: AuthedTeamIdIdLayoutProductIndexRoute,
-  AuthedTeamIdIdLayoutTeamIndexRoute: AuthedTeamIdIdLayoutTeamIndexRoute,
-  AuthedTeamIdIdLayoutProductPidIndexRoute:
-    AuthedTeamIdIdLayoutProductPidIndexRoute,
-}
-
-const AuthedTeamIdIdLayoutRouteWithChildren =
-  AuthedTeamIdIdLayoutRoute._addFileChildren(AuthedTeamIdIdLayoutRouteChildren)
-
-interface AuthedTeamIdIdRouteChildren {
-  AuthedTeamIdIdLayoutRoute: typeof AuthedTeamIdIdLayoutRouteWithChildren
-}
-
-const AuthedTeamIdIdRouteChildren: AuthedTeamIdIdRouteChildren = {
-  AuthedTeamIdIdLayoutRoute: AuthedTeamIdIdLayoutRouteWithChildren,
-}
-
-const AuthedTeamIdIdRouteWithChildren = AuthedTeamIdIdRoute._addFileChildren(
-  AuthedTeamIdIdRouteChildren,
-)
-
-interface AuthedTeamIdRouteChildren {
-  AuthedTeamIdIdRoute: typeof AuthedTeamIdIdRouteWithChildren
-}
-
-const AuthedTeamIdRouteChildren: AuthedTeamIdRouteChildren = {
-  AuthedTeamIdIdRoute: AuthedTeamIdIdRouteWithChildren,
-}
-
-const AuthedTeamIdRouteWithChildren = AuthedTeamIdRoute._addFileChildren(
-  AuthedTeamIdRouteChildren,
-)
-
-interface AuthedTeamTeamRouteChildren {
-  AuthedTeamTeamJoinTeamRoute: typeof AuthedTeamTeamJoinTeamRoute
-  AuthedTeamTeamNewRoute: typeof AuthedTeamTeamNewRoute
-  AuthedTeamTeamSearchRoute: typeof AuthedTeamTeamSearchRoute
-  AuthedTeamTeamSettingRoute: typeof AuthedTeamTeamSettingRoute
-  AuthedTeamTeamIndexRoute: typeof AuthedTeamTeamIndexRoute
-}
-
-const AuthedTeamTeamRouteChildren: AuthedTeamTeamRouteChildren = {
-  AuthedTeamTeamJoinTeamRoute: AuthedTeamTeamJoinTeamRoute,
-  AuthedTeamTeamNewRoute: AuthedTeamTeamNewRoute,
-  AuthedTeamTeamSearchRoute: AuthedTeamTeamSearchRoute,
-  AuthedTeamTeamSettingRoute: AuthedTeamTeamSettingRoute,
-  AuthedTeamTeamIndexRoute: AuthedTeamTeamIndexRoute,
-}
-
-const AuthedTeamTeamRouteWithChildren = AuthedTeamTeamRoute._addFileChildren(
-  AuthedTeamTeamRouteChildren,
-)
-
-interface AuthedTeamRouteChildren {
-  AuthedTeamIdRoute: typeof AuthedTeamIdRouteWithChildren
-  AuthedTeamTeamRoute: typeof AuthedTeamTeamRouteWithChildren
-}
-
-const AuthedTeamRouteChildren: AuthedTeamRouteChildren = {
-  AuthedTeamIdRoute: AuthedTeamIdRouteWithChildren,
-  AuthedTeamTeamRoute: AuthedTeamTeamRouteWithChildren,
-}
-
-const AuthedTeamRouteWithChildren = AuthedTeamRoute._addFileChildren(
-  AuthedTeamRouteChildren,
-)
-
 interface AuthedRouteChildren {
   AuthedUserRoute: typeof AuthedUserRouteWithChildren
-  AuthedAdminRoute: typeof AuthedAdminRouteWithChildren
-  AuthedTeamRoute: typeof AuthedTeamRouteWithChildren
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedUserRoute: AuthedUserRouteWithChildren,
-  AuthedAdminRoute: AuthedAdminRouteWithChildren,
-  AuthedTeamRoute: AuthedTeamRouteWithChildren,
 }
 
 const AuthedRouteWithChildren =

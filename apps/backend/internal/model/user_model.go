@@ -11,7 +11,6 @@ type (
 		RoleID        uint           `db:"role_id" json:"role_id"`
 		ProfileImage  []ProfileImage `db:"-" json:"profile_image,omitempty"`
 		Role          *Role          `db:"-" json:"role,omitempty"`
-		TeamMembers   []TeamMember   `db:"-" json:"team_members,omitempty"`
 	}
 
 	ProfileImage struct {

@@ -4,8 +4,9 @@ import (
 	"time"
 
 	"github.com/suttapak/starter/bootstrap"
-	"github.com/suttapak/starter/config"
-	"github.com/suttapak/starter/database"
+	"github.com/suttapak/starter/domain/config"
+	"github.com/suttapak/starter/domain/database"
+	"github.com/suttapak/starter/domain/mail"
 	"github.com/suttapak/starter/helpers"
 	"github.com/suttapak/starter/i18n"
 	"github.com/suttapak/starter/internal/controller"
@@ -14,7 +15,6 @@ import (
 	"github.com/suttapak/starter/internal/route"
 	"github.com/suttapak/starter/internal/service"
 	"github.com/suttapak/starter/logger"
-	"github.com/suttapak/starter/mail"
 
 	"go.uber.org/fx"
 )

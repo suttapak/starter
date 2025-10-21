@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/domain/config"
 	"github.com/suttapak/starter/errs"
 )
 

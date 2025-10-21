@@ -58,7 +58,7 @@ export const NavbarAuthed = () => {
                 "flex justify-start items-center gap-1",
                 link({ color: "foreground" }),
               )}
-              to="/team"
+              to="/"
             >
               <p className="font-bold text-inherit">{t("navbar.brand")}</p>
             </Link>

@@ -21,6 +21,6 @@ func (m *mailRepository) Send(ctx context.Context, message *gomail.Message) erro
 	return err
 }
 
-func newMailRepository(dialer *gomail.Dialer) MailRepository {
+func NewMailRepository(dialer *gomail.Dialer) MailRepository {
 	return &mailRepository{dialer}
 }

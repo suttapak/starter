@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	goI8n "github.com/nicksnyder/go-i18n/v2/i18n"
-	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/domain/config"
 	"github.com/suttapak/starter/logger"
 	"golang.org/x/text/language"
 )

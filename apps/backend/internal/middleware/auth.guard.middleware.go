@@ -1,12 +1,10 @@
 package middleware
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/suttapak/starter/errs"
-	"github.com/suttapak/starter/internal/repository"
 	"github.com/suttapak/starter/internal/service"
 	"github.com/suttapak/starter/logger"
 
@@ -19,76 +17,14 @@ type (
 		Protect(c *gin.Context)
 		ProtectRefreshToken(c *gin.Context)
 		Permission(c *gin.Context)
-		TeamPermission(c *gin.Context)
 	}
 	authGuardMiddleware struct {
 		jwt      service.JWTService
 		enforcer *casbin.Enforcer
 		logger   logger.AppLogger
 		user     service.UserService
-		team     service.Team
-		teamRepo repository.Team
 	}
 )
-
-// TeamPermission implements AuthGuardMiddleware.
-func (a *authGuardMiddleware) TeamPermission(c *gin.Context) {
-	userIdStr, ok := c.Get("user_id")
-	if !ok {
-		a.logger.Error("can not get user id")
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	uId, ok := userIdStr.(uint)
-	if !ok {
-		a.logger.Error("user id is not uint")
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	teamIdStr := c.Param("team_id")
-	teamId, err := strconv.Atoi(teamIdStr)
-	if err != nil {
-		a.logger.Error("can not get teamId")
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	member, err := a.team.GetTeamUserMe(c, uint(teamId), uId)
-	if err != nil {
-		a.logger.Error(err)
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	isExist, err := a.teamRepo.ExistUserInTeamByTeamId(c, nil, uint(teamId), uId)
-	if err != nil {
-		a.logger.Error(err)
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	if !isExist {
-		a.logger.Error("user not in team")
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-
-	if err := a.enforcer.LoadPolicy(); err != nil {
-		a.logger.Error(err)
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	allowed, err := a.enforcer.Enforce(strconv.Itoa(int(member.TeamRoleID)), c.Request.URL.Path, c.Request.Method)
-	if err != nil {
-		a.logger.Error(err)
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	if !allowed {
-		fmt.Println(strconv.Itoa(int(member.TeamRoleID)), c.Request.URL.Path, c.Request.Method)
-		a.logger.Debug("not allow in team permission")
-		handlerError(c, errs.ErrUnauthorized)
-		return
-	}
-	c.Next()
-}
 
 // Permission implements AuthGuardMiddleware.
 func (a *authGuardMiddleware) Permission(c *gin.Context) {
@@ -199,15 +135,11 @@ func NewAuthGuardMiddleware(
 	enforcer *casbin.Enforcer,
 	logger logger.AppLogger,
 	user service.UserService,
-	team service.Team,
-	teamRepo repository.Team,
 ) AuthGuardMiddleware {
 	return &authGuardMiddleware{
 		jwt:      jwt,
 		enforcer: enforcer,
 		logger:   logger,
 		user:     user,
-		team:     team,
-		teamRepo: teamRepo,
 	}
 }

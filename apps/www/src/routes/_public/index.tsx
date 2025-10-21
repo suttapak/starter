@@ -30,7 +30,7 @@ function Index() {
             radius: "full",
             variant: "shadow",
           })}
-          to="/team"
+          to="/profile"
         >
           {t("navbar.use_app")}
         </Link>

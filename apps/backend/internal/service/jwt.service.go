@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/domain/config"
 	"github.com/suttapak/starter/errs"
 	"github.com/suttapak/starter/helpers"
 	"github.com/suttapak/starter/logger"

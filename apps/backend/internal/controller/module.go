@@ -8,10 +8,6 @@ import (
 var Module = fx.Options(
 	fx.Provide(NewAuth),
 	fx.Provide(NewUser),
-	fx.Provide(NewTeam),
-	fx.Provide(NewProducts),
-	fx.Provide(NewProductCategory),
-	fx.Provide(NewReport),
 )
 
 type (

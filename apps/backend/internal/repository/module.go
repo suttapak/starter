@@ -11,12 +11,7 @@ var (
 		fx.Provide(NewDatabaseTransaction),
 		fx.Provide(NewImage),
 		fx.Provide(NewAutoIncrementSequence),
-		fx.Provide(NewReport),
-		fx.Provide(NewTeam),
-		fx.Provide(NewProductCategory),
-		fx.Provide(NewProducts),
 		fx.Provide(NewODT),
-
-		fx.Provide(newMailRepository),
+		fx.Provide(NewMailRepository),
 	)
 )

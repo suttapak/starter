@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/suttapak/starter/config"
+	"github.com/suttapak/starter/domain/config"
 	"github.com/suttapak/starter/internal/service"
 )
 

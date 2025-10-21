@@ -7,11 +7,7 @@ var Module = fx.Options(
 	fx.Provide(NewJWT),
 	fx.Provide(NewEmail),
 	fx.Provide(NewUser),
-	fx.Provide(NewTeam),
-	fx.Provide(NewProducts),
-	fx.Provide(NewProductCategory),
 	fx.Provide(NewCodeService),
-	fx.Provide(NewReport),
 	fx.Provide(NewExcelService),
 	fx.Provide(NewImageFileService),
 )

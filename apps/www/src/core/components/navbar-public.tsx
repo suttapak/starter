@@ -23,7 +23,7 @@ export const NavbarPublic = () => {
               "flex justify-start items-center gap-1",
               link({ color: "foreground" }),
             )}
-            to="/team"
+            to="/"
           >
             <p className="font-bold text-inherit">{t("navbar.brand")}</p>
           </Link>
@@ -33,7 +33,7 @@ export const NavbarPublic = () => {
       <NavbarContent className=" pl-4" justify="end">
         <ThemeSwitch />
         <NavbarItem>
-          <Button as={Link} color="primary" to="/team">
+          <Button as={Link} color="primary" to="/profile">
             {t("navbar.use_app")}
           </Button>
         </NavbarItem>
