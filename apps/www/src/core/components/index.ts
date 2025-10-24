@@ -4,7 +4,6 @@ export { default as ErrorBoundary } from "./error-boundary";
 export { FileTrigger } from "./file-trigger";
 export { NavbarAuthed } from "./navbar-authed";
 export { NavbarAuthedAdmin } from "./navbar-authed-admin";
-export { NavbarAuthedTeam } from "./navbar-authed-team";
 export { default as MNavbarMenuItems } from "./navbar-menu-item";
 export { NavbarPublic } from "./navbar-public";
 export * from "./primitives";

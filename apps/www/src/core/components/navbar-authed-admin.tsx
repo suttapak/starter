@@ -83,7 +83,7 @@ export const NavbarAuthedAdmin = (props: NavbarAuthedAdminProps) => {
                 "flex justify-start items-center gap-1",
                 link({ color: "foreground" }),
               )}
-              to="/team"
+              to="/profile"
             >
               <p className="font-bold text-inherit">{t("navbar.brand")}</p>
             </Link>

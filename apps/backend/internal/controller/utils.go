@@ -2,15 +2,14 @@ package controller
 
 import (
 	"errors"
-	"mime/multipart"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/suttapak/starter/errs"
-	"github.com/suttapak/starter/helpers"
 )
 
+/*
 func handlePaginationJsonResponse(c *gin.Context, json any, pg *helpers.Pagination, msg ...string) {
 	// Default message if none is provided
 	message := "Success"
@@ -39,7 +38,7 @@ func handlePaginationJsonResponse(c *gin.Context, json any, pg *helpers.Paginati
 
 	// Send response with the determined status
 	c.JSON(status, response)
-}
+}*/
 
 func handleJsonResponse(c *gin.Context, json any, msg ...string) {
 	// Default message if none is provided
@@ -88,6 +87,7 @@ func handlerError(c *gin.Context, err error) {
 	c.AbortWithStatusJSON(status, response)
 }
 
+/*
 func getTeamId(c *gin.Context) (teamId uint, err error) {
 	teamIdStr := c.Param("team_id")
 	if teamIdStr == "" {
@@ -120,7 +120,7 @@ func getProductImageId(c *gin.Context) (uint, error) {
 		return 0, errs.ErrBadRequest
 	}
 	return uint(productImageIdInt), nil
-}
+}*/
 
 func getProtectUserId(c *gin.Context) (uId uint, err error) {
 	uIdStr, ok := c.Get("user_id")

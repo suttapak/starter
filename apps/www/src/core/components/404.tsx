@@ -16,7 +16,7 @@ export default function NotFound() {
         </CardBody>
         <CardFooter>
           <Button>
-            <Link to="/team">{t("not_found.global.action")}</Link>
+            <Link to="/profile">{t("not_found.global.action")}</Link>
           </Button>
         </CardFooter>
       </Card>
