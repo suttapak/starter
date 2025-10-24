@@ -18,5 +18,6 @@
     "stockub",
     "testutil",
     "verifyed"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "disabled"
 }

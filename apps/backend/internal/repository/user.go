@@ -36,8 +36,7 @@ func (u *user) CreateImageProfile(ctx context.Context, tx *gorm.DB, userId uint,
 		UserID:  userId,
 		ImageID: imageId,
 	}
-	return tx.WithContext(ctx).Create(profileImage).Error
-
+	return gorm.G[model.ProfileImage](tx).Create(ctx, profileImage)
 }
 
 // IsVerifyEmailByUserId checks if a user's email is verified.

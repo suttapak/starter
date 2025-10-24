@@ -22,7 +22,8 @@ func (i *image) Delete(ctx context.Context, tx *gorm.DB, imageId uint) error {
 	if tx == nil {
 		tx = i.db
 	}
-	return tx.WithContext(ctx).Delete(&model.Image{}, imageId).Error
+	_, err := gorm.G[model.Image](tx).Where("id = ?", imageId).Delete(ctx)
+	return err
 }
 
 // Save implements Image.
@@ -30,7 +31,7 @@ func (i *image) Save(ctx context.Context, tx *gorm.DB, userId uint, image *model
 	if tx == nil {
 		tx = i.db
 	}
-	err := tx.WithContext(ctx).Create(&image).Error
+	err := gorm.G[model.Image](tx).Create(ctx, image)
 	return image, err
 }
 
